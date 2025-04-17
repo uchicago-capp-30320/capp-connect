@@ -1,0 +1,13 @@
+[project]
+name = "capp-connect"
+version = "0.1.0"
+description = "This is the repository for Spring 2025 CAPP Connect Project"
+authors = ["bentoviml"]
+readme = "README.md"
+requires-python = ">=3.12.0"
+dependencies = [
+    "pre-commit>=4.0.1",
+    "pytest>=8.3.4",
+    "requests>=2.32.3",
+    "responses>=0.25.3",
+]
