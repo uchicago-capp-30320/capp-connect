@@ -50,7 +50,7 @@ Include any output that confirms that the code does what is expected.
 
 <!---
 
-Include this section if your changes will impact other people / other sections of the project. 
+Include this section if your changes will impact other people / other sections of the project.
 
 Link any related documents, resources, or instructions for merge if any.
 
