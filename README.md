@@ -1,5 +1,6 @@
 # capp-connect
 CAPP Connect Project Repo
+Project members: Alison Spencer,
 
 ### Instructions to Run the Project
 
