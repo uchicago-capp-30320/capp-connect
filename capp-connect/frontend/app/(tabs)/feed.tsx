@@ -13,7 +13,7 @@ export default function Index() {
         }}
       >
        
-          <Text>This the home page</Text>
+          <Text>This is the feed</Text>
         
   
       </SafeAreaView>

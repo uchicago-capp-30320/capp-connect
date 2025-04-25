@@ -1,6 +1,6 @@
 import { Text, StyleSheet } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import ProfilePhoto from '../../components/ProfilePhoto'
+import ProfilePhoto from '../components/ProfilePhoto'
 
 export default function Index() {
   return (
@@ -12,7 +12,7 @@ export default function Index() {
         }}
       >
         <Square />
-        <ProfilePhoto />
+       
         <Text>This is the User Profile page.</Text>
       </SafeAreaProvider>
   );
