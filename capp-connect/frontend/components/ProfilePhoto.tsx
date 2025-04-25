@@ -1,24 +1,19 @@
-import { Pressable, Image, StyleSheet } from "react-native";
-import { router, useRouter } from 'expo-router';
+import { Image, StyleProp, ImageStyle, Pressable, SafeAreaView } from "react-native";
+import { router } from 'expo-router';
 
-export default function ProfilePhoto() {
-    return (
-            <Pressable onPress={() => router.navigate('/(tabs)/profile')}>
-                <Image source={
-                    require('../assets/images/fakeprofile.png')} 
-                    style={[styles.image, {resizeMode: 'cover'}]}
-                />
-            </Pressable>
-    )
+interface ProfilePhotoProps {
+    style: StyleProp<ImageStyle>;
 }
 
-const styles = StyleSheet.create({
-    image: {
-        position: 'absolute',
-        top: 30,
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        borderWidth: 2
-    }
-})
+export default function ProfilePhoto({style}: ProfilePhotoProps) {
+    return (
+        <SafeAreaView>
+            <Pressable onPress={() => router.navigate('/profile')}>
+                <Image source={
+                    require('../assets/images/fakeprofile.png')} 
+                    style={[style, {resizeMode: 'cover'}]}
+                />
+            </Pressable>
+        </SafeAreaView>
+    )
+}
