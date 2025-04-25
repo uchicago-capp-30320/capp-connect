@@ -12,10 +12,10 @@ export default function Index() {
           alignItems: "center",
         }}
       >
-       
+
           <Text>This is the feed</Text>
-        
-  
+
+
       </SafeAreaView>
     </SafeAreaProvider>
   );

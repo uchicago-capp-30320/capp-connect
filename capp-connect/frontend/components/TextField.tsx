@@ -21,9 +21,9 @@ export default function TextField(props: TextFieldProps) {
     return (
         <SafeAreaView>
             <Text style={{alignContent: "center"}}>{props.label}</Text>
-            <TextInput 
+            <TextInput
             editable={props.editMode}
-            style={props.style} 
+            style={props.style}
             value={text}
             onChangeText={(newText) => {changeText(newText); newData.set(props.dataKey, newText); props.updateData(newData)}}
             enterKeyHint="done"

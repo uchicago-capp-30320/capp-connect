@@ -10,7 +10,7 @@ export default function ProfilePhoto({style}: ProfilePhotoProps) {
         <SafeAreaView>
             <Pressable onPress={() => router.navigate('/profile')}>
                 <Image source={
-                    require('../assets/images/fakeprofile.png')} 
+                    require('../assets/images/fakeprofile.png')}
                     style={[style, {resizeMode: 'cover'}]}
                 />
             </Pressable>

@@ -12,7 +12,7 @@ export default function Index() {
         }}
       >
         <Square />
-       
+
         <Text>This is the User Profile page.</Text>
       </SafeAreaProvider>
   );

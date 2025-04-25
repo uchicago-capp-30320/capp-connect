@@ -12,10 +12,10 @@ export default function Index() {
           alignItems: "center",
         }}
       >
-       
+
           <Text>This the home page</Text>
-        
-  
+
+
       </SafeAreaView>
     </SafeAreaProvider>
   );

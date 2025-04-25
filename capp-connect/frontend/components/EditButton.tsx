@@ -13,13 +13,13 @@ export default function EditButton({editMode, changeEditMode}: EditButtonProps) 
     const [buttonText, changeButtonText] = useState("Edit")
 
     return (
-        <Button 
+        <Button
             title={buttonText}
             onPress={
                 () => {
                     !editMode ? changeButtonText("Save") : changeButtonText("Edit")
                     changeEditMode(!editMode)
-                }} 
+                }}
         />
     )
 }
