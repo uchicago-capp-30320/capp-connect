@@ -172,3 +172,42 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+## Frontend stuff (Node.js/React.js/Expo) ##
+
+# dependencies
+capp-connect/frontend/node_modules/
+
+# Expo
+capp-connect/frontend/.expo/
+capp-connect/frontend/dist/
+capp-connect/frontend/web-build/
+capp-connect/frontend/expo-env.d.ts
+
+# Native
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+capp-connect/frontend/.metro-health-check*
+
+# debug
+capp-connect/frontend/npm-debug.*
+capp-connect/frontend/yarn-debug.*
+capp-connect/frontend/yarn-error.*
+
+# macOS
+capp-connect/frontend/.DS_Store
+*.pem
+
+# local env files
+capp-connect/frontend/.env*.local
+
+# typescript
+*.tsbuildinfo
+
+capp-connect/frontend/app-example
