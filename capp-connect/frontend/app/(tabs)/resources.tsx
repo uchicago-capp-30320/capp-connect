@@ -1,8 +1,7 @@
 import { RefreshControl, ScrollView, Text } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import ProfilePhoto from '../../components/ProfilePhoto';
 
-export default function Index() {
+export default function Resources() {
   return (
     <SafeAreaProvider>
       <SafeAreaView
