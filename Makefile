@@ -14,6 +14,8 @@ lint:
 .PHONY: create-requirements
 create-requirements:
 	uv pip compile --generate-hashes pyproject.toml > requirements.txt
+# Install JavaScript dependencies (uses package.json and package-lock.json)
+	npm install
 
 .PHONY: test
 test:
@@ -23,6 +25,16 @@ test:
 test-and-fail:
 	uv run pytest -vsx tests/
 
-.PHONY: run
-run:
+# one proposed way of running this in parallel
+# https://stackoverflow.com/questions/48047276/makefile-for-running-django-backend-and-react-frontend
+.PHONY: backend
+backend:
 	uv run python -m capp-connect
+
+.PHONY: frontend
+frontend:
+	cd capp-connect/frontend && npx expo start --tunnel
+
+.PHONY: run-all
+run-all:
+	make backend & make frontend
