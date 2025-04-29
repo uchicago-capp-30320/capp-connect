@@ -179,7 +179,7 @@ cython_debug/
 node_modules/
 
 # Expo
-capp-connect/frontend/.expo/
+.expo/
 capp-connect/frontend/dist/
 capp-connect/frontend/web-build/
 capp-connect/frontend/expo-env.d.ts
