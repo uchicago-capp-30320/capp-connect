@@ -176,7 +176,7 @@ cython_debug/
 ## Frontend stuff (Node.js/React.js/Expo) ##
 
 # dependencies
-capp-connect/frontend/node_modules/
+node_modules/
 
 # Expo
 capp-connect/frontend/.expo/
