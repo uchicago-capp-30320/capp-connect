@@ -175,6 +175,9 @@ cython_debug/
 
 ## Frontend stuff (Node.js/React.js/Expo) ##
 
+# is automatically created when running expo app to ignore expo-env.d.ts, but ignores nothing else
+capp-connect/frontend/.gitignore
+
 # dependencies
 node_modules/
 
