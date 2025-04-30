@@ -43,7 +43,7 @@ function makeDrawerScreen(fileName: string, label: string) {
             <View style={{marginRight: 16}}>
                 <ProfilePhoto style={styles.image} />
             </View>
-            
+
             <SettingsIcon style={styles.icon} color="grey"/>
             </>
           )
@@ -57,7 +57,7 @@ export default function Layout() {
   if (Device.deviceType == Device.DeviceType.DESKTOP) {
     return (
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <Drawer > 
+        <Drawer >
           {makeDrawerScreen("index", "Home")}
           {makeDrawerScreen("feed", "Feed")}
           {makeDrawerScreen("resources", "Resources")}
@@ -73,8 +73,8 @@ export default function Layout() {
       {makeTab("index", "Home", "home")}
       {makeTab("resources", "Resources", "file")}
     </Tabs>
-  );  
-  } 
+  );
+  }
 
 
 const styles = StyleSheet.create({
