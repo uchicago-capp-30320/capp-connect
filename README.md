@@ -1,6 +1,9 @@
 # capp-connect
 CAPP Connect Project Repo
-Project members: Alison Spencer,
+Project members: Amber Avila, Lee-Or Bentovim, Paula Cadena, Kiran Jivnani, Gregory Mitchell, and Alison Spencer
+Instructor: James Turk
+
+This project is a work in progress. [Link to Notion](https://www.notion.so/Projects-Tasks-1d50e856f08380bdb819cc3870547466)
 
 ### Instructions to Run the Project
 
