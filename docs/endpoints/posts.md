@@ -30,15 +30,16 @@ Parameters:
 
 Response:
 - general_posts:
-    - general_posts_ids: array of unique post identifiers
+    - post_id: array of unique general post identifiers (general, job, and resources are all types of posts delineated by a type variable in the db)
 - job_posts:
-    - job_posts_ids: array of unique post identifiers
-- event_posts:
-    - event_posts_ids: array of unique post identifiers
-- projects_posts:
-    - projects_posts_ids: array of unique post identifiers
+    - post_id: array of unique job post identifiers
 - resources_posts:
-    - resources_posts_ids: array of unique post identifiers
+    - post_id: array of unique post identifiers
+- event_posts:
+    - event_id: array of unique event post identifiers
+- projects_posts:
+    - project_id: array of unique project post identifiers
+
 
 ### GET /fetch_post_info/
 
