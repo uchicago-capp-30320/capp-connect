@@ -30,15 +30,15 @@ Parameters:
 
 Response:
 - general_posts:
-    - post_ids: array of unique post identifiers
+    - general_posts_ids: array of unique post identifiers
 - job_posts:
-    - post_ids: array of unique post identifiers
+    - job_posts_ids: array of unique post identifiers
 - event_posts:
-    - post_ids: array of unique post identifiers
+    - event_posts_ids: array of unique post identifiers
 - projects_posts:
-    - post_ids: array of unique post identifiers
+    - projects_posts_ids: array of unique post identifiers
 - resources_posts:
-    - post_ids: array of unique post identifiers
+    - resources_posts_ids: array of unique post identifiers
 
 ### GET /fetch_post_info/
 
