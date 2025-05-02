@@ -1,0 +1,68 @@
+from django.shortcuts import redirect
+from django.conf import settings
+from django.http import JsonResponse
+import urllib.parse
+import uuid
+import jwt
+import requests
+from .load_slack_key import *  # adjust if needed
+
+def slack_login_redirect(request):
+    state = str(uuid.uuid4())  # store in session for real CSRF protection
+    nonce = str(uuid.uuid4())  # optional for now
+
+    base_url = "https://slack.com/openid/connect/authorize"
+    params = {
+        "client_id": settings.SLACK_CLIENT_ID,
+        "scope": "openid profile email",
+        "redirect_uri": settings.SLACK_REDIRECT_URI,
+        "response_type": "code",
+        "state": state,
+        "nonce": nonce,
+    }
+
+    url = f"{base_url}?{urllib.parse.urlencode(params)}"
+    return redirect(url)
+
+
+def slack_callback(request):
+    code = request.GET.get("code")
+    if not code:
+        return JsonResponse({"error": "Missing code"}, status=400)
+
+    token_url = "https://slack.com/api/openid.connect.token"
+    data = {
+        "client_id": settings.SLACK_CLIENT_ID,
+        "client_secret": settings.SLACK_CLIENT_SECRET,
+        "code": code,
+        "redirect_uri": settings.SLACK_REDIRECT_URI,
+        "grant_type": "authorization_code",
+    }
+
+    response = requests.post(token_url, data=data)
+    token_data = response.json()
+
+    if not response.ok or "id_token" not in token_data:
+        return JsonResponse({"error": "Failed to get tokens", "details": token_data}, status=400)
+
+    id_token = token_data["id_token"]
+
+    # Static JWKS key (replace this with dynamic fetch later)
+    n = "zQqzXfb677bpMKw0idKC5WkVLyqk04PWMsWYJDKqMUUuu_PmzdsvXBfHU7tcZiNoHDuVvGDqjqnkLPEzjXnaZY0DDDHvJKS0JI8fkxIfV1kNy3DkpQMMhgAwnftUiSXgb5clypOmotAEm59gHPYjK9JHBWoHS14NYEYZv9NVy0EkjauyYDSTz589aiKU5lA-cePG93JnqLw8A82kfTlrJ1IIJo2isyBGANr0YzR-d3b_5EvP7ivU7Ph2v5JcEUHeiLSRzIzP3PuyVFrPH659Deh-UAsDFOyJbIcimg9ITnk5_45sb_Xcd_UN6h5I7TGOAFaJN4oi4aaGD4elNi_K1Q"
+    e = "AQAB"
+
+    key = load_rsa_public_key(n, e)
+
+    try:
+        decoded = jwt.decode(
+            id_token,
+            key=key,
+            algorithms=["RS256"],
+            audience=settings.SLACK_CLIENT_ID,
+            issuer="https://slack.com"
+        )
+    except jwt.PyJWTError as e:
+        return JsonResponse({"error": "Invalid token", "details": str(e)}, status=400)
+
+    return JsonResponse(decoded)
+
