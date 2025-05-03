@@ -77,9 +77,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "capp_connect",
         "OPTIONS": {
-            "service": "my_service",
-            "passfile": ".my_pgpass",
-        },
+            "service": "my_service"        },
     }
 }
 
