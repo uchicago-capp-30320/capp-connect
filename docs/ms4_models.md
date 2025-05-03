@@ -84,7 +84,7 @@ Table for posts created by users.
 | description        |  varchar          |  Post body                                                   |
 | created_at         |  timestamp        | When the post was created |
 | updated_at         |  timestamp        | When the post was updated |
-| links              |  varchar          |  Any associated link                                         |  
+| links              |  varchar          |  Any associated link                                         |
 | tag                |  ManyToMany(Tag)  |  Tags describing the content                                 |
 | type                |  enum  |  General, Job, or Resources                                 |
 
