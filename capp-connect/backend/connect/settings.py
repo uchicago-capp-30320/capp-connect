@@ -75,7 +75,11 @@ WSGI_APPLICATION = "connect.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": BASE_DIR / "db.postgres",
+        "NAME": "capp_connect",
+        "OPTIONS": {
+            "service": "my_service",
+            "passfile": ".my_pgpass",
+        },
     }
 }
 
