@@ -7,7 +7,12 @@ Table for information about a CAPP connect user.
 | ----------------- | -------------------- | ------------------------- |
 | user_id           | PrimaryKey (not null)     | Unique identifier for each user |
 | username       | varchar             | Chosen display name       |
+| name       | varchar             | User's name       |
+| profile_photo       | bytea             | Profile image of user       |
 | slack_username | varchar | Corresponding Slack handle   |
+| linkedin | varchar | LinkedIn url   |
+| github | varchar | Github url  |
+| personal_site | varchar | Personal or portfolio url   |
 | country | varchar | User's country location   |
 | state | varchar | User's state location   |
 | city | varchar | User's city location   |
@@ -81,6 +86,7 @@ Table for posts created by users.
 | updated_at         |  timestamp        | When the post was updated |
 | links              |  varchar          |  Any associated link                                         |  
 | tag                |  ManyToMany(Tag)  |  Tags describing the content                                 |
+| type                |  enum  |  General, Job, or Resources                                 |
 
 **Event_tags**
 Join table for tags associated with events.
