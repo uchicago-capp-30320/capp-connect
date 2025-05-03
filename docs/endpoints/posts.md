@@ -16,7 +16,7 @@ Parameters:
 - post_type: general, event, project, job, or CAPP resource
 
 Response:
-- post_id: unique identifier for this post
+- id: unique identifier for this post
 - timestamp: timestamp for post
 
 ### GET /fetch_post_ids/
@@ -47,10 +47,11 @@ Fetches the relevant information for the posts specified by their ids.
 
 Parameters:
 - ids: array of ids (currently capped to 20 ids)
+- post_type: type of post 
 
 Response:
 - posts: array of posts
-    - post_id: unique identifier for this post
+    - id: unique identifier for this post
     - user_id: user id of poster
     - body: text content of post
     - timestamp: timestamp for post
