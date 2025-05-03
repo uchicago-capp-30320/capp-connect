@@ -52,7 +52,7 @@ Join table linking featured skills to specific skills
 | featured_skill_id             | ForeignKey            | Link to featured skills table                       |
 | skill_id             | ForeignKey            |  Link to skill table                      |
 
-**Tags**
+**Tag**
 Table for tags used in other tables.
 
 | Name               | Type              | Description                                                  |
