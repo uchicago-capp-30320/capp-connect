@@ -47,7 +47,7 @@ Fetches the relevant information for the posts specified by their ids.
 
 Parameters:
 - ids: array of ids (currently capped to 20 ids)
-- post_type: type of post 
+- post_type: type of post
 
 Response:
 - posts: array of posts
