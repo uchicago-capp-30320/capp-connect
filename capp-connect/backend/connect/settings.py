@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "ccserver"
+    "ccserver",
 ]
 
 MIDDLEWARE = [
@@ -77,8 +77,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "capp_connect",
-        "OPTIONS": {
-            "service": "my_service"        },
+        "OPTIONS": {"service": "my_service"},
     }
 }
 

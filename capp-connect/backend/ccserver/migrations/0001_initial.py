@@ -94,7 +94,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"unique_together": {("project", "tag")},},
+            options={
+                "unique_together": {("project", "tag")},
+            },
         ),
         migrations.AddField(
             model_name="project",
@@ -130,7 +132,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"unique_together": {("post", "tag")},},
+            options={
+                "unique_together": {("post", "tag")},
+            },
         ),
         migrations.AddField(
             model_name="post",
@@ -164,7 +168,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"unique_together": {("event", "tag")},},
+            options={
+                "unique_together": {("event", "tag")},
+            },
         ),
         migrations.AddField(
             model_name="event",
@@ -282,7 +288,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"unique_together": {("user", "tag")},},
+            options={
+                "unique_together": {("user", "tag")},
+            },
         ),
         migrations.AddField(
             model_name="user",
