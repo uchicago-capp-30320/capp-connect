@@ -1,11 +1,14 @@
-from django.shortcuts import redirect
-from django.conf import settings
-from django.http import JsonResponse
 import urllib.parse
 import uuid
+
 import jwt
 import requests
-from .load_slack_key import *  # adjust if needed
+from django.conf import settings
+from django.http import JsonResponse
+from django.shortcuts import redirect
+
+from .load_slack_key import load_rsa_public_key
+
 
 def slack_login_redirect(request):
     state = str(uuid.uuid4())  # store in session for real CSRF protection
@@ -43,7 +46,9 @@ def slack_callback(request):
     token_data = response.json()
 
     if not response.ok or "id_token" not in token_data:
-        return JsonResponse({"error": "Failed to get tokens", "details": token_data}, status=400)
+        return JsonResponse(
+            {"error": "Failed to get tokens", "details": token_data}, status=400
+        )
 
     id_token = token_data["id_token"]
 
@@ -59,10 +64,11 @@ def slack_callback(request):
             key=key,
             algorithms=["RS256"],
             audience=settings.SLACK_CLIENT_ID,
-            issuer="https://slack.com"
+            issuer="https://slack.com",
         )
     except jwt.PyJWTError as e:
-        return JsonResponse({"error": "Invalid token", "details": str(e)}, status=400)
+        return JsonResponse(
+            {"error": "Invalid token", "details": str(e)}, status=400
+        )
 
     return JsonResponse(decoded)
-
