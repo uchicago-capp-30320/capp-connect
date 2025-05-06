@@ -139,4 +139,4 @@ class ProjectTag(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ("project", "tag
+        unique_together = ("project", "tag")
