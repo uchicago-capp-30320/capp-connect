@@ -15,15 +15,29 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.contrib import admin
+from ccserver import views
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
-from ccserver import views
 
 
 urlpatterns = [
-    path("ccserver/<int:pk>/", views.GetUser.as_view(), name="get_user"),
+    path("ccserver/<int:pk>/", views.GetProfile.as_view(), name="get_user"),
     path("ccserver/<int:pk>/", views.GetPost.as_view(), name="get_post"),
+    path(
+        "ccserver/create_content/",
+        views.CreateContent.as_view(),
+        name="create_content",
+    ),
+    path(
+        "ccserver/fetch_content/",
+        views.FetchContent.as_view(),
+        name="fetch_content",
+    ),
+    path(
+        "ccserver/fetch_content_info/",
+        views.FetchContentInfo.as_view(),
+        name="fetch_content_info",
+    ),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
