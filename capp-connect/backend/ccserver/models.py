@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 
 # Choices for model fields
@@ -46,7 +46,9 @@ class User(models.Model):
     job_title = models.CharField(max_length=100, blank=True, null=True)
     company = models.CharField(max_length=100, blank=True, null=True)
     bio = models.TextField(max_length=600, blank=True, null=True)
-    tags = models.ManyToManyField(Tag, through="UserTag", related_name="user_tags")
+    tags = models.ManyToManyField(
+        Tag, through="UserTag", related_name="user_tags"
+    )
 
     def __str__(self):
         return f"{self.user.username}'s profile"
@@ -71,7 +73,9 @@ class Post(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    tags = models.ManyToManyField(Tag, through="PostTag", related_name="post_tags")
+    tags = models.ManyToManyField(
+        Tag, through="PostTag", related_name="post_tags"
+    )
     links = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -97,7 +101,9 @@ class Event(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     links = models.TextField(blank=True, null=True)
-    tags = models.ManyToManyField(Tag, through="EventTag", related_name="event_tags")
+    tags = models.ManyToManyField(
+        Tag, through="EventTag", related_name="event_tags"
+    )
 
     def __str__(self):
         return self.title
