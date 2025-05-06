@@ -8,8 +8,8 @@ from .models import (
     Project,
     ProjectTag,
     Tag,
-    User,
-    UserTag,
+    Profile,
+    ProfileTag,
 )
 
 
@@ -19,15 +19,15 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
         fields = ["__all__"]
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = User
+        model = Profile
         fields = ["__all__"]
 
 
-class UserTagSerializer(serializers.HyperlinkedModelSerializer):
+class ProfileTagSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = UserTag
+        model = ProfileTag
         fields = ["__all__"]
 
 

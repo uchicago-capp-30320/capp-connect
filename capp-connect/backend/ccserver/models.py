@@ -27,7 +27,7 @@ class Tag(models.Model):
 
 
 # User and related tables
-class User(models.Model):
+class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     slack_username = models.CharField(max_length=100, blank=True, null=True)
     linkedin_username = models.CharField(max_length=100, blank=True, null=True)
@@ -54,7 +54,7 @@ class User(models.Model):
         return f"{self.user.username}'s profile"
 
 
-class UserTag(models.Model):
+class ProfileTag(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
 
