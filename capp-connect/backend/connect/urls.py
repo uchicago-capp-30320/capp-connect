@@ -17,8 +17,13 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
+from rest_framework.urlpatterns import format_suffix_patterns
+from ccserver import views
 
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("ccserver/<int:pk>/", views.GetUser.as_view(), name="get_user"),
+    path("ccserver/<int:pk>/", views.GetPost.as_view(), name="get_post"),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)
