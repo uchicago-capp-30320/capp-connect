@@ -47,7 +47,7 @@ class Profile(models.Model):
     company = models.CharField(max_length=100, blank=True, null=True)
     bio = models.TextField(max_length=600, blank=True, null=True)
     tags = models.ManyToManyField(
-        Tag, through="UserTag", related_name="user_tags"
+        Tag, through="ProfileTag", related_name="user_tags"
     )
 
     def __str__(self):
@@ -139,4 +139,4 @@ class ProjectTag(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ("project", "tag")
+        unique_together = ("project", "tag

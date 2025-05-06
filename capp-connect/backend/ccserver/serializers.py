@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
+
 
 from .models import (
     Event,
@@ -16,19 +18,37 @@ from .models import (
 class TagSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Tag
-        fields = ["__all__"]
+        fields = ["tag_id", "tag_name"]
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
+    tags = TagSerializer(many=True)
     class Meta:
         model = Profile
-        fields = ["__all__"]
+        fields = ["user",
+            "slack_username",
+            "linkedin_username",
+            "github_username",
+            "personal_site",
+            "country",
+            "state",
+            "city",
+            "phone_number",
+            "photo_url",
+            "employment_status",
+            "job_title",
+            "company",
+            "bio",
+            "tags",
+        ]
+
+
 
 
 class ProfileTagSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ProfileTag
-        fields = ["__all__"]
+        fields = ["user", "tag"]
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
