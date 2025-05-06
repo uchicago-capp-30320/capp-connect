@@ -1,5 +1,4 @@
 import { Text, View, SafeAreaView, StyleSheet, TouchableHighlight, useWindowDimensions } from "react-native";
-import { useState } from "react";
 import * as Device from 'expo-device';
 import ProfilePhoto from "./ProfilePhoto";
 
