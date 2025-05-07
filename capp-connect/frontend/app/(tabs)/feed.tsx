@@ -13,12 +13,12 @@ export default function Feed() {
           alignItems: "center",
         }}
       >
-        
-        <SearchBar 
-          placeholder="Search..." 
+
+        <SearchBar
+          placeholder="Search..."
           style={{ marginVertical: 5
-           }} 
-          color="gray" 
+           }}
+          color="gray"
         />
 
           <Text>This is the feed</Text>

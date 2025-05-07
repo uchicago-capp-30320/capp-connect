@@ -13,12 +13,12 @@ export default function Index() {
           alignItems: "center",
         }}
       >
-        
-        <SearchBar 
-          placeholder="Search..." 
+
+        <SearchBar
+          placeholder="Search..."
           style={{ marginVertical: 5
-           }} 
-          color="gray" 
+           }}
+          color="gray"
         />
 
           <Text>This the home page</Text>
