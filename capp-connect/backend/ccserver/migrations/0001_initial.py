@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -24,7 +23,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Post",
             fields=[
-                ("post_id", models.AutoField(primary_key=True, serialize=False)),
+                (
+                    "post_id",
+                    models.AutoField(primary_key=True, serialize=False),
+                ),
                 ("title", models.CharField(max_length=100)),
                 ("description", models.TextField()),
                 (
@@ -45,7 +47,10 @@ class Migration(migrations.Migration):
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 ("links", models.TextField(blank=True, null=True)),
                 ("start_time", models.DateTimeField()),
-                ("location", models.CharField(blank=True, max_length=100, null=True)),
+                (
+                    "location",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
                 (
                     "user",
                     models.ForeignKey(
@@ -83,14 +88,26 @@ class Migration(migrations.Migration):
                     "personal_site",
                     models.CharField(blank=True, max_length=100, null=True),
                 ),
-                ("country", models.CharField(blank=True, max_length=100, null=True)),
-                ("state", models.CharField(blank=True, max_length=100, null=True)),
-                ("city", models.CharField(blank=True, max_length=100, null=True)),
+                (
+                    "country",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "state",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "city",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
                 (
                     "phone_number",
                     models.CharField(blank=True, max_length=15, null=True),
                 ),
-                ("photo_url", models.CharField(blank=True, max_length=255, null=True)),
+                (
+                    "photo_url",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
                 (
                     "employment_status",
                     models.CharField(
@@ -104,9 +121,18 @@ class Migration(migrations.Migration):
                         max_length=20,
                     ),
                 ),
-                ("job_title", models.CharField(blank=True, max_length=100, null=True)),
-                ("company", models.CharField(blank=True, max_length=100, null=True)),
-                ("bio", models.TextField(blank=True, max_length=600, null=True)),
+                (
+                    "job_title",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "company",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "bio",
+                    models.TextField(blank=True, max_length=600, null=True),
+                ),
                 (
                     "user",
                     models.OneToOneField(
@@ -139,11 +165,14 @@ class Migration(migrations.Migration):
                 (
                     "tag",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="ccserver.tag"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="ccserver.tag",
                     ),
                 ),
             ],
-            options={"unique_together": {("profile", "tag")},},
+            options={
+                "unique_together": {("profile", "tag")},
+            },
         ),
         migrations.AddField(
             model_name="profile",
@@ -169,23 +198,29 @@ class Migration(migrations.Migration):
                 (
                     "post",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="ccserver.post"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="ccserver.post",
                     ),
                 ),
                 (
                     "tag",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="ccserver.tag"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="ccserver.tag",
                     ),
                 ),
             ],
-            options={"unique_together": {("post", "tag")},},
+            options={
+                "unique_together": {("post", "tag")},
+            },
         ),
         migrations.AddField(
             model_name="post",
             name="tags",
             field=models.ManyToManyField(
-                related_name="post_tags", through="ccserver.PostTag", to="ccserver.tag"
+                related_name="post_tags",
+                through="ccserver.PostTag",
+                to="ccserver.tag",
             ),
         ),
     ]

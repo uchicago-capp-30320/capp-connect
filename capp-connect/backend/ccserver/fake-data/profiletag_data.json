@@ -1,18 +1,18 @@
 [
-    {
-        "\ufeff\"profile_id": "1,1",
-        "tag_id\"": null
-    },
-    {
-        "\ufeff\"profile_id": "2,3",
-        "tag_id\"": null
-    },
-    {
-        "\ufeff\"profile_id": "3,5",
-        "tag_id\"": null
-    },
-    {
-        "\ufeff\"profile_id": "4,6",
-        "tag_id\"": null
-    }
+  {
+    "tag_id\"": null,
+    "\ufeff\"profile_id": "1,1"
+  },
+  {
+    "tag_id\"": null,
+    "\ufeff\"profile_id": "2,3"
+  },
+  {
+    "tag_id\"": null,
+    "\ufeff\"profile_id": "3,5"
+  },
+  {
+    "tag_id\"": null,
+    "\ufeff\"profile_id": "4,6"
+  }
 ]

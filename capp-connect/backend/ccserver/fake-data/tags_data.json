@@ -1,26 +1,26 @@
 [
-    {
-        "\ufeff\"tag_id": "1,Python",
-        "tag_name\"": null
-    },
-    {
-        "\ufeff\"tag_id": "2,Django",
-        "tag_name\"": null
-    },
-    {
-        "\ufeff\"tag_id": "3,Machine Learning",
-        "tag_name\"": null
-    },
-    {
-        "\ufeff\"tag_id": "4,Data Science",
-        "tag_name\"": null
-    },
-    {
-        "\ufeff\"tag_id": "5,Product Management",
-        "tag_name\"": null
-    },
-    {
-        "\ufeff\"tag_id": "6,Software Development",
-        "tag_name\"": null
-    }
+  {
+    "tag_name\"": null,
+    "\ufeff\"tag_id": "1,Python"
+  },
+  {
+    "tag_name\"": null,
+    "\ufeff\"tag_id": "2,Django"
+  },
+  {
+    "tag_name\"": null,
+    "\ufeff\"tag_id": "3,Machine Learning"
+  },
+  {
+    "tag_name\"": null,
+    "\ufeff\"tag_id": "4,Data Science"
+  },
+  {
+    "tag_name\"": null,
+    "\ufeff\"tag_id": "5,Product Management"
+  },
+  {
+    "tag_name\"": null,
+    "\ufeff\"tag_id": "6,Software Development"
+  }
 ]

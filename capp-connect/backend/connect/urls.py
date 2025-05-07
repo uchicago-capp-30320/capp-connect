@@ -23,7 +23,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 urlpatterns = [
     path("ccserver/<int:pk>/", views.GetProfile.as_view(), name="get_user"),
     path("ccserver/post/<int:pk>/", views.GetPost.as_view(), name="get_post"),
-    path("ccserver/posts/", views.GetAllPosts.as_view(), name="get_all_posts")
+    path("ccserver/posts/", views.GetAllPosts.as_view(), name="get_all_posts"),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

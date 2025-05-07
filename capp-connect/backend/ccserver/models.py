@@ -17,6 +17,7 @@ class PostType(models.TextChoices):
     EVENT = "Event", "event"
     PROJECT = "Project", "project"
 
+
 # Models
 # Tags for users/posts/events/resources
 class Tag(models.Model):
@@ -80,6 +81,7 @@ class Post(models.Model):
     links = models.TextField(blank=True, null=True)
     start_time = models.DateTimeField()
     location = models.CharField(max_length=100, blank=True, null=True)
+
     def __str__(self):
         return self.title
 

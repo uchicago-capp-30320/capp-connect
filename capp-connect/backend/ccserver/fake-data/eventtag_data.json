@@ -1,10 +1,10 @@
 [
-    {
-        "\ufeff\"event_id": "1,2",
-        "tag_id\"": null
-    },
-    {
-        "\ufeff\"event_id": "2,3",
-        "tag_id\"": null
-    }
+  {
+    "tag_id\"": null,
+    "\ufeff\"event_id": "1,2"
+  },
+  {
+    "tag_id\"": null,
+    "\ufeff\"event_id": "2,3"
+  }
 ]

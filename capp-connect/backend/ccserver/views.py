@@ -1,20 +1,17 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import (
-    PostSerializer,
-    ProfileSerializer,
-)
 
 # Create your views here.
-from .models import Post, Profile, Tag
+from .models import Post, Profile
+from .serializers import PostSerializer, ProfileSerializer
 
 
 # tutorial: https://www.django-rest-framework.org/tutorial/3-class-based-views/
 
 
 class GetProfile(APIView):
-    def get(self, request, pk, format = None):
+    def get(self, request, pk, format=None):
         try:
             user = Profile.objects.get(pk=pk)
             serializer = ProfileSerializer(user)
@@ -51,6 +48,7 @@ class GetPost(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class GetAllPosts(APIView):
     def get(self, request, format=None):

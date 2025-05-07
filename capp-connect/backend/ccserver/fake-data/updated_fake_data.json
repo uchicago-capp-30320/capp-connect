@@ -1,194 +1,218 @@
 [
   {
-    "model": "auth.user",
-    "pk": 1,
     "fields": {
-      "username": "alice",
-      "first_name": "Alice",
-      "last_name": "Smith",
       "email": "alice@example.com",
-      "password": "pbkdf2_sha256$216000$randomsalt$hashvalue",
-      "is_superuser": false,
+      "first_name": "Alice",
+      "is_active": true,
       "is_staff": false,
-      "is_active": true
-    }
+      "is_superuser": false,
+      "last_name": "Smith",
+      "password": "pbkdf2_sha256$216000$randomsalt$hashvalue",
+      "username": "alice"
+    },
+    "model": "auth.user",
+    "pk": 1
   },
   {
-    "model": "auth.user",
-    "pk": 2,
     "fields": {
-      "username": "bob",
-      "first_name": "Bob",
-      "last_name": "Johnson",
       "email": "bob@example.com",
-      "password": "pbkdf2_sha256$216000$randomsalt$hashvalue",
-      "is_superuser": false,
+      "first_name": "Bob",
+      "is_active": true,
       "is_staff": false,
-      "is_active": true
-    }
-  },
-  {
+      "is_superuser": false,
+      "last_name": "Johnson",
+      "password": "pbkdf2_sha256$216000$randomsalt$hashvalue",
+      "username": "bob"
+    },
     "model": "auth.user",
-    "pk": 3,
-    "fields": {
-      "username": "carol",
-      "first_name": "Carol",
-      "last_name": "Williams",
-      "email": "carol@example.com",
-      "password": "pbkdf2_sha256$216000$randomsalt$hashvalue",
-      "is_superuser": false,
-      "is_staff": false,
-      "is_active": true
-    }
+    "pk": 2
   },
   {
-    "model": "ccserver.profile",
-    "pk": 1,
     "fields": {
-      "user": 1,
-      "slack_username": "alice_s",
-      "linkedin_username": "alice-smith",
-      "github_username": "asmith",
-      "personal_site": "https://alice.dev",
-      "country": "USA",
-      "state": "IL",
+      "email": "carol@example.com",
+      "first_name": "Carol",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_name": "Williams",
+      "password": "pbkdf2_sha256$216000$randomsalt$hashvalue",
+      "username": "carol"
+    },
+    "model": "auth.user",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "bio": "Lover of code and coffee.",
       "city": "Chicago",
+      "company": "TechCorp",
+      "country": "USA",
+      "employment_status": "Employed",
+      "github_username": "asmith",
+      "job_title": "Software Engineer",
+      "linkedin_username": "alice-smith",
+      "personal_site": "https://alice.dev",
       "phone_number": "3125550101",
       "photo_url": "",
-      "employment_status": "Employed",
-      "job_title": "Software Engineer",
-      "company": "TechCorp",
-      "bio": "Lover of code and coffee."
-    }
+      "slack_username": "alice_s",
+      "state": "IL",
+      "user": 1
+    },
+    "model": "ccserver.profile",
+    "pk": 1
   },
   {
-    "model": "ccserver.profile",
-    "pk": 2,
     "fields": {
-      "user": 2,
-      "slack_username": "bobbyj",
-      "linkedin_username": "bob-johnson",
-      "github_username": "bobj",
-      "personal_site": "https://bob.io",
-      "country": "USA",
-      "state": "NY",
+      "bio": "Aspiring developer.",
       "city": "New York",
+      "company": "",
+      "country": "USA",
+      "employment_status": "Student",
+      "github_username": "bobj",
+      "job_title": "CS Student",
+      "linkedin_username": "bob-johnson",
+      "personal_site": "https://bob.io",
       "phone_number": "2125550202",
       "photo_url": "",
-      "employment_status": "Student",
-      "job_title": "CS Student",
-      "company": "",
-      "bio": "Aspiring developer."
-    }
+      "slack_username": "bobbyj",
+      "state": "NY",
+      "user": 2
+    },
+    "model": "ccserver.profile",
+    "pk": 2
   },
   {
-    "model": "ccserver.profile",
-    "pk": 3,
     "fields": {
-      "user": 3,
-      "slack_username": "carolw",
-      "linkedin_username": "carol-williams",
-      "github_username": "caroldev",
-      "personal_site": "https://carol.codes",
-      "country": "USA",
-      "state": "CA",
+      "bio": "Looking to build great teams.",
       "city": "San Francisco",
+      "company": "DevWorks",
+      "country": "USA",
+      "employment_status": "Hiring",
+      "github_username": "caroldev",
+      "job_title": "Team Lead",
+      "linkedin_username": "carol-williams",
+      "personal_site": "https://carol.codes",
       "phone_number": "4155550303",
       "photo_url": "",
-      "employment_status": "Hiring",
-      "job_title": "Team Lead",
-      "company": "DevWorks",
-      "bio": "Looking to build great teams."
-    }
+      "slack_username": "carolw",
+      "state": "CA",
+      "user": 3
+    },
+    "model": "ccserver.profile",
+    "pk": 3
   },
   {
-    "model": "ccserver.tag",
-    "pk": 1,
-    "fields": { "tag_name": "Python" }
-  },
-  {
-    "model": "ccserver.tag",
-    "pk": 2,
-    "fields": { "tag_name": "Django" }
-  },
-  {
-    "model": "ccserver.tag",
-    "pk": 3,
-    "fields": { "tag_name": "React" }
-  },
-  {
-    "model": "ccserver.profiletag",
-    "pk": 1,
-    "fields": { "profile": 1, "tag": 1 }
-  },
-  {
-    "model": "ccserver.profiletag",
-    "pk": 2,
-    "fields": { "profile": 2, "tag": 3 }
-  },
-  {
-    "model": "ccserver.profiletag",
-    "pk": 3,
-    "fields": { "profile": 3, "tag": 2 }
-  },
-  {
-    "model": "ccserver.post",
-    "pk": 1,
     "fields": {
-      "user": 1,
-      "title": "Django Job Opening",
-      "description": "Hiring Django developers!",
-      "post_type": "Job",
+      "tag_name": "Python"
+    },
+    "model": "ccserver.tag",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "tag_name": "Django"
+    },
+    "model": "ccserver.tag",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "tag_name": "React"
+    },
+    "model": "ccserver.tag",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "profile": 1,
+      "tag": 1
+    },
+    "model": "ccserver.profiletag",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "profile": 2,
+      "tag": 3
+    },
+    "model": "ccserver.profiletag",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "profile": 3,
+      "tag": 2
+    },
+    "model": "ccserver.profiletag",
+    "pk": 3
+  },
+  {
+    "fields": {
       "created_at": "2025-05-07T12:00:00Z",
-      "updated_at": "2025-05-07T12:00:00Z",
+      "description": "Hiring Django developers!",
       "links": "https://jobs.devworks.com",
+      "location": "Remote",
+      "post_type": "Job",
       "start_time": "2025-06-01T09:00:00Z",
-      "location": "Remote"
-    }
+      "title": "Django Job Opening",
+      "updated_at": "2025-05-07T12:00:00Z",
+      "user": 1
+    },
+    "model": "ccserver.post",
+    "pk": 1
   },
   {
-    "model": "ccserver.post",
-    "pk": 2,
     "fields": {
-      "user": 2,
-      "title": "Hackathon This Weekend!",
-      "description": "Come join our student-run hackathon.",
-      "post_type": "Event",
       "created_at": "2025-05-05T09:00:00Z",
-      "updated_at": "2025-05-06T10:00:00Z",
+      "description": "Come join our student-run hackathon.",
       "links": "https://hackathon.example.edu",
+      "location": "New York",
+      "post_type": "Event",
       "start_time": "2025-05-10T10:00:00Z",
-      "location": "New York"
-    }
-  },
-  {
+      "title": "Hackathon This Weekend!",
+      "updated_at": "2025-05-06T10:00:00Z",
+      "user": 2
+    },
     "model": "ccserver.post",
-    "pk": 3,
+    "pk": 2
+  },
+  {
     "fields": {
-      "user": 3,
-      "title": "Free React Resources",
-      "description": "Here's a list of React tutorials and documentation.",
-      "post_type": "Resource",
       "created_at": "2025-04-30T08:00:00Z",
-      "updated_at": "2025-05-01T12:00:00Z",
+      "description": "Here's a list of React tutorials and documentation.",
       "links": "https://reactjs.org/docs/getting-started.html",
+      "location": "Online",
+      "post_type": "Resource",
       "start_time": "2025-05-01T12:00:00Z",
-      "location": "Online"
-    }
+      "title": "Free React Resources",
+      "updated_at": "2025-05-01T12:00:00Z",
+      "user": 3
+    },
+    "model": "ccserver.post",
+    "pk": 3
   },
   {
+    "fields": {
+      "post": 1,
+      "tag": 2
+    },
     "model": "ccserver.posttag",
-    "pk": 1,
-    "fields": { "post": 1, "tag": 2 }
+    "pk": 1
   },
   {
+    "fields": {
+      "post": 2,
+      "tag": 3
+    },
     "model": "ccserver.posttag",
-    "pk": 2,
-    "fields": { "post": 2, "tag": 3 }
+    "pk": 2
   },
   {
+    "fields": {
+      "post": 3,
+      "tag": 3
+    },
     "model": "ccserver.posttag",
-    "pk": 3,
-    "fields": { "post": 3, "tag": 3 }
+    "pk": 3
   }
 ]
