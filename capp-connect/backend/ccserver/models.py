@@ -14,7 +14,8 @@ class PostType(models.TextChoices):
     JOB = "Job", "job"
     GENERAL = "General", "general"
     RESOURCE = "Resource", "resource"
-
+    EVENT = "Event", "event"
+    PROJECT = "Project", "project"
 
 # Models
 # Tags for users/posts/events/resources
@@ -77,6 +78,8 @@ class Post(models.Model):
         Tag, through="PostTag", related_name="post_tags"
     )
     links = models.TextField(blank=True, null=True)
+    #start_time = models.DateTimeField()
+    #location = models.CharField(max_length=100, blank=True, null=True)
     def __str__(self):
         return self.title
 
@@ -87,55 +90,3 @@ class PostTag(models.Model):
 
     class Meta:
         unique_together = ("post", "tag")
-
-
-# Events and related tables
-class Event(models.Model):
-    event_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
-    description = models.TextField()
-    start_time = models.DateTimeField()
-    location = models.CharField(max_length=100, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    links = models.TextField(blank=True, null=True)
-    tags = models.ManyToManyField(
-        Tag, through="EventTag", related_name="event_tags"
-    )
-
-    def __str__(self):
-        return self.title
-
-
-class EventTag(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ("event", "tag")
-
-
-# Projects and related tables
-class Project(models.Model):
-    project_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
-    description = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    links = models.TextField(blank=True, null=True)
-    tags = models.ManyToManyField(
-        Tag, through="ProjectTag", related_name="project_tags"
-    )
-
-    def __str__(self):
-        return self.title
-
-
-class ProjectTag(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ("project", "tag")
