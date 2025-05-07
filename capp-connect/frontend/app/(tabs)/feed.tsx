@@ -1,6 +1,7 @@
 import { RefreshControl, ScrollView, Text } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ProfilePhoto from '../../components/ProfilePhoto';
+import TagIcon from "../../components/TagIcon";
 
 export default function Feed() {
   return (
