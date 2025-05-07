@@ -1,0 +1,187 @@
+[
+    {
+        "model": "ccserver.tag",
+        "pk": 1,
+        "fields": {
+            "tag_name": "Technology"
+        }
+    },
+    {
+        "model": "ccserver.tag",
+        "pk": 2,
+        "fields": {
+            "tag_name": "Python"
+        }
+    },
+    {
+        "model": "ccserver.tag",
+        "pk": 3,
+        "fields": {
+            "tag_name": "Data Science"
+        }
+    },
+    {
+        "model": "ccserver.tag",
+        "pk": 4,
+        "fields": {
+            "tag_name": "Machine Learning"
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "username": "johndoe",
+            "first_name": "John",
+            "last_name": "Doe",
+            "email": "johndoe@example.com",
+            "password": "password123",
+            "is_active": true,
+            "is_staff": false,
+            "is_superuser": false,
+            "date_joined": "2025-05-01T12:00:00Z"
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 2,
+        "fields": {
+            "username": "janedoe",
+            "first_name": "Jane",
+            "last_name": "Doe",
+            "email": "janedoe@example.com",
+            "password": "password456",
+            "is_active": true,
+            "is_staff": false,
+            "is_superuser": false,
+            "date_joined": "2025-05-03T14:00:00Z"
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 3,
+        "fields": {
+            "username": "alice123",
+            "first_name": "Alice",
+            "last_name": "Smith",
+            "email": "alice@example.com",
+            "password": "password789",
+            "is_active": true,
+            "is_staff": false,
+            "is_superuser": false,
+            "date_joined": "2025-05-04T11:00:00Z"
+        }
+    },
+    {
+        "model": "ccserver.profile",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "slack_username": "johndoe",
+            "linkedin_username": "john_doe_linkedin",
+            "github_username": "johndoe123",
+            "personal_site": "https://johndoe.com",
+            "country": "USA",
+            "state": "California",
+            "city": "San Francisco",
+            "phone_number": "555-555-5555",
+            "photo_url": "https://example.com/photo1.jpg",
+            "employment_status": "Employed",
+            "job_title": "Software Engineer",
+            "company": "TechCorp",
+            "bio": "Experienced software engineer with a passion for coding."
+        }
+    },
+    {
+        "model": "ccserver.profile",
+        "pk": 2,
+        "fields": {
+            "user": 2,
+            "slack_username": "janedoe",
+            "linkedin_username": "jane_doe_linkedin",
+            "github_username": "janedoe456",
+            "personal_site": "https://janedoe.com",
+            "country": "USA",
+            "state": "New York",
+            "city": "New York",
+            "phone_number": "555-555-5556",
+            "photo_url": "https://example.com/photo2.jpg",
+            "employment_status": "Searching",
+            "job_title": "Data Scientist",
+            "company": "",
+            "bio": "Data scientist with expertise in machine learning."
+        }
+    },
+    {
+        "model": "ccserver.profile",
+        "pk": 3,
+        "fields": {
+            "user": 3,
+            "slack_username": "alice123",
+            "linkedin_username": "alice_linkedin",
+            "github_username": "alice456",
+            "personal_site": "https://alice.com",
+            "country": "Canada",
+            "state": "Ontario",
+            "city": "Toronto",
+            "phone_number": "555-555-5557",
+            "photo_url": "https://example.com/photo3.jpg",
+            "employment_status": "Hiring",
+            "job_title": "Product Manager",
+            "company": "TechSolutions",
+            "bio": "Product manager with 5 years of experience in the tech industry."
+        }
+    },
+    {
+        "model": "ccserver.post",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "title": "Job Opportunity: Senior Developer",
+            "description": "We are hiring a senior software developer with extensive experience in Python and JavaScript.",
+            "post_type": "Job",
+            "created_at": "2025-05-01T12:00:00Z",
+            "updated_at": "2025-05-02T12:00:00Z",
+            "tags": [1, 2]
+        }
+    },
+    {
+        "model": "ccserver.post",
+        "pk": 2,
+        "fields": {
+            "user": 2,
+            "title": "Machine Learning Resources",
+            "description": "A list of resources to help you get started with machine learning.",
+            "post_type": "Resource",
+            "created_at": "2025-05-03T14:00:00Z",
+            "updated_at": "2025-05-03T14:30:00Z",
+            "tags": [3, 4]
+        }
+    },
+    {
+        "model": "ccserver.event",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "title": "Tech Conference 2025",
+            "description": "Join us for a 3-day conference on the latest in software development and AI.",
+            "start_time": "2025-06-15T09:00:00Z",
+            "location": "San Francisco, CA",
+            "created_at": "2025-05-05T10:00:00Z",
+            "updated_at": "2025-05-05T10:00:00Z",
+            "tags": [1, 2]
+        }
+    },
+    {
+        "model": "ccserver.project",
+        "pk": 1,
+        "fields": {
+            "user": 3,
+            "title": "AI for Healthcare",
+            "description": "Developing a machine learning model to predict patient outcomes.",
+            "created_at": "2025-04-20T11:00:00Z",
+            "updated_at": "2025-05-01T12:00:00Z",
+            "tags": [3, 4]
+        }
+    }
+]
