@@ -55,11 +55,11 @@ class Profile(models.Model):
 
 
 class ProfileTag(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, default=1, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ("user", "tag")
+        unique_together = ("profile", "tag")
 
 
 # Posts and related tables
