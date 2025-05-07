@@ -78,8 +78,8 @@ class Post(models.Model):
         Tag, through="PostTag", related_name="post_tags"
     )
     links = models.TextField(blank=True, null=True)
-    #start_time = models.DateTimeField()
-    #location = models.CharField(max_length=100, blank=True, null=True)
+    start_time = models.DateTimeField()
+    location = models.CharField(max_length=100, blank=True, null=True)
     def __str__(self):
         return self.title
 
