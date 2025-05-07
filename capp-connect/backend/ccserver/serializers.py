@@ -76,7 +76,7 @@ class ContentCreateSerializer(serializers.HyperlinkedModelSerializer):
     # Post-specific fields
     post_id = serializers.IntegerField(required=False)
     post_type = serializers.ChoiceField(
-        choices=PostType.TextChoices, required=False
+        choices=PostType.choices, required=False
     )
     # Event-specific fields
     event_id = serializers.IntegerField(required=False)
@@ -147,16 +147,16 @@ class ContentCreateSerializer(serializers.HyperlinkedModelSerializer):
 
 class ContentInfoSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.SerializerMethodField()
-    user_id = serializers.IntegerField("profile.user")
-    body = serializers.CharField("description")
+    user_id = serializers.IntegerField(source="profile.user", read_only=True)
+    body = serializers.CharField(source="description")
     timestamp = serializers.DateTimeField("created_at")
     tags = serializers.SerializerMethodField()
-    links = serializers.CharField("links", allow_blank=True)
+    links = serializers.CharField(source="links", allow_blank=True)
     content_type = serializers.ChoiceField(
         choices=ContentCreateSerializer.CONTENT_TYPES
     )
     post_type = serializers.ChoiceField(
-        choices=PostType.TextChoices, required=False
+        choices=PostType.choices, required=False
     )
     start_time = serializers.DateTimeField(required=False)
     location = serializers.CharField(max_length=100, required=False)
