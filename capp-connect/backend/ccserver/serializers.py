@@ -11,6 +11,7 @@ from .models import (
     ProfileTag,
     Project,
     ProjectTag,
+    PostType,
     Tag,
 )
 
@@ -75,7 +76,7 @@ class ContentCreateSerializer(serializers.HyperlinkedModelSerializer):
     # Post-specific fields
     post_id = serializers.IntegerField(required=False)
     post_type = serializers.ChoiceField(
-        choices=Post.POST_TYPE_CHOICES, required=False
+        choices=PostType.TextChoices, required=False
     )
     # Event-specific fields
     event_id = serializers.IntegerField(required=False)
@@ -155,7 +156,7 @@ class ContentInfoSerializer(serializers.HyperlinkedModelSerializer):
         choices=ContentCreateSerializer.CONTENT_TYPES
     )
     post_type = serializers.ChoiceField(
-        choices=Post.POST_TYPE_CHOICES, required=False
+        choices=PostType.TextChoices, required=False
     )
     start_time = serializers.DateTimeField(required=False)
     location = serializers.CharField(max_length=100, required=False)

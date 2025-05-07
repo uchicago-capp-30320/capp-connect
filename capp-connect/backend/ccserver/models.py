@@ -77,7 +77,7 @@ class Post(models.Model):
         Tag, through="PostTag", related_name="post_tags"
     )
     links = models.TextField(blank=True, null=True)
-
+    POST_TYPE_CHOICES = ["project", "Project", "post", "Post"]
     def __str__(self):
         return self.title
 
