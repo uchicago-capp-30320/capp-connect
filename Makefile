@@ -6,6 +6,8 @@ default: create-requirements lint
 .PHONY: env
 env:
 	uv venv
+# Install JavaScript dependencies (uses package.json and package-lock.json)
+	cd capp-connect/frontend && npm install
 
 .PHONY: lint
 lint:
@@ -14,8 +16,6 @@ lint:
 .PHONY: create-requirements
 create-requirements:
 	uv pip compile --generate-hashes pyproject.toml > requirements.txt
-# Install JavaScript dependencies (uses package.json and package-lock.json)
-	cd capp-connect/frontend && npm install
 
 .PHONY: test
 test:
