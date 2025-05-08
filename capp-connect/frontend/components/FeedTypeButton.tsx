@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 
 export default function feedButton({ label, name, feedButtonPressed, setButton }: feedButtonProps) {
     return (
-        <TouchableHighlight 
+        <TouchableHighlight
             style={[styles.tag, { backgroundColor: "grey" }]}
             onPress={() => {
                 if (feedButtonPressed != name) {

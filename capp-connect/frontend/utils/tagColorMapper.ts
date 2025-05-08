@@ -4,12 +4,12 @@
 // should be moved to persistent storage
 export default function createTagColorMapper() {
     const keywordToColor: Record<string, string> = {};
-  
+
     function getRandomColor() {
       // Generates a random hex color, e.g. "#a3e12f"
       return '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
     }
-  
+
     return function(keyword: string) {
       if (!keywordToColor[keyword]) {
         keywordToColor[keyword] = getRandomColor();
@@ -17,5 +17,3 @@ export default function createTagColorMapper() {
       return keywordToColor[keyword];
     };
   }
-  
-  

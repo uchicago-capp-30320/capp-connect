@@ -66,7 +66,7 @@ export default function Feed() {
     fetchFeed();
   }, []);
 
-  // set button (feed type) 
+  // set button (feed type)
   const [feedType, setFeedType] = useState("all")
   // keep record of the parsed data
   const [filteredData, setFilteredData] = useState<Post[]>([]);
