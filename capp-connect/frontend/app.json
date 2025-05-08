@@ -9,7 +9,7 @@
     "experiments": {
       "typedRoutes": true
     },
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/capp_connect_splash_icon.png",
     "ios": {
       "supportsTablet": true
     },
@@ -22,7 +22,7 @@
         "expo-splash-screen",
         {
           "backgroundColor": "#ffffff",
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/capp_connect_splash_icon.png",
           "imageWidth": 200,
           "resizeMode": "contain"
         }
