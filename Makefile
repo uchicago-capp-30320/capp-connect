@@ -29,7 +29,8 @@ test-and-fail:
 # https://stackoverflow.com/questions/48047276/makefile-for-running-django-backend-and-react-frontend
 .PHONY: backend
 backend:
-	uv run python -m capp-connect
+# uv run python -m capp-connect
+	cd capp-connect/backend && uv run python manage.py runserver 8080
 
 .PHONY: frontend
 frontend:
