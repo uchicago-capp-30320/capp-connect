@@ -204,7 +204,7 @@ capp-connect/frontend/yarn-debug.*
 capp-connect/frontend/yarn-error.*
 
 # macOS
-capp-connect/frontend/.DS_Store
+.DS_Store
 *.pem
 
 # local env files
