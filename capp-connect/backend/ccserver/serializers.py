@@ -56,5 +56,5 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             "tags",
             "links",
             "start_time",
-            "location"
+            "location",
         ]
