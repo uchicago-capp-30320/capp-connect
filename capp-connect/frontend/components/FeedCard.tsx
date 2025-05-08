@@ -1,10 +1,15 @@
-import { Text, View, SafeAreaView, StyleSheet, TouchableHighlight, useWindowDimensions } from "react-native";
+import { Text, View, StyleSheet, TouchableHighlight } from "react-native";
+import { useState } from "react";
 import * as Device from 'expo-device';
 import ProfilePhoto from "./ProfilePhoto";
+import TagIcon from "./TagIcon";
+import createTagColorMapper from "../utils/tagColorMapper"
+import { useNavigation, useRouter } from "expo-router";
+
 
 // create conditional styling for desktop vs mobile
-const CARD_HEIGHT = Device.deviceType === Device.DeviceType.DESKTOP ? 500: 300
-const NUM_TEXT_LINES = Device.deviceType === Device.DeviceType.DESKTOP ? 10: 7
+const CARD_HEIGHT = Device.deviceType === Device.DeviceType.DESKTOP ? 500: 350
+const NUM_TEXT_LINES = Device.deviceType === Device.DeviceType.DESKTOP ? 10: 4
 const PADDING = Device.deviceType === Device.DeviceType.DESKTOP ? 5: 5
 const PROFILE_PHOTO_SIZE = Device.deviceType === Device.DeviceType.DESKTOP ? 90: 60
 
@@ -53,20 +58,27 @@ const styles = StyleSheet.create({
 });
 
 
-
 // The text box should take a key/label for the text box, as well as a current value
 interface FeedCardProps {
     title: string
     body: string
+    tags: Array<string>
 }
 
+// create Tag color mapper:
+const getColorForTag = createTagColorMapper();
 
 // create basic card for feed
-export default function FeedCard({title, body}: FeedCardProps) {
-
+// should update to remove tags that would surpass the screen width
+export default function FeedCard({title, body, tags}: FeedCardProps) {
     return (
         <TouchableHighlight
-            onPress={() => {}}
+            onPress={() => {
+                const router = useRouter()
+                router.push(
+                    `/post?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}&tags=${encodeURIComponent(tags.join(','))}`
+                )
+            }}
             // how the card changes when pressed
             activeOpacity={.6}
             underlayColor="#DDDDDD"
@@ -79,7 +91,7 @@ export default function FeedCard({title, body}: FeedCardProps) {
                     <ProfilePhoto style={styles.image}/>
                 </View>
                 {/* create title */}
-                <View style={styles.textTitleContainer}>
+                <View style={[styles.textTitleContainer, {paddingTop: 15}]}>
                     <Text style={styles.text}>{title}</Text>
                 </View>
                 {/* create text body */}
@@ -88,6 +100,18 @@ export default function FeedCard({title, body}: FeedCardProps) {
                         numberOfLines={NUM_TEXT_LINES}
                         style={styles.text}
                     >{body}</Text>
+                </View>
+                <View style={{
+                    // flex:1,
+                    flexDirection:"row",
+                    position:"absolute",
+                    bottom:10,
+                    flexWrap: 'wrap',
+                    }}
+                >
+                    {tags.map((tag, index) => (
+                        <TagIcon key={index} tag={tag} color={getColorForTag(tag)} style={{}}/>
+                    ))}
                 </View>
             </View>
         </TouchableHighlight>
