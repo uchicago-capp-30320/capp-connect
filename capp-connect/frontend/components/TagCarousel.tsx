@@ -3,14 +3,14 @@ import { FlashList } from "@shopify/flash-list";
 import TagIcon from "./TagIcon";
 
 type Tag = {
-    name: string 
+    name: string
     color: string
 }
 
 export default function TagCarousel({tags}: {tags: Tag[]}) {
     return (
         <View>
-            <FlashList 
+            <FlashList
             renderItem={
                 ({item}) => {
                         return <TagIcon tag={item.name} color={item.color} style={{minWidth: 80}} />
