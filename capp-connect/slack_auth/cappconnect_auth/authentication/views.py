@@ -1,18 +1,17 @@
 import urllib.parse
 import uuid
-
 import jwt
 import requests
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from cappconnect_auth.load_slack_key import load_rsa_public_key
-#from .load_slack_key import 
+
 
 
 def slack_login_redirect(request):
-    state = str(uuid.uuid4())  # store in session for real CSRF protection
-    nonce = str(uuid.uuid4())  # optional for now
+    state = str(uuid.uuid4())  
+    nonce = str(uuid.uuid4())  
 
     base_url = "https://slack.com/openid/connect/authorize"
     params = {
