@@ -6,8 +6,8 @@ import requests
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import redirect
-
-from .load_slack_key import load_rsa_public_key
+from cappconnect_auth.load_slack_key import load_rsa_public_key
+#from .load_slack_key import 
 
 
 def slack_login_redirect(request):
