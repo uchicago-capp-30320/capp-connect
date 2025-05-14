@@ -11,16 +11,17 @@ Relevant information/to do::
 import os
 from pathlib import Path
 
-
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent 
 
+# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY") #kj changed this. Before the key was out in the open.
 
 DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1","localhost", "641e-38-124-65-130.ngrok-free.app"] #the server is nOT added because it is HTTP. waiting for James to see if I can use nginx 
 
-
+# Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -60,7 +61,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "cappconnect_auth.wsgi.application"
 
-
+# Database
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3", #ours is postgres not sqlite which is default! needs to be changed!!!
@@ -85,7 +87,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-
+# Internationalization
+# https://docs.djangoproject.com/en/5.2/topics/i18n/
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -94,10 +97,12 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.2/howto/static-files/
 STATIC_URL = "static/"
 
-
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 SLACK_CLIENT_ID = os.environ.get("SLACK_CLIENT_ID")
