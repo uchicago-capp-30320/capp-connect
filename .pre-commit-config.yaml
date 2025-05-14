@@ -80,7 +80,7 @@ repos:
     hooks:
       - id: eslint-frontend
         name: eslint-frontend
-        entry: ./capp-connect/frontend/node_modules/.bin/eslint
+        entry: bash -c "cd capp-connect/frontend && npx eslint"
         language: system
         args:
           - "--config"
