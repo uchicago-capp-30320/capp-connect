@@ -33,6 +33,8 @@ def slack_login_redirect(request):
     }
 
     url = f"{base_url}?{urllib.parse.urlencode(params)}"
+    print("final url:",url)
+
     return redirect(url)
 
 
