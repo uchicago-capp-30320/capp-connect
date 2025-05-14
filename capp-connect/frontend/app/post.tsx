@@ -1,17 +1,11 @@
 import { View, Text} from "react-native";
-import FeedCard from "@/components/FeedCard";
-import { FlashList } from "@shopify/flash-list";
-import { useEffect, useState } from "react";
-import SearchBar from '../components/SearchBar';
-import fetchData from '../utils/fetchdata';
-import * as Device from 'expo-device'
-import FeedTypeButton from '../components/FeedTypeButton'
 import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView, SafeAreaProvider} from "react-native-safe-area-context";
 import TagIcon from "@/components/TagIcon";
 import createTagColorMapper from "../utils/tagColorMapper"
 
-type Post = {
+/* eslint-disable no-redeclare, @typescript-eslint/no-redeclare -- type Post exists only temporarily, will be renamed */
+type Post = { // This shares a name with the function at line 18. Doesn't seem to be used?
   title: string;
   description: string;
   poster_name: string;
