@@ -19,7 +19,7 @@ class PostType(models.TextChoices):
 
 
 # Models
-# Tags for users/posts/events/resources
+# Tags, to be used for users/posts
 class Tag(models.Model):
     tag_id = models.AutoField(primary_key=True)
     tag_name = models.CharField(max_length=50, unique=True)
@@ -28,7 +28,7 @@ class Tag(models.Model):
         return self.tag_name
 
 
-# User and related tables
+# Users and related tables
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     slack_username = models.CharField(max_length=100, blank=True, null=True)
@@ -85,6 +85,9 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        ordering = ["-created_at"]
+
 
 class PostTag(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -92,3 +95,19 @@ class PostTag(models.Model):
 
     class Meta:
         unique_together = ("post", "tag")
+
+
+class Comment(models.Model):
+    comment_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name="comments"
+    )
+    comment_text = models.TextField(max_length=1000, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Comment by {self.user.username} on post '{self.post.title}'"
+
+    class Meta:
+        ordering = ["-created_at"]
