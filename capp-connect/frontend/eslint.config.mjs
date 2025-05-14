@@ -23,7 +23,7 @@ export default defineConfig([
       ),
     },
   },
-  
+
   {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
