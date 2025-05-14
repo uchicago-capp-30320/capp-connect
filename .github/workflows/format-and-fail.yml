@@ -10,7 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v4
         with:
           python-version: "3.11"
+
+      - name: Install frontend dependencies
+        run: |
+          cd capp-connect/capp-connect/frontend
+          npm ci
+
       - uses: pre-commit/action@v3.0.0
