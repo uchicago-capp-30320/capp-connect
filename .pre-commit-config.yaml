@@ -84,7 +84,7 @@ repos:
         language: system
         args:
           - "--config"
-          - "capp-connect/frontend/eslint.config.mjs"
+          - "eslint.config.mjs"
           - "--ext"
           - ".js,.jsx,.ts,.tsx"
           - "--no-warn-ignored"
