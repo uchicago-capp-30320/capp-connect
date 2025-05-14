@@ -1,34 +1,35 @@
 import urllib.parse
 import uuid
+
 import jwt
 import requests
+from cappconnect_auth.load_slack_key import load_rsa_public_key
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import redirect
-from cappconnect_auth.load_slack_key import load_rsa_public_key
-
 
 
 def slack_login_redirect(request):
-    '''
-    This function identifies our Slack OpenID connect endpoint (base_url) for a user to login 
+    """
+    This function identifies our Slack OpenID connect endpoint (base_url) for a user to login
     and verify their identity.
 
-    Inputs: request: the incoming HTTP request object from the browser. 
-    Ouputs: the redirect url to Slacks authorization request 
-    '''
-     #str(uuid.uuid4())  
+    Inputs: request: the incoming HTTP request object from the browser.
+    Ouputs: the redirect url to Slacks authorization request
+    """
+    # str(uuid.uuid4())
 
-    base_url = "https://slack.com/openid/connect/authorize" 
-    #state = uuid.uuid4().hex + uuid.uuid1().hex #str(uuid.uuid4())  
-    #nonce = uuid.uuid4().hex + uuid.uuid1().hex 
+    base_url = "https://slack.com/openid/connect/authorize"
+    # state = uuid.uuid4().hex + uuid.uuid1().hex #str(uuid.uuid4())
+    # nonce = uuid.uuid4().hex + uuid.uuid1().hex
     params = {
         "client_id": settings.SLACK_CLIENT_ID,
         "scope": "openid profile email",
         "redirect_uri": settings.SLACK_REDIRECT_URI,
         "response_type": "code",
         "state": uuid.uuid4().hex + uuid.uuid1().hex,
-        "nonce": uuid.uuid4().hex + uuid.uuid1().hex, #https://stackoverflow.com/questions/5590170/what-is-the-standard-method-for-generating-a-nonce-in-python
+        "nonce": uuid.uuid4().hex
+        + uuid.uuid1().hex,  # https://stackoverflow.com/questions/5590170/what-is-the-standard-method-for-generating-a-nonce-in-python
     }
 
     url = f"{base_url}?{urllib.parse.urlencode(params)}"
@@ -36,13 +37,13 @@ def slack_login_redirect(request):
 
 
 def slack_callback(request):
-    '''
-    This function gets the autorization code from Slack, and exchanges it for an 
-    JWT ID token. It then verifies the JWT signagture and decodes the payload. 
-    Decoded version = the JSON response. 
-    Input: request: the incoming HTTP request object from the browser. 
-    Output: The decoded JSON showing user information such as name, slack_id, email, etc. 
-    '''
+    """
+    This function gets the autorization code from Slack, and exchanges it for an
+    JWT ID token. It then verifies the JWT signagture and decodes the payload.
+    Decoded version = the JSON response.
+    Input: request: the incoming HTTP request object from the browser.
+    Output: The decoded JSON showing user information such as name, slack_id, email, etc.
+    """
     code = request.GET.get("code")
     if not code:
         return JsonResponse({"error": "Missing code"}, status=400)

@@ -1,25 +1,32 @@
 """
-This file holds all the Django settings for the authorization process for Capp 
-Connect. 
-Relevant information/to do:: 
-- All secret keys are currently imported to the environment 
-- When dev is over we need to change DEBUG to False 
-- Need to change to server. 
-- Add DB here! 
+This file holds all the Django settings for the authorization process for Capp
+Connect.
+Relevant information/to do::
+- All secret keys are currently imported to the environment
+- When dev is over we need to change DEBUG to False
+- Need to change to server.
+- Add DB here!
 """
 
 import os
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent 
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY") #kj changed this. Before the key was out in the open.
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY"
+)  # kj changed this. Before the key was out in the open.
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1","localhost", "641e-38-124-65-130.ngrok-free.app"] #the server is nOT added because it is HTTP. waiting for James to see if I can use nginx 
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "641e-38-124-65-130.ngrok-free.app",
+]  # the server is nOT added because it is HTTP. waiting for James to see if I can use nginx
 
 # Application definition
 INSTALLED_APPS = [
@@ -29,12 +36,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "authentication", #kj added and edited imports in views.py and urls.py
-] #source: https://www.geeksforgeeks.org/user-authentication-system-using-django/ 
+    "authentication",  # kj added and edited imports in views.py and urls.py
+]  # source: https://www.geeksforgeeks.org/user-authentication-system-using-django/
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware", 
-    "django.contrib.sessions.middleware.SessionMiddleware", 
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -65,8 +72,9 @@ WSGI_APPLICATION = "cappconnect_auth.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3", #ours is postgres not sqlite which is default! needs to be changed!!!
-        "NAME": BASE_DIR / "db.sqlite3", # added our db here #going to add more in next iteration...rn tests passing with this.
+        "ENGINE": "django.db.backends.sqlite3",  # ours is postgres not sqlite which is default! needs to be changed!!!
+        "NAME": BASE_DIR
+        / "db.sqlite3",  # added our db here #going to add more in next iteration...rn tests passing with this.
     }
 }
 
