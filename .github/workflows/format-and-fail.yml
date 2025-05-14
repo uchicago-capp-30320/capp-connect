@@ -17,7 +17,7 @@ jobs:
 
       - name: Install frontend dependencies
         run: |
-          cd capp-connect/capp-connect/frontend
+          cd capp-connect/frontend
           npm ci
 
       - uses: pre-commit/action@v3.0.0
