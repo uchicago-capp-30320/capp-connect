@@ -12,7 +12,8 @@ The below is credited to Michael Plunkett, 2024 CAPP TA
 1. Download uv: [link](https://docs.astral.sh/uv/).
 2. Download Node.js and npm: [link](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 2. Go into the base directory of the repository and type `make env` into the terminal.
-3. Use the `make run-all` command.
+3. Install requirements with `make install`
+4. Use the `make run-all` command.
 
 ### Technical Notes
 - Any new Python modules should be added via the `uv add [module]` command.
@@ -22,6 +23,7 @@ The below is credited to Michael Plunkett, 2024 CAPP TA
 
 ## Standard Commands
 - `make create-requirements`: Creates and/or updates the `requirements.txt` file.
+- `make install`: Installs all packages needed in `requirements.txt`
 - `make env`: Creates or activates a `uv` virtual environment. Also installs the npm dependencies for the project.
 - `make lint`: Runs `pre-commit`.
 - `make frontend`: Runs the frontend React Native project with Expo Go.
