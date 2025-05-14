@@ -33,7 +33,7 @@ function makeTab(fileName: string, label: string, icon: React.ComponentProps<typ
           // set color for the header text
           headerTintColor: Colors.headerText
         }}
-        
+
       />
   )
 }
@@ -69,10 +69,10 @@ export default function Layout() {
   if (Device.deviceType == Device.DeviceType.DESKTOP) {
     return (
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <Drawer 
+        <Drawer
           screenOptions={{
             // add background color and active and inactive text color (tint)
-            drawerStyle: { backgroundColor: Colors.menuBackground }, 
+            drawerStyle: { backgroundColor: Colors.menuBackground },
             drawerActiveTintColor: Colors.activeText,
             drawerInactiveTintColor:  Colors.inactiveText
           }}>
@@ -87,11 +87,11 @@ export default function Layout() {
 
   // use tab navigation on mobile
   return (
-    <Tabs 
-      screenOptions={{ 
-        tabBarActiveTintColor: Colors.iconActive, 
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: Colors.iconActive,
         tabBarInactiveTintColor: Colors.iconInactive,
-        tabBarStyle: {backgroundColor: Colors.footer} 
+        tabBarStyle: {backgroundColor: Colors.footer}
       }}
     >
     {/* returns JSX tab objects for all the pages */}

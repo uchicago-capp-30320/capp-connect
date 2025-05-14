@@ -8,22 +8,22 @@ export default function RootLayout() {
       contentStyle: {backgroundColor: Colors.background}
     }}>
       <Stack.Screen name="(tabs)" options={{ title: "Back", headerShown: false}} />
-      
-      <Stack.Screen name="profile" 
-        options={{ 
+
+      <Stack.Screen name="profile"
+        options={{
           title: "Profile",
           headerStyle: {backgroundColor: Colors.header},
           headerTintColor: Colors.headerText
         }} />
       <Stack.Screen name="settings"
-        options={{ 
-          title: "Settings", 
+        options={{
+          title: "Settings",
           headerStyle: {backgroundColor: Colors.header},
           headerTintColor: Colors.headerText
         }} />
-      <Stack.Screen name="post" 
-        options={{ 
-          title: "Feed",  
+      <Stack.Screen name="post"
+        options={{
+          title: "Feed",
           headerStyle: {backgroundColor: Colors.header},
           headerTintColor: Colors.headerText
         }} />
