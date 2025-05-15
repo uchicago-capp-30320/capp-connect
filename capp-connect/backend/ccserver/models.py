@@ -66,6 +66,10 @@ class ProfileTag(models.Model):
 
 # Posts and related tables
 class Post(models.Model):
+    class Source(models.TextChoices):
+        SLACK = "Slack", "Slack"
+        APP = "App", "App"
+
     post_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
@@ -81,6 +85,11 @@ class Post(models.Model):
     links = models.TextField(blank=True, null=True)
     start_time = models.DateTimeField()
     location = models.CharField(max_length=100, blank=True, null=True)
+    source = models.CharField(
+        max_length=5,
+        choices=Source.choices,
+        default=Source.APP,
+    )
 
     def __str__(self):
         return self.title
@@ -111,3 +120,30 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+
+
+# Resources and related tables
+class Resource(models.Model):
+    resource_id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    tags = models.ManyToManyField(
+        Tag, through="ResourceTag", related_name="resource_tags"
+    )
+    links = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ["-created_at"]
+
+
+class ResourceTag(models.Model):
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("resource", "tag")
