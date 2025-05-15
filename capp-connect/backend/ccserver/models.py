@@ -19,7 +19,7 @@ class PostType(models.TextChoices):
 
 
 # Models
-# Tags for users/posts/events/resources
+# Tags, to be used for users/posts
 class Tag(models.Model):
     tag_id = models.AutoField(primary_key=True)
     tag_name = models.CharField(max_length=50, unique=True)
@@ -28,7 +28,7 @@ class Tag(models.Model):
         return self.tag_name
 
 
-# User and related tables
+# Users and related tables
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     slack_username = models.CharField(max_length=100, blank=True, null=True)
@@ -66,6 +66,10 @@ class ProfileTag(models.Model):
 
 # Posts and related tables
 class Post(models.Model):
+    class Source(models.TextChoices):
+        SLACK = "Slack", "Slack"
+        APP = "App", "App"
+
     post_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
@@ -81,9 +85,17 @@ class Post(models.Model):
     links = models.TextField(blank=True, null=True)
     start_time = models.DateTimeField()
     location = models.CharField(max_length=100, blank=True, null=True)
+    source = models.CharField(
+        max_length=5,
+        choices=Source.choices,
+        default=Source.APP,
+    )
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        ordering = ["-created_at"]
 
 
 class PostTag(models.Model):
@@ -92,3 +104,46 @@ class PostTag(models.Model):
 
     class Meta:
         unique_together = ("post", "tag")
+
+
+class Comment(models.Model):
+    comment_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name="comments"
+    )
+    comment_text = models.TextField(max_length=1000, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Comment by {self.user.username} on post '{self.post.title}'"
+
+    class Meta:
+        ordering = ["-created_at"]
+
+
+# Resources and related tables
+class Resource(models.Model):
+    resource_id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    tags = models.ManyToManyField(
+        Tag, through="ResourceTag", related_name="resource_tags"
+    )
+    links = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ["-created_at"]
+
+
+class ResourceTag(models.Model):
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("resource", "tag")
