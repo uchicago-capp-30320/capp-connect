@@ -28,3 +28,4 @@
 - Get all profiles that have X tag
 - Get all profiles that have "text" in job title or description
 - Update profile, only if the user is the owner
+- Delete profile
