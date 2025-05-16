@@ -54,7 +54,7 @@ To connect to a server for development you need to follow these steps:
 5. Run `export SLACK_CLIENT_SECRET=<[slack_client_secret]>` we will share securely
 6. Run `export SLACK_SIGNING_SECRET=<[slack_signing_secret]>` we will share securely
 7. Run export SLACK_REDIRECT_URI=<[your link here]/auth/callback/slack>
-8. cd into `capp-connect/slack_auth/cappconnect_auth/cappconnect_auth`
+8. cd into `capp_connect/slack_auth/cappconnect_auth/cappconnect_auth`
 10. Go to settings.py update the ALLOWED_HOSTS variable with the first portion after https://
 11. Cd back one level up. Use `cd ..`
 12. Run `python manage.py runserver` (may be python3 on your machine)

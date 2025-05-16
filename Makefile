@@ -7,7 +7,7 @@ default: create-requirements lint
 env:
 	uv venv
 # Install JavaScript dependencies (uses package.json and package-lock.json)
-	cd capp-connect/frontend && npm install
+	cd capp_connect/frontend && npm install
 
 .PHONY: lint
 lint:
@@ -29,12 +29,12 @@ test-and-fail:
 # https://stackoverflow.com/questions/48047276/makefile-for-running-django-backend-and-react-frontend
 .PHONY: backend
 backend:
-# uv run python -m capp-connect
-	cd capp-connect/backend && uv run python manage.py runserver 8080
+# uv run python -m capp_connect
+	cd capp_connect/backend && uv run python manage.py runserver 8080
 
 .PHONY: frontend
 frontend:
-	cd capp-connect/frontend && npx expo start --tunnel
+	cd capp_connect/frontend && npx expo start --tunnel
 
 .PHONY: run-all
 run-all:

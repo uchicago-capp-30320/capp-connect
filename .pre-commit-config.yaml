@@ -80,12 +80,12 @@ repos:
     hooks:
       - id: eslint-frontend
         name: eslint-frontend
-        entry: bash -c "cd capp-connect/frontend && npx eslint"
+        entry: bash -c "cd capp_connect/frontend && npx eslint"
         language: system
         args:
           - "--config"
-          - "capp-connect/frontend/eslint.config.mjs"
+          - "capp_connect/frontend/eslint.config.mjs"
           - "--ext"
           - ".js,.jsx,.ts,.tsx"
           - "--no-warn-ignored"
-        files: capp-connect/frontend/
+        files: capp_connect/frontend/
