@@ -24,7 +24,7 @@ The below is credited to Michael Plunkett, 2024 CAPP TA
 7. Run `export SLACK_CLIENT_ID=<[slack_client_id]>` Ask Kiran or Lee-Or to securely share
 8. Run `export SLACK_CLIENT_SECRET=<[slack_client_secret]>` Ask Kiran or Lee-Or to securely share
 9. Run `export SLACK_SIGNING_SECRET=<[slack_signing_secret]>` Ask Kiran or Lee-Or to securely share
-10. Run export SLACK_REDIRECT_URI=" Ask Kiran or Lee-Or to securely share
+10. Run `export SLACK_REDIRECT_URI= <[url here]>` Ask Kiran or Lee-Or to securely share
 11. Cd back one level up. Use cd ..
 12. Run `python manage.py runserver 0.0.0.0:8010` (may be python3 on your machine)
 13. Then go to this [link](https://capp-connect.unnamed.computer/auth/login/slack/)
