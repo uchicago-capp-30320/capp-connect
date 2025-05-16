@@ -21,9 +21,8 @@ The below is credited to Michael Plunkett, 2024 CAPP TA
 3. `git checkout main` and `git pull` to ensure you have the most updated version of everything
 4. Run the command `uv pip install -r requirements.txt`
 5. You should no longer need to run `uv pip install django` and `uv pip install PyJWT` let Lee-Or know if that is still true
-6. If this is your first time using the server, `nano .env` and fill in the values as seen in `.env.example`. Ask Kiran and Lee-Or for the secrets. Note: This may prove unneccessary, but keeping in for now
-7. Run `python capp_connect/slack_auth/cappconnect_auth/manage.py runserver 0.0.0.0:8010` (may be python3 on your machine)
-8. Then go to this [link](https://capp-connect.unnamed.computer/auth/login/slack/)
+6. Run `python capp_connect/slack_auth/cappconnect_auth/manage.py runserver 0.0.0.0:8010` (may be python3 on your machine)
+7. Then go to this [link](https://capp-connect.unnamed.computer/auth/login/slack/)
 
 ### Technical Notes
 - Any new Python modules should be added via the `uv add [module]` command.
