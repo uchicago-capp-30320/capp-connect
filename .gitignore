@@ -222,7 +222,10 @@ expo-env.d.ts
 # @end expo-cli
 
 # Ignore virtual environment files
+.venv/
+env/
 venv/
+lib64/
 *.pyc
 *.pyo
 *.pyd
