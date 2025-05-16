@@ -68,7 +68,9 @@ To connect to a server for development you need to follow these steps:
 
 ## Standard Commands
 - `make create-requirements`: Creates and/or updates the `requirements.txt` file.
-- `make env`: Creates or activates a `uv` virtual environment.
+- `make install`: Installs all packages needed in `requirements.txt`
+- `make env`: Creates or activates a `uv` virtual environment. Also installs the npm dependencies for the project.
 - `make lint`: Runs `pre-commit`.
-- `make run`: Runs the `main` function in the `project` folder.
+- `make frontend`: Runs the frontend React Native project with Expo Go.
+- `make run-all`: Runs the `main` function in the `project` folder in parallel with starting the node.js development server for the frontend app.
 - `make test`: Runs test cases in the `tests` directory.

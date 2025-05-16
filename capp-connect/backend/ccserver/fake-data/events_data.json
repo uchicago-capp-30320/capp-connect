@@ -1,0 +1,24 @@
+[
+  {
+    "created_at": null,
+    "description": null,
+    "links\"": null,
+    "location": null,
+    "start_time": null,
+    "title": null,
+    "updated_at": null,
+    "user_id": null,
+    "\ufeff\"event_id": "1,1,Django Workshop,Join us for a workshop on Django!,2025-05-10T14:00:00,San Francisco,2025-05-05T10:00:00,2025-05-05T10:30:00,https://example.com/django-workshop"
+  },
+  {
+    "created_at": null,
+    "description": null,
+    "links\"": null,
+    "location": null,
+    "start_time": null,
+    "title": null,
+    "updated_at": null,
+    "user_id": null,
+    "\ufeff\"event_id": "2,2,AI Conference,Attend the latest AI conference.,2025-06-01T09:00:00,New York,2025-05-06T11:00:00,2025-05-06T11:30:00,https://example.com/ai-conference"
+  }
+]
