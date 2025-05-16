@@ -1,5 +1,0 @@
-﻿"post_id,user_id,title,description,post_type,created_at,updated_at,links"
-"1,1,Looking for a new job,We are hiring software engineers!,Job,2025-05-05T10:00:00,2025-05-05T12:00:00,https://example.com/job-post"
-"2,2,How to get started with Data Science,An intro to data science and its tools.,General,2025-05-06T11:00:00,2025-05-06T11:30:00,https://example.com/data-science"
-"3,3,Project Manager Role at TechSolutions,Join our team as a Project Manager.,Job,2025-05-07T09:00:00,2025-05-07T10:00:00,https://example.com/project-manager"
-"4,4,Coding Bootcamp for Beginners,A bootcamp for aspiring developers.,Resource,2025-05-08T08:00:00,2025-05-08T08:30:00,https://example.com/bootcamp"

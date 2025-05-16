@@ -3,11 +3,24 @@
 
 import os
 import sys
+from pathlib import Path
+
+
+# Walk up until we find the folder that contains `capp_connect`
+p = Path(__file__).resolve()
+while not (p / "capp_connect").exists():
+    if p == p.parent:
+        raise RuntimeError(
+            "Could not find capp_connect/ in any parent directory"
+        )
+    p = p.parent
+
+sys.path.append(str(p))
 
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "connect.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cappconnect_auth.settings")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

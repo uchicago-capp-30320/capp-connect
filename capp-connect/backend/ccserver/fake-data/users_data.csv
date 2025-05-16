@@ -1,5 +1,0 @@
-﻿"id,username,email,password,slack_username,linkedin_username,github_username,personal_site,country,state,city,phone_number,photo_url,employment_status,job_title,company,bio"
-"1,johndoe,johndoe@example.com,password123,john_doe,john_doe_linkedin,johndoe123,https://johndoe.com,USA,California,San Francisco,555-555-5555,https://example.com/photo1.jpg,Employed,Software Engineer,TechCorp,""Experienced software engineer with a passion for coding."""
-"2,janedoe,janedoe@example.com,password456,jane_doe,jane_doe_linkedin,janedoe456,https://janedoe.com,USA,New York,New York,555-555-5556,https://example.com/photo2.jpg,Searching,Data Scientist,,""Data scientist with expertise in machine learning."""
-"3,alice,alice@example.com,password789,alice123,alice_linkedin,alice456,https://alice.com,Canada,Ontario,Toronto,555-555-5557,https://example.com/photo3.jpg,Hiring,Product Manager,TechSolutions,""Product manager with 5 years of experience in the tech industry."""
-"4,bob,bob@example.com,password101,bob_the_dev,bob_linkedin,bob789,https://bob.com,UK,London,London,555-555-5558,https://example.com/photo4.jpg,Student,,""Student pursuing computer science."""
