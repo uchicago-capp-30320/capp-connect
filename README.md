@@ -14,12 +14,12 @@ The below is credited to Michael Plunkett, 2024 CAPP TA
 3. Go into the base directory of the repository and type `make env` into the terminal.
 4. Use the `make run-all` command.
 
-### Connecting to the server: 
+### Connecting to the server:
  **You should only have to do this process once**
 1. Connect to the server using the command: `ssh -p 2222 capp-connect@turing.unnamed.computer`
 2. Create a new uv virtual environment (See Standard Commands for command if needed)
 4. Run the command `uv pip install django`
-5. Run the command `uv pip install PyJWT` 
+5. Run the command `uv pip install PyJWT`
 6. cd to the root of our project
 7. Run `export SLACK_CLIENT_ID=<[slack_client_id]>` Ask Kiran or Lee-Or to securely share
 8. Run `export SLACK_CLIENT_SECRET=<[slack_client_secret]>` Ask Kiran or Lee-Or to securely share

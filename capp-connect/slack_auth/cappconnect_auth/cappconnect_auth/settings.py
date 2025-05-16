@@ -22,7 +22,9 @@ SECRET_KEY = os.environ.get(
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["capp-connect.unnamed.computer",]  # the server is nOT added because it is HTTP. waiting for James to see if I can use nginx
+ALLOWED_HOSTS = [
+    "capp-connect.unnamed.computer",
+]  # the server is nOT added because it is HTTP. waiting for James to see if I can use nginx
 
 # Application definition
 INSTALLED_APPS = [
