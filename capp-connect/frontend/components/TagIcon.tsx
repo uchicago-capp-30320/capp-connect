@@ -1,4 +1,4 @@
-import { Text, StyleProp, ViewStyle, Pressable, SafeAreaView, StyleSheet } from 'react-native';
+import { Text, View, StyleProp, ViewStyle, Pressable, SafeAreaView, StyleSheet } from 'react-native';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {faX} from '@fortawesome/free-solid-svg-icons/faX'
@@ -29,22 +29,23 @@ const styles = StyleSheet.create({
 export default function TagIcon({ tag, color, style, deletable, listSetter, listToRemoveFrom }: TagIconProps) {
     return (
         <Pressable style={[styles.tag, { backgroundColor: color }, style]}>
-            <SafeAreaView style={{flexDirection: "row"}}>
-
-                {/* conditionally create a button to delete a tag from a list */}
-                {deletable ? 
-                    <Pressable 
+            <SafeAreaView style={{flexDirection: "row", alignItems: "center"}}>
+                <Text style={styles.tagText}>{tag}</Text>
+                {deletable ?
+                    <Pressable
                         onPress={() => {
                             if (listSetter && listToRemoveFrom) {
                                 listSetter(listToRemoveFrom.filter(item => item != tag))
                             }
                         }}
                     >
-                        <FontAwesomeIcon size={20} icon={faX} color={"black"} style={{alignSelf: "center"}} /> 
+                        <FontAwesomeIcon size={10} icon={faX} color={"black"} style={{ paddingLeft: 5 }} />
+
                     </Pressable>
                 : null}
 
-                <Text style={styles.tagText}>{tag}</Text>
+
+
             </SafeAreaView>
         </Pressable>
     );
