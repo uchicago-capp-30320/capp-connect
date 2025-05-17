@@ -61,6 +61,7 @@ export default function Layout() {
           {makeDrawerScreen("index", "Home")}
           {makeDrawerScreen("feed", "Feed")}
           {makeDrawerScreen("resources", "Resources")}
+          {makeDrawerScreen("directory", "Directory")} 
         </Drawer>
       </GestureHandlerRootView>
     );
@@ -72,6 +73,7 @@ export default function Layout() {
       {makeTab("feed", "Feed", "rss")}
       {makeTab("index", "Home", "home")}
       {makeTab("resources", "Resources", "file")}
+      {makeTab("directory", "Directory", "address-book")}
     </Tabs>
   );
   }
