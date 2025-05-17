@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Post, Profile, ProfileTag, Tag, Comment
+
+from .models import Comment, Post, Profile, ProfileTag, Tag
 
 
 class TagSerializer(serializers.HyperlinkedModelSerializer):
@@ -95,6 +96,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             "start_time",
             "location",
         ]
+
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.StringRelatedField()

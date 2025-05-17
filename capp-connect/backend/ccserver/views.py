@@ -2,12 +2,12 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Post, Profile, Comment
+from .models import Comment, Post, Profile
 from .serializers import (
+    CommentSerializer,
     PostSerializer,
     ProfileListSerializer,
     ProfileSerializer,
-    CommentSerializer,
 )
 
 
@@ -88,7 +88,8 @@ class GetAllPosts(APIView):
         posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
-    
+
+
 class GetComment(APIView):
     def get(self, request, pk, comment_id, format=None):
         try:
@@ -102,8 +103,10 @@ class GetComment(APIView):
             )
         except Comment.DoesNotExist:
             return Response(
-                {"error": "Comment not found."}, status=status.HTTP_404_NOT_FOUND
+                {"error": "Comment not found."},
+                status=status.HTTP_404_NOT_FOUND,
             )
+
     def delete(self, request, pk, comment_id, format=None):
         try:
             post = Post.objects.get(pk=pk)
@@ -116,8 +119,10 @@ class GetComment(APIView):
             )
         except Comment.DoesNotExist:
             return Response(
-                {"error": "Comment not found."}, status=status.HTTP_404_NOT_FOUND
+                {"error": "Comment not found."},
+                status=status.HTTP_404_NOT_FOUND,
             )
+
 
 class GetAllComments(APIView):
     def get(self, request, pk, format=None):
@@ -132,15 +137,16 @@ class GetAllComments(APIView):
             )
         except Comment.DoesNotExist:
             return Response(
-                {"error": "Comment not found."}, status=status.HTTP_404_NOT_FOUND
+                {"error": "Comment not found."},
+                status=status.HTTP_404_NOT_FOUND,
             )
+
     def post(self, request, pk, format=None):
         try:
             post = Post.objects.get(pk=pk)
         except Post.DoesNotExist:
             return Response(
-                {"error": "Post not found."}, 
-                status=status.HTTP_404_NOT_FOUND
+                {"error": "Post not found."}, status=status.HTTP_404_NOT_FOUND
             )
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
