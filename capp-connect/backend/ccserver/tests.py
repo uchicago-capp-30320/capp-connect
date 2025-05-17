@@ -1,1 +1,1 @@
-# Create tests for the ccserver app
+# For cc server tests
