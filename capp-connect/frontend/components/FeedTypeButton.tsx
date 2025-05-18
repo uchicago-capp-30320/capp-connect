@@ -1,13 +1,13 @@
-import { View, Text, StyleProp, ViewStyle, TouchableHighlight, StyleSheet } from 'react-native';
+import { View, Text, TouchableHighlight, StyleSheet } from 'react-native';
 import React from 'react';
 
 interface feedButtonProps {
     label: string;
     name: string;
-    // name: string;
-    setButton: Function;
+    setButton: (name: string) => void;
     feedButtonPressed: string;
 }
+
 
 const styles = StyleSheet.create({
     tag:{

@@ -1,10 +1,9 @@
 import { Text, View, StyleSheet, TouchableHighlight } from "react-native";
-import { useState } from "react";
 import * as Device from 'expo-device';
 import ProfilePhoto from "./ProfilePhoto";
 import TagIcon from "./TagIcon";
 import createTagColorMapper from "../utils/tagColorMapper"
-import { useNavigation, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 
 
 // create conditional styling for desktop vs mobile

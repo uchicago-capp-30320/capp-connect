@@ -7,7 +7,7 @@ import fetchData from '../../utils/fetchdata';
 import * as Device from 'expo-device'
 import FeedTypeButton from '../../components/FeedTypeButton'
 
-const BODY = "The gentle hum of the city faded as the sun dipped below the skyline, casting long shadows across the quiet park. Leaves rustled in the evening breeze, swirling in small, playful circles around the old wooden bench. Somewhere nearby, laughter echoed-brief and bright-before dissolving into the soft chorus of distant traffic. In that moment, time seemed to slow, and the world paused to breathe, wrapped in the golden glow of twilight."
+// const BODY = "The gentle hum of the city faded as the sun dipped below the skyline, casting long shadows across the quiet park. Leaves rustled in the evening breeze, swirling in small, playful circles around the old wooden bench. Somewhere nearby, laughter echoed-brief and bright-before dissolving into the soft chorus of distant traffic. In that moment, time seemed to slow, and the world paused to breathe, wrapped in the golden glow of twilight."
 
 type Post = {
   title: string;
@@ -22,7 +22,7 @@ async function updateFeed(): Promise<Post[]> {
   return await fetchData("http://127.0.0.1:8080/ccserver/posts", "GET", {})
 }
 
-const TYPES = ["All", "General", "Events", "Jobs", "Projects"]
+// const TYPES = ["All", "General", "Events", "Jobs", "Projects"]
 
 
 // function filterData(raw_data: Array<{ [key: string]: any }>, data_setter: Function) {
