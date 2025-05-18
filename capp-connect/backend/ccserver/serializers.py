@@ -10,7 +10,10 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
-    tags = TagSerializer(many=True)
+    user = serializers.StringRelatedField()
+    tags = serializers.SlugRelatedField(
+        many=True, slug_field="tag_name", queryset=Tag.objects.all()
+    )
 
     class Meta:
         model = Profile
@@ -29,6 +32,41 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
             "job_title",
             "company",
             "bio",
+            "tags",
+        ]
+        unique_together = ("profile", "tag")
+
+    def update(self, instance, validated_data):
+        tags_data = validated_data.pop("tags", [])
+        instance = super().update(instance, validated_data)
+        instance.tags.clear()
+        for tag_name in tags_data:
+            tag, _ = Tag.objects.get_or_create(tag_name=tag_name)
+            instance.tags.add(tag)
+        return instance
+
+    def delete(self, instance):
+        instance.delete()
+        return instance
+
+
+class ProfileListSerializer(serializers.HyperlinkedModelSerializer):
+    user = serializers.StringRelatedField()
+    tags = serializers.SlugRelatedField(
+        many=True, slug_field="tag_name", queryset=Tag.objects.all()
+    )
+
+    class Meta:
+        model = Profile
+        fields = [
+            "user",
+            "country",
+            "state",
+            "city",
+            "photo_url",
+            "employment_status",
+            "job_title",
+            "company",
             "tags",
         ]
 

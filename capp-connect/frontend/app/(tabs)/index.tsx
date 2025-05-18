@@ -1,6 +1,6 @@
-import { RefreshControl, ScrollView, Text } from "react-native";
+import { Text } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import ProfilePhoto from '../../components/ProfilePhoto';
+// import ProfilePhoto from '../../components/ProfilePhoto';
 import SearchBar from '../../components/SearchBar';
 import AutoComplete from "@/components/TagAutocomplete";
 import { useState } from "react";

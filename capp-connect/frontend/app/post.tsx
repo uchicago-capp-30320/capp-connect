@@ -1,23 +1,9 @@
 import { View, Text} from "react-native";
-import FeedCard from "@/components/FeedCard";
-import { FlashList } from "@shopify/flash-list";
-import { useEffect, useState } from "react";
-import SearchBar from '../components/SearchBar';
-import fetchData from '../utils/fetchdata';
-import * as Device from 'expo-device'
-import FeedTypeButton from '../components/FeedTypeButton'
 import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView, SafeAreaProvider} from "react-native-safe-area-context";
 import TagIcon from "@/components/TagIcon";
 import createTagColorMapper from "../utils/tagColorMapper"
 
-type Post = {
-  title: string;
-  description: string;
-  poster_name: string;
-  post_type: string;
-  tags: Array<string>;
-};
 
 // create Tag color mapper:
 const getColorForTag = createTagColorMapper();

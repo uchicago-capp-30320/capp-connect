@@ -1,4 +1,4 @@
-import { Text, View, StyleProp, ViewStyle, Pressable, SafeAreaView, StyleSheet } from 'react-native';
+import { Text, StyleProp, ViewStyle, Pressable, SafeAreaView, StyleSheet } from 'react-native';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {faX} from '@fortawesome/free-solid-svg-icons/faX'
