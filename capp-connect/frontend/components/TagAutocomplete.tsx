@@ -1,6 +1,6 @@
 import Autocomplete from "react-native-autocomplete-input"
 import { useState, useEffect, useRef } from "react"
-import { View, Text, TextInput, Keyboard } from "react-native"
+import { View, Text, NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native"
 import TagIcon from "./TagIcon"
 import { StyleSheet } from "react-native"
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -35,7 +35,7 @@ function useFilteredData(query: string) {
     useEffect(() => {
         if (query) {
             setData(DATA.filter(
-                (item) => item.toLowerCase().includes(query.toLowerCase())
+                (item) => item.toLowerCase().trim().includes(query.toLowerCase().trim())
             ))
         } else {
             setData(DATA)
@@ -45,29 +45,57 @@ function useFilteredData(query: string) {
     return data
 }
 
-const fontSpecs = {
-  fontSize: 16,
-  fontFamily: 'System', // or your custom font
-  fontWeight: '400' as const,
-};
-
 
 // create basic autocompleting tag that when submitted creates a tag in the search bar
 function TagAutoComplete({usedTags, setTags, placeholder}: {usedTags: Array<string>, setTags: Function, placeholder: string}) {
     const [ query, setQuery ] = useState('');
     const [ hideRec, setHideRec ] = useState(true);
     const [inputKey, setInputKey] = useState(0);
-    const [keyPressed, setKeyPressed] = useState('');
-
+    const [highlightedIndex, setHighlightedIndex] = useState(-1);
+    const [isOpen, setIsOpen] = useState(false);
 
     const data = useFilteredData(query).filter(tag => !usedTags.includes(tag));
 
     //submit top choice
     const handleSubmit = () => {
         if (data.length > 0) {
-            setTags([...usedTags, data[0]])
+            let index = 0
+            if (isOpen) {
+                index = highlightedIndex
+            }
+            // add tag to list
+            setTags([...usedTags, data[index]])
+
+            // reset query
             setQuery('')
             setHideRec(true)
+            setHighlightedIndex(-1)
+            setIsOpen(false)
+        }
+    }
+
+    // allow user to navigate dropdown menu of recommendations with keys
+    const handleKeyPress = (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+        if (e.nativeEvent.key === 'Backspace') {
+            if (usedTags && query=="") {
+                setTags(usedTags.slice(0, -1))
+            }
+        }
+        if (e.nativeEvent.key === 'Tab' || e.nativeEvent.key === 'ArrowDown') {
+            e.preventDefault();
+            if (!isOpen) {
+                setIsOpen(true);
+                setHighlightedIndex(0);
+            } else {
+                setHighlightedIndex((prevIndex) => (prevIndex + 1) % data.length);
+            }
+        } else if (e.nativeEvent.key === 'ArrowUp') {
+            e.preventDefault();
+            if (isOpen) {
+                setHighlightedIndex((prevIndex) =>
+                    prevIndex === 0 ? data.length - 1 : prevIndex - 1
+                );
+            }
         }
     }
 
@@ -83,14 +111,7 @@ function TagAutoComplete({usedTags, setTags, placeholder}: {usedTags: Array<stri
             value={query}
             autoFocus={true}
             placeholder={placeholder}
-            onKeyPress={(e) => {
-                if (e.nativeEvent.key === 'Backspace') {
-                    // const removedTag = usedTags.slice(-1);
-                    if (usedTags && query=="") {
-                        setTags(usedTags.slice(0, -1))
-                    }
-                }
-            }}
+            onKeyPress={(e) => handleKeyPress(e)}
 
             onChangeText={(text) => {
                 setQuery(text)
@@ -100,7 +121,15 @@ function TagAutoComplete({usedTags, setTags, placeholder}: {usedTags: Array<stri
             hideResults={hideRec}
             flatListProps={{
                 keyExtractor: (_, idx) => String(idx),
-                renderItem: ({ item }) => <Text>{item}</Text>,
+                renderItem: ({ item, index }) => (
+                    <Text
+                        style={[
+                            {fontSize:16},
+                            { backgroundColor: index === highlightedIndex ? '#e0e0e0' : 'transparent',}
+                        ]}>
+                            {item}
+                    </Text>
+                ),
             }}
             inputContainerStyle={{
                 borderWidth:0,
@@ -133,7 +162,7 @@ export default function TagSearch({tags, setTags, search}: {tags: string[], setT
 
     return (
         <View style={styles.textInput} >
-            {search ? <FontAwesome size={15} name="search" color={"grey"} style={{}} />: null }
+            {search ? <FontAwesome size={15} name="search" color={"#808080"} style={{}} />: null }
             {tags.map((tag) => (
                 <TagIcon
                     key={tag}
@@ -152,7 +181,6 @@ export default function TagSearch({tags, setTags, search}: {tags: string[], setT
 
 const styles = StyleSheet.create({
     textInput: {
-        // flex: 1,
         flexDirection: "row",
         backgroundColor: "white",
         borderWidth: 2,
@@ -164,7 +192,6 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         minHeight: 50,
         maxHeight: 500,
-        // flexGrow: 1
         overflow: "visible",
 
         borderColor: "#808080",

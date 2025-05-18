@@ -2,8 +2,12 @@ import { RefreshControl, ScrollView, Text } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ProfilePhoto from '../../components/ProfilePhoto';
 import SearchBar from '../../components/SearchBar';
+import AutoComplete from "@/components/TagAutocomplete";
+import { useState } from "react";
 
 export default function Index() {
+  const [ tags, setTags ] = useState<string[]>([]);
+
   return (
     <SafeAreaProvider>
       <SafeAreaView
@@ -13,6 +17,7 @@ export default function Index() {
           alignItems: "center",
         }}
       >
+        <AutoComplete tags={tags} setTags={setTags}/>
 
         <SearchBar
           placeholder="Search..."
