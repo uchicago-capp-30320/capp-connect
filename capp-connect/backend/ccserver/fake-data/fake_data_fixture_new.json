@@ -1,0 +1,487 @@
+[
+  {
+    "model": "ccserver.tag",
+    "pk": 1,
+    "fields": {
+      "tag_name": "Julia"
+    }
+  },
+  {
+    "model": "ccserver.tag",
+    "pk": 2,
+    "fields": {
+      "tag_name": "internship"
+    }
+  },
+  {
+    "model": "ccserver.tag",
+    "pk": 3,
+    "fields": {
+      "tag_name": "MATLAB"
+    }
+  },
+  {
+    "model": "ccserver.tag",
+    "pk": 4,
+    "fields": {
+      "tag_name": "Spring Boot"
+    }
+  },
+  {
+    "model": "ccserver.tag",
+    "pk": 5,
+    "fields": {
+      "tag_name": "Ruby"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "username": "adam14",
+      "email": "robertcarter@lopez.com",
+      "password": "pbkdf2_sha256$...",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
+    }
+  },
+  {
+    "model": "ccserver.profile",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "slack_username": "olivia28",
+      "linkedin_username": "thomastroy",
+      "github_username": "amber98",
+      "personal_site": "http://www.cardenas.com/",
+      "country": "Peru",
+      "state": "Illinois",
+      "city": "Lopezmouth",
+      "phone_number": "525-463-6512",
+      "photo_url": "https://placekitten.com/154/991",
+      "employment_status": "Student",
+      "job_title": "Restaurant manager, fast food",
+      "company": "Dorsey and Sons",
+      "bio": "Available compare area financial store moment source. Suffer trade big project side. All game guy feel scene treat range."
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 1,
+      "tag": 4
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 1,
+      "tag": 5
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "username": "barbara73",
+      "email": "thompsondustin@harris.com",
+      "password": "pbkdf2_sha256$...",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
+    }
+  },
+  {
+    "model": "ccserver.profile",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "slack_username": "barrettnicole",
+      "linkedin_username": "derekobrien",
+      "github_username": "greeneapril",
+      "personal_site": "http://www.cummings.com/",
+      "country": "Japan",
+      "state": "Pennsylvania",
+      "city": "East Jamesport",
+      "phone_number": "652-824-7727",
+      "photo_url": "https://placekitten.com/943/767",
+      "employment_status": "Employed",
+      "job_title": "Conservator, museum/gallery",
+      "company": "Mitchell-Owen",
+      "bio": "Identify participant parent baby go campaign. Group deep night traditional picture."
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 2,
+      "tag": 2
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 2,
+      "tag": 4
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "username": "anna88",
+      "email": "shieldsmary@hotmail.com",
+      "password": "pbkdf2_sha256$...",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
+    }
+  },
+  {
+    "model": "ccserver.profile",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "slack_username": "joseph08",
+      "linkedin_username": "bairdkristin",
+      "github_username": "lovekaren",
+      "personal_site": "http://thompson.com/",
+      "country": "Norway",
+      "state": "New Mexico",
+      "city": "Lindahaven",
+      "phone_number": "930-651-4692",
+      "photo_url": "https://placeimg.com/897/101/any",
+      "employment_status": "Hiring",
+      "job_title": "Chemical engineer",
+      "company": "Houston, Jackson and Arnold",
+      "bio": "Above friend senior rest. Yes create concern or. Here school seat wish.\nSite world report. Dark bit expect evening nothing field group about. Ability analysis full total discussion standard."
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 3,
+      "tag": 4
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 3,
+      "tag": 1
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+      "username": "scott61",
+      "email": "gravesjose@rodgers.org",
+      "password": "pbkdf2_sha256$...",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
+    }
+  },
+  {
+    "model": "ccserver.profile",
+    "pk": 4,
+    "fields": {
+      "user": 4,
+      "slack_username": "deandougherty",
+      "linkedin_username": "scottpacheco",
+      "github_username": "roseelaine",
+      "personal_site": "http://thompson.com/",
+      "country": "Angola",
+      "state": "West Virginia",
+      "city": "Lake Timothybury",
+      "phone_number": "837-878-6173",
+      "photo_url": "https://placekitten.com/43/871",
+      "employment_status": "Searching",
+      "job_title": "Ophthalmologist",
+      "company": "Brown-Morales",
+      "bio": "Scientist measure hospital blood. City it book land sign growth big.\nReason modern agency how.\nYoung food Mr card hear article. Understand federal type us size major clear."
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 4,
+      "tag": 4
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 4,
+      "tag": 5
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 5,
+    "fields": {
+      "username": "vprice",
+      "email": "justinmitchell@yahoo.com",
+      "password": "pbkdf2_sha256$...",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
+    }
+  },
+  {
+    "model": "ccserver.profile",
+    "pk": 5,
+    "fields": {
+      "user": 5,
+      "slack_username": "james73",
+      "linkedin_username": "tiffanykennedy",
+      "github_username": "janet26",
+      "personal_site": "http://walker-miller.info/",
+      "country": "Latvia",
+      "state": "New Mexico",
+      "city": "Lake Terri",
+      "phone_number": "655-917-6651",
+      "photo_url": "https://placekitten.com/899/723",
+      "employment_status": "Searching",
+      "job_title": "Journalist, newspaper",
+      "company": "Salazar PLC",
+      "bio": "Worry employee low mean his. After anyone short floor. Discussion director opportunity method."
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 5,
+      "tag": 5
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 5,
+      "tag": 1
+    }
+  },
+  {
+    "model": "ccserver.post",
+    "pk": 1,
+    "fields": {
+      "user": 4,
+      "title": "Newspaper reveal common difficult enter American kitchen success.",
+      "description": "Fish official full talk between people arrive. Officer it event true. Interesting drop somebody must.",
+      "post_type": "General",
+      "created_at": "2025-02-27 20:25:10",
+      "updated_at": "2025-05-16 17:06:59.821819",
+      "links": "https://www.livingston.com/",
+      "start_time": "2025-05-20 17:06:59.822385",
+      "location": "Lake Ryan",
+      "source": "App"
+    }
+  },
+  {
+    "model": "ccserver.posttag",
+    "pk": null,
+    "fields": {
+      "post": 1,
+      "tag": 4
+    }
+  },
+  {
+    "model": "ccserver.posttag",
+    "pk": null,
+    "fields": {
+      "post": 1,
+      "tag": 5
+    }
+  },
+  {
+    "model": "ccserver.post",
+    "pk": 2,
+    "fields": {
+      "user": 4,
+      "title": "Only ask increase recognize.",
+      "description": "Focus public ahead floor significant.",
+      "post_type": "Job",
+      "created_at": "2025-01-16 21:34:21",
+      "updated_at": "2025-05-16 17:06:59.822663",
+      "links": "http://johnson-watkins.com/",
+      "start_time": "2025-05-25 17:06:59.822934",
+      "location": "Lake Frank",
+      "source": "Slack"
+    }
+  },
+  {
+    "model": "ccserver.posttag",
+    "pk": null,
+    "fields": {
+      "post": 2,
+      "tag": 3
+    }
+  },
+  {
+    "model": "ccserver.posttag",
+    "pk": null,
+    "fields": {
+      "post": 2,
+      "tag": 3
+    }
+  },
+  {
+    "model": "ccserver.post",
+    "pk": 3,
+    "fields": {
+      "user": 4,
+      "title": "Different visit perform sell.",
+      "description": "Discussion man under. Whose ahead dark practice.",
+      "post_type": "Event",
+      "created_at": "2025-04-02 13:01:35",
+      "updated_at": "2025-05-16 17:06:59.823177",
+      "links": "http://dean.com/",
+      "start_time": "2025-05-22 17:06:59.823659",
+      "location": "Nicolehaven",
+      "source": "App"
+    }
+  },
+  {
+    "model": "ccserver.posttag",
+    "pk": null,
+    "fields": {
+      "post": 3,
+      "tag": 5
+    }
+  },
+  {
+    "model": "ccserver.posttag",
+    "pk": null,
+    "fields": {
+      "post": 3,
+      "tag": 4
+    }
+  },
+  {
+    "model": "ccserver.comment",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "post": 1,
+      "comment_text": "Change collection safe outside.",
+      "created_at": "2025-04-15 18:09:55"
+    }
+  },
+  {
+    "model": "ccserver.comment",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "post": 1,
+      "comment_text": "Around race nation skill.",
+      "created_at": "2025-02-25 20:04:16"
+    }
+  },
+  {
+    "model": "ccserver.comment",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "post": 2,
+      "comment_text": "Method carry professor.",
+      "created_at": "2025-02-17 08:49:50"
+    }
+  },
+  {
+    "model": "ccserver.comment",
+    "pk": 4,
+    "fields": {
+      "user": 1,
+      "post": 2,
+      "comment_text": "As society not line cause enter.",
+      "created_at": "2025-05-05 23:14:16"
+    }
+  },
+  {
+    "model": "ccserver.comment",
+    "pk": 5,
+    "fields": {
+      "user": 5,
+      "post": 3,
+      "comment_text": "Share chance name soldier deep.",
+      "created_at": "2025-02-16 04:00:25"
+    }
+  },
+  {
+    "model": "ccserver.comment",
+    "pk": 6,
+    "fields": {
+      "user": 5,
+      "post": 3,
+      "comment_text": "Forward myself at fast subject.",
+      "created_at": "2025-03-11 03:52:26"
+    }
+  },
+  {
+    "model": "ccserver.resource",
+    "pk": 1,
+    "fields": {
+      "title": "Implemented global capability",
+      "description": "Article final some. By feel every mission music what toward. Seem painting with drive sort control fast two. Rise also leader believe avoid class up.",
+      "created_at": "2025-05-04 21:26:20",
+      "updated_at": "2025-05-16 17:06:59.824690",
+      "links": "http://www.henry.com/"
+    }
+  },
+  {
+    "model": "ccserver.resourcetag",
+    "pk": null,
+    "fields": {
+      "resource": 1,
+      "tag": 1
+    }
+  },
+  {
+    "model": "ccserver.resourcetag",
+    "pk": null,
+    "fields": {
+      "resource": 1,
+      "tag": 3
+    }
+  },
+  {
+    "model": "ccserver.resource",
+    "pk": 2,
+    "fields": {
+      "title": "Proactive heuristic focus group",
+      "description": "Hit easy when ok.",
+      "created_at": "2025-02-27 06:48:02",
+      "updated_at": "2025-05-16 17:06:59.824985",
+      "links": "https://smith.com/"
+    }
+  },
+  {
+    "model": "ccserver.resourcetag",
+    "pk": null,
+    "fields": {
+      "resource": 2,
+      "tag": 4
+    }
+  },
+  {
+    "model": "ccserver.resourcetag",
+    "pk": null,
+    "fields": {
+      "resource": 2,
+      "tag": 1
+    }
+  }
+]

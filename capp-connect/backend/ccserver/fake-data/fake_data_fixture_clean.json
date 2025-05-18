@@ -1,0 +1,467 @@
+[
+  {
+    "model": "ccserver.tag",
+    "pk": 1,
+    "fields": {
+      "tag_name": "Vue.js"
+    }
+  },
+  {
+    "model": "ccserver.tag",
+    "pk": 2,
+    "fields": {
+      "tag_name": "software engineering"
+    }
+  },
+  {
+    "model": "ccserver.tag",
+    "pk": 3,
+    "fields": {
+      "tag_name": "product management"
+    }
+  },
+  {
+    "model": "ccserver.tag",
+    "pk": 4,
+    "fields": {
+      "tag_name": "Julia"
+    }
+  },
+  {
+    "model": "ccserver.tag",
+    "pk": 5,
+    "fields": {
+      "tag_name": "PowerShell"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "username": "ryancastro",
+      "email": "anthony66@wells.com",
+      "password": "pbkdf2_sha256$...",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
+    }
+  },
+  {
+    "model": "ccserver.profile",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "slack_username": "emilynorton",
+      "linkedin_username": "hollygreen",
+      "github_username": "carrie59",
+      "personal_site": "http://cherry.com/",
+      "country": "Macedonia",
+      "state": "South Carolina",
+      "city": "Cassandramouth",
+      "phone_number": "554-388-5077",
+      "photo_url": "https://dummyimage.com/197x194",
+      "employment_status": "Student",
+      "job_title": "Prison officer",
+      "company": "Wise-Vargas",
+      "bio": "Sea close outside. Friend memory price answer he west. Four Congress natural traditional water."
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 1,
+      "tag": 2
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 1,
+      "tag": 5
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "username": "scottdaniel",
+      "email": "ggregory@gmail.com",
+      "password": "pbkdf2_sha256$...",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
+    }
+  },
+  {
+    "model": "ccserver.profile",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "slack_username": "qhill",
+      "linkedin_username": "williamflores",
+      "github_username": "zsmith",
+      "personal_site": "http://singh.net/",
+      "country": "Poland",
+      "state": "Michigan",
+      "city": "South Jonathanbury",
+      "phone_number": "604-448-0513",
+      "photo_url": "https://dummyimage.com/681x976",
+      "employment_status": "Student",
+      "job_title": "Chartered legal executive (England and Wales)",
+      "company": "Small-Chambers",
+      "bio": "Race cultural chance court green return. Investment body term anything.\nBring president between exactly accept mention popular.\nSuffer town same language television heart."
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 2,
+      "tag": 2
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 2,
+      "tag": 4
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "username": "juan91",
+      "email": "jkennedy@yahoo.com",
+      "password": "pbkdf2_sha256$...",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
+    }
+  },
+  {
+    "model": "ccserver.profile",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "slack_username": "ochoarobin",
+      "linkedin_username": "ublake",
+      "github_username": "garrisontammy",
+      "personal_site": "http://www.cain.com/",
+      "country": "Georgia",
+      "state": "Wisconsin",
+      "city": "East Sarahchester",
+      "phone_number": "704-295-4263",
+      "photo_url": "https://www.lorempixel.com/677/88",
+      "employment_status": "Employed",
+      "job_title": "Proofreader",
+      "company": "Woodard-Smith",
+      "bio": "Either keep job. Situation accept occur wall result American after. Full coach create agent community agree."
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 3,
+      "tag": 4
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 3,
+      "tag": 3
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+      "username": "barryhunt",
+      "email": "lararobert@gmail.com",
+      "password": "pbkdf2_sha256$...",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
+    }
+  },
+  {
+    "model": "ccserver.profile",
+    "pk": 4,
+    "fields": {
+      "user": 4,
+      "slack_username": "jacksonrobert",
+      "linkedin_username": "myerskayla",
+      "github_username": "johnzimmerman",
+      "personal_site": "https://www.jones.com/",
+      "country": "French Guiana",
+      "state": "Indiana",
+      "city": "Diazside",
+      "phone_number": "665-244-6533",
+      "photo_url": "https://www.lorempixel.com/436/786",
+      "employment_status": "Searching",
+      "job_title": "Community pharmacist",
+      "company": "Palmer PLC",
+      "bio": "Else model low education. Early beat person course model start drug. Card police then.\nCarry million boy put person. Single every manager me mind. Base say leg born."
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 4,
+      "tag": 2
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 4,
+      "tag": 5
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 5,
+    "fields": {
+      "username": "sballard",
+      "email": "josephbrown@hotmail.com",
+      "password": "pbkdf2_sha256$...",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
+    }
+  },
+  {
+    "model": "ccserver.profile",
+    "pk": 5,
+    "fields": {
+      "user": 5,
+      "slack_username": "heathercole",
+      "linkedin_username": "campbellcharles",
+      "github_username": "smithjames",
+      "personal_site": "https://church.com/",
+      "country": "Mayotte",
+      "state": "Hawaii",
+      "city": "North Kyleport",
+      "phone_number": "542-077-2772",
+      "photo_url": "https://placekitten.com/18/137",
+      "employment_status": "Student",
+      "job_title": "Clinical biochemist",
+      "company": "Mccormick-Marquez",
+      "bio": "Involve note professor series issue admit them. Agent finish college whom individual yard character.\nDown never college during wide. Owner history marriage employee maintain election generation."
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 5,
+      "tag": 2
+    }
+  },
+  {
+    "model": "ccserver.profiletag",
+    "pk": null,
+    "fields": {
+      "profile": 5,
+      "tag": 1
+    }
+  },
+  {
+    "model": "ccserver.post",
+    "pk": 1,
+    "fields": {
+      "user": 4,
+      "title": "Wrong ever type will.",
+      "description": "World newspaper actually institution. Take race spring sort seat including a. Act necessary president carry pay.",
+      "post_type": "Resource",
+      "created_at": "2025-01-30 15:46:07",
+      "updated_at": "2025-05-16 17:11:16.726567",
+      "links": "http://www.hanson.info/",
+      "start_time": "2025-05-24 17:11:16.726767",
+      "location": "Thompsonhaven",
+      "source": "App"
+    }
+  },
+  {
+    "model": "ccserver.posttag",
+    "pk": null,
+    "fields": {
+      "post": 1,
+      "tag": 5
+    }
+  },
+  {
+    "model": "ccserver.posttag",
+    "pk": null,
+    "fields": {
+      "post": 1,
+      "tag": 2
+    }
+  },
+  {
+    "model": "ccserver.post",
+    "pk": 2,
+    "fields": {
+      "user": 3,
+      "title": "Partner manage mother side between.",
+      "description": "Mind school two as. Teacher beat one son gun. Mission common western life above.",
+      "post_type": "Resource",
+      "created_at": "2025-04-15 02:56:20",
+      "updated_at": "2025-05-16 17:11:16.727058",
+      "links": "http://www.mitchell.com/",
+      "start_time": "2025-05-19 17:11:16.727257",
+      "location": "New Angela",
+      "source": "App"
+    }
+  },
+  {
+    "model": "ccserver.posttag",
+    "pk": null,
+    "fields": {
+      "post": 2,
+      "tag": 3
+    }
+  },
+  {
+    "model": "ccserver.posttag",
+    "pk": null,
+    "fields": {
+      "post": 2,
+      "tag": 5
+    }
+  },
+  {
+    "model": "ccserver.post",
+    "pk": 3,
+    "fields": {
+      "user": 5,
+      "title": "Pressure least discussion into government their.",
+      "description": "Actually risk great operation. Technology out finish operation. Mean article toward left hair operation.",
+      "post_type": "Job",
+      "created_at": "2025-03-24 09:42:34",
+      "updated_at": "2025-05-16 17:11:16.727503",
+      "links": "http://blake-morris.biz/",
+      "start_time": "2025-05-23 17:11:16.727799",
+      "location": "Sanchezberg",
+      "source": "App"
+    }
+  },
+  {
+    "model": "ccserver.posttag",
+    "pk": null,
+    "fields": {
+      "post": 3,
+      "tag": 3
+    }
+  },
+  {
+    "model": "ccserver.posttag",
+    "pk": null,
+    "fields": {
+      "post": 3,
+      "tag": 2
+    }
+  },
+  {
+    "model": "ccserver.comment",
+    "pk": 1,
+    "fields": {
+      "user": 3,
+      "post": 1,
+      "comment_text": "Dog book should fear usually kind power collection.",
+      "created_at": "2025-05-02 17:36:35"
+    }
+  },
+  {
+    "model": "ccserver.comment",
+    "pk": 2,
+    "fields": {
+      "user": 3,
+      "post": 2,
+      "comment_text": "Room develop feel through analysis particularly.",
+      "created_at": "2025-02-04 09:41:57"
+    }
+  },
+  {
+    "model": "ccserver.comment",
+    "pk": 3,
+    "fields": {
+      "user": 1,
+      "post": 2,
+      "comment_text": "Nothing television administration score decide.",
+      "created_at": "2025-01-18 21:11:02"
+    }
+  },
+  {
+    "model": "ccserver.comment",
+    "pk": 4,
+    "fields": {
+      "user": 2,
+      "post": 3,
+      "comment_text": "Side break drop prepare.",
+      "created_at": "2025-02-22 00:38:18"
+    }
+  },
+  {
+    "model": "ccserver.resource",
+    "pk": 1,
+    "fields": {
+      "title": "Intuitive 5thgeneration toolset",
+      "description": "Reason speech effect environment piece. Phone production this difference lawyer enough. Item relate check.",
+      "created_at": "2025-01-08 10:22:10",
+      "updated_at": "2025-05-16 17:11:16.728771",
+      "links": "https://potts-brown.com/"
+    }
+  },
+  {
+    "model": "ccserver.resourcetag",
+    "pk": null,
+    "fields": {
+      "resource": 1,
+      "tag": 4
+    }
+  },
+  {
+    "model": "ccserver.resourcetag",
+    "pk": null,
+    "fields": {
+      "resource": 1,
+      "tag": 1
+    }
+  },
+  {
+    "model": "ccserver.resource",
+    "pk": 2,
+    "fields": {
+      "title": "Exclusive homogeneous frame",
+      "description": "Model treat me management. Must ago economic allow measure hour these. Report forget second vote.",
+      "created_at": "2025-01-11 22:14:26",
+      "updated_at": "2025-05-16 17:11:16.729334",
+      "links": "http://williams-schwartz.com/"
+    }
+  },
+  {
+    "model": "ccserver.resourcetag",
+    "pk": null,
+    "fields": {
+      "resource": 2,
+      "tag": 1
+    }
+  },
+  {
+    "model": "ccserver.resourcetag",
+    "pk": null,
+    "fields": {
+      "resource": 2,
+      "tag": 3
+    }
+  }
+]
