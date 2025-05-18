@@ -1,5 +1,5 @@
 import Autocomplete from "react-native-autocomplete-input"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { View, Text, NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native"
 import TagIcon from "./TagIcon"
 import { StyleSheet } from "react-native"
@@ -47,7 +47,7 @@ function useFilteredData(query: string) {
 
 
 // create basic autocompleting tag that when submitted creates a tag in the search bar
-function TagAutoComplete({usedTags, setTags, placeholder}: {usedTags: Array<string>, setTags: Function, placeholder: string}) {
+function TagAutoComplete({usedTags, setTags, placeholder}: {usedTags: Array<string>, setTags: (tags: string[]) => void, placeholder: string}) {
     const [ query, setQuery ] = useState('');
     const [ hideRec, setHideRec ] = useState(true);
     const [inputKey, setInputKey] = useState(0);
@@ -157,7 +157,7 @@ function TagAutoComplete({usedTags, setTags, placeholder}: {usedTags: Array<stri
 
 
 // create a tag-based search bar
-export default function TagSearch({tags, setTags, search}: {tags: string[], setTags: Function, search?: boolean}) {
+export default function TagSearch({tags, setTags, search}: {tags: string[], setTags: (tags: string[]) => void, search?: boolean}) {
      const colorMapper = createTagColorMapper()
 
     return (

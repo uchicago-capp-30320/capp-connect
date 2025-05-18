@@ -8,7 +8,7 @@ interface TagIconProps {
     color: string;
     style: StyleProp<ViewStyle>;
     deletable: boolean;
-    listSetter?: Function;
+    listSetter?: (tags: string[]) => void;
     listToRemoveFrom?: Array<string>
 }
 
