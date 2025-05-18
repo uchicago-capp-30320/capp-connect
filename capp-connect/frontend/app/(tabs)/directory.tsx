@@ -85,7 +85,7 @@ const userProfiles: UserProfile[] = [
     country: "USA",
     job_title: "Data Scientist",
     company: "City of Chicago",
-    tags: ["Data Science", "Python", "Urban Policy"]
+    tags: ["Data Science", "Python", "Urban Policy","Policy Analysis", "Research", "Housing", "React", "JavaScript", "Civic Tech","UX Design", "User Research", "Accessibility"]
   },
   {
     id: "2",

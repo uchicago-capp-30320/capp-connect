@@ -1,13 +1,13 @@
 import { Text, View, StyleSheet, TouchableHighlight } from "react-native";
 import * as Device from 'expo-device';
 import ProfilePhoto from "./ProfilePhoto";
-import TagIcon from "./TagIcon";
 import createTagColorMapper from "../utils/tagColorMapper";
 import { useRouter } from "expo-router";
+import TagCarousel from "./TagCarousel";
 
 // create conditional styling for desktop vs mobile
-const CARD_HEIGHT = Device.deviceType === Device.DeviceType.DESKTOP ? 200 : 70;
-const PADDING = Device.deviceType === Device.DeviceType.DESKTOP ? 10 : 4;
+const CARD_HEIGHT = Device.deviceType === Device.DeviceType.DESKTOP ? 200 : 120;
+const PADDING = Device.deviceType === Device.DeviceType.DESKTOP ? 10 : 6;
 const PROFILE_PHOTO_SIZE = Device.deviceType === Device.DeviceType.DESKTOP ? 90 : 60;
 const BORDER_RADIUS = 5;
 
@@ -32,6 +32,11 @@ export default function ProfileCard(props: ProfileCardProps) {
   const location = [props.city, props.state, props.country]
     .filter(item => item) 
     .join(", ");
+
+  const tagObjects = props.tags.map(tag => ({
+    name: tag,
+    color: getColorForTag(tag)
+  }));
   
   return (
     <TouchableHighlight
@@ -55,10 +60,8 @@ export default function ProfileCard(props: ProfileCardProps) {
           <Text style={styles.company}>{props.company}</Text>
           
           {/* tags */}
-          <View style={styles.tagsContainer}> 
-            {props.tags.slice(0, 5).map((tag, index) => ( 
-              <TagIcon key={index} tag={tag} color={getColorForTag(tag)} style={{}}/>
-            ))}
+          <View style={styles.tagsContainer}>
+            <TagCarousel tags={tagObjects} />
           </View>
         </View>
       </View>
@@ -71,7 +74,7 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS,
     alignSelf: "center",
     height: CARD_HEIGHT,
-    width: "100%",
+    width: "95%",
     padding: PADDING
   },
   cardBackground: {
@@ -87,36 +90,36 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 5,
-    padding: 15,
+    padding: Device.deviceType === Device.DeviceType.DESKTOP ? 15 : 10,
     flexDirection: "row"
   },
   infoContainer: {
     flex: 1,
-    marginLeft: 15,
+    marginLeft: Device.deviceType === Device.DeviceType.DESKTOP ? 15 : 10,
     justifyContent: "center"
   },
   name: {
-    fontSize: 18,
+    fontSize: Device.deviceType === Device.DeviceType.DESKTOP ? 18 : 16,
     fontWeight: "bold",
     marginBottom: 2
   },
   location: {
-    fontSize: 14,
+    fontSize: Device.deviceType === Device.DeviceType.DESKTOP ? 14 : 12,
     color: "#555",
-    marginBottom: 6
+    marginBottom: Device.deviceType === Device.DeviceType.DESKTOP ? 6 : 4
   },
   job_title: {
-    fontSize: 16,
+    fontSize: Device.deviceType === Device.DeviceType.DESKTOP ? 16 : 14,
     marginBottom: 2
   },
   company: {
-    fontSize: 14,
+    fontSize: Device.deviceType === Device.DeviceType.DESKTOP ? 14 : 12,
     color: "#555",
-    marginBottom: 10
+    marginBottom: Device.deviceType === Device.DeviceType.DESKTOP ? 10 : 6
   },
   tagsContainer: {
-    flexDirection: "row",
-    flexWrap: 'wrap',
+    width: "100%",
+    marginTop: Device.deviceType === Device.DeviceType.DESKTOP ? 5 : 3
   },
   image: {
     width: PROFILE_PHOTO_SIZE,
