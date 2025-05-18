@@ -21,7 +21,21 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 
 urlpatterns = [
-    path("ccserver/<int:pk>/", views.GetProfile.as_view(), name="get_user"),
+    path(
+        "ccserver/profile/<str:username>/",
+        views.GetProfile.as_view(),
+        name="get_profile",
+    ),  # Supports delete method
+    path(
+        "ccserver/profile/<str:username>/update/",
+        views.GetProfile.as_view(),
+        name="update_profile",
+    ),
+    path(
+        "ccserver/profiles/",
+        views.GetProfileList.as_view(),
+        name="get_profile_list",
+    ),
     path("ccserver/post/<int:pk>/", views.GetPost.as_view(), name="get_post"),
     path("ccserver/posts/", views.GetAllPosts.as_view(), name="get_all_posts"),
 ]
