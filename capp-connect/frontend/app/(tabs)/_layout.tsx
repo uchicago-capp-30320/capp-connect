@@ -1,9 +1,10 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Stack, Tabs } from 'expo-router';
+import { Tabs } from 'expo-router';
 import ProfilePhoto from '@/components/ProfilePhoto';
 import SettingsIcon from '@/components/SettingsIcon';
 import { View, StyleSheet } from 'react-native';
-import * as Device from 'expo-device'
+import * as Device from 'expo-device';
+import * as React from "react";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
 import Colors from '@/themes/colors';

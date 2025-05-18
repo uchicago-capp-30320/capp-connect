@@ -39,3 +39,7 @@ frontend:
 .PHONY: run-all
 run-all:
 	make backend & make frontend
+
+.PHONY: install
+install:
+	uv pip install -r requirements.txt

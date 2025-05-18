@@ -1,4 +1,4 @@
-import { View, Text, StyleProp, ViewStyle, Pressable, SafeAreaView, StyleSheet } from 'react-native';
+import { Text, StyleProp, ViewStyle, Pressable, SafeAreaView, StyleSheet } from 'react-native';
 import React from 'react';
 
 interface TagIconProps {

@@ -1,4 +1,4 @@
-async function _GET(url: string, headers: Headers, params: Object) {
+async function _GET(url: string, headers: Headers, params: object) {
     const resp = await fetch(
         `${url}${new URLSearchParams(params as Record<string, string>).toString()}`,
         {headers: headers}
@@ -7,7 +7,7 @@ async function _GET(url: string, headers: Headers, params: Object) {
     return resp.json();
 }
 
-async function _POST(url: string, headers: Headers, params: Object) {
+async function _POST(url: string, headers: Headers, params: object) {
     const resp = await fetch(url,
         {
             method: 'POST',
@@ -18,7 +18,7 @@ async function _POST(url: string, headers: Headers, params: Object) {
     return resp.json()
 }
 
-export default async function fetchData(url: string, method: string, params: Object) {
+export default async function fetchData(url: string, method: string, params: object) {
     const headers = new Headers({
         'Content-Type': 'application/json'
     })

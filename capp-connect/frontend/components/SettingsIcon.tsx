@@ -1,4 +1,4 @@
-import { Image, StyleProp, TextStyle, Pressable, SafeAreaView } from "react-native";
+import { StyleProp, TextStyle, Pressable, SafeAreaView } from "react-native";
 import { router } from 'expo-router';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import React from "react";
