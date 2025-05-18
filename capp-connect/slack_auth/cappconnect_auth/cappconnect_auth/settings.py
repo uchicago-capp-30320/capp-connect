@@ -28,6 +28,9 @@ ALLOWED_HOSTS = [
 
 # Application definition
 INSTALLED_APPS = [
+    "allauth", 
+    "allauth.account", 
+    "allauth.socialaccount", #kj added the top 3 for allauth
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -45,6 +48,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware", #kj added 
 ]
 
 ROOT_URLCONF = "cappconnect_auth.urls"
@@ -114,3 +118,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SLACK_CLIENT_ID = os.environ.get("SLACK_CLIENT_ID")
 SLACK_REDIRECT_URI = os.environ.get("SLACK_REDIRECT_URI")
 SLACK_CLIENT_SECRET = os.environ.get("SLACK_CLIENT_SECRET")
+
+#adding authentication backend here: 
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+
+#adding the social account-ours = Slack! 
+SOCIALACCOUNT_PROVIDERS = {}
