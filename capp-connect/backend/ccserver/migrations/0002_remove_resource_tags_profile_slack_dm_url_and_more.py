@@ -4,22 +4,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ccserver', '0001_initial'),
+        ("ccserver", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='resource',
-            name='tags',
+            model_name="resource",
+            name="tags",
         ),
         migrations.AddField(
-            model_name='profile',
-            name='slack_dm_url',
+            model_name="profile",
+            name="slack_dm_url",
             field=models.CharField(blank=True, max_length=100, null=True),
         ),
         migrations.DeleteModel(
-            name='ResourceTag',
+            name="ResourceTag",
         ),
     ]

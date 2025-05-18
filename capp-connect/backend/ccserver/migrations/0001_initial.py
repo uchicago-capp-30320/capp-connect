@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,124 +14,313 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Resource',
+            name="Resource",
             fields=[
-                ('resource_id', models.AutoField(primary_key=True, serialize=False)),
-                ('title', models.CharField(max_length=100)),
-                ('description', models.TextField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('links', models.TextField(blank=True, null=True)),
+                (
+                    "resource_id",
+                    models.AutoField(primary_key=True, serialize=False),
+                ),
+                ("title", models.CharField(max_length=100)),
+                ("description", models.TextField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("links", models.TextField(blank=True, null=True)),
             ],
             options={
-                'ordering': ['-created_at'],
+                "ordering": ["-created_at"],
             },
         ),
         migrations.CreateModel(
-            name='Tag',
+            name="Tag",
             fields=[
-                ('tag_id', models.AutoField(primary_key=True, serialize=False)),
-                ('tag_name', models.CharField(max_length=50, unique=True)),
+                ("tag_id", models.AutoField(primary_key=True, serialize=False)),
+                ("tag_name", models.CharField(max_length=50, unique=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Post',
+            name="Post",
             fields=[
-                ('post_id', models.AutoField(primary_key=True, serialize=False)),
-                ('title', models.CharField(max_length=100)),
-                ('description', models.TextField()),
-                ('post_type', models.CharField(choices=[('Job', 'job'), ('General', 'general'), ('Resource', 'resource'), ('Event', 'event'), ('Project', 'project')], default='General', max_length=20)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('links', models.TextField(blank=True, null=True)),
-                ('start_time', models.DateTimeField()),
-                ('location', models.CharField(blank=True, max_length=100, null=True)),
-                ('source', models.CharField(choices=[('Slack', 'Slack'), ('App', 'App')], default='App', max_length=5)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "post_id",
+                    models.AutoField(primary_key=True, serialize=False),
+                ),
+                ("title", models.CharField(max_length=100)),
+                ("description", models.TextField()),
+                (
+                    "post_type",
+                    models.CharField(
+                        choices=[
+                            ("Job", "job"),
+                            ("General", "general"),
+                            ("Resource", "resource"),
+                            ("Event", "event"),
+                            ("Project", "project"),
+                        ],
+                        default="General",
+                        max_length=20,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("links", models.TextField(blank=True, null=True)),
+                ("start_time", models.DateTimeField()),
+                (
+                    "location",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "source",
+                    models.CharField(
+                        choices=[("Slack", "Slack"), ("App", "App")],
+                        default="App",
+                        max_length=5,
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-created_at'],
+                "ordering": ["-created_at"],
             },
         ),
         migrations.CreateModel(
-            name='Comment',
+            name="Comment",
             fields=[
-                ('comment_id', models.AutoField(primary_key=True, serialize=False)),
-                ('comment_text', models.TextField(blank=True, max_length=1000, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='ccserver.post')),
+                (
+                    "comment_id",
+                    models.AutoField(primary_key=True, serialize=False),
+                ),
+                (
+                    "comment_text",
+                    models.TextField(blank=True, max_length=1000, null=True),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "post",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="comments",
+                        to="ccserver.post",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-created_at'],
+                "ordering": ["-created_at"],
             },
         ),
         migrations.CreateModel(
-            name='Profile',
+            name="Profile",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('slack_username', models.CharField(blank=True, max_length=100, null=True)),
-                ('linkedin_username', models.CharField(blank=True, max_length=100, null=True)),
-                ('github_username', models.CharField(blank=True, max_length=100, null=True)),
-                ('personal_site', models.CharField(blank=True, max_length=100, null=True)),
-                ('country', models.CharField(blank=True, max_length=100, null=True)),
-                ('state', models.CharField(blank=True, max_length=100, null=True)),
-                ('city', models.CharField(blank=True, max_length=100, null=True)),
-                ('phone_number', models.CharField(blank=True, max_length=15, null=True)),
-                ('photo_url', models.CharField(blank=True, max_length=255, null=True)),
-                ('employment_status', models.CharField(choices=[('Employed', 'employed'), ('Searching', 'searching'), ('Hiring', 'hiring'), ('Student', 'student')], default='Searching', max_length=20)),
-                ('job_title', models.CharField(blank=True, max_length=100, null=True)),
-                ('company', models.CharField(blank=True, max_length=100, null=True)),
-                ('bio', models.TextField(blank=True, max_length=600, null=True)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "slack_username",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "linkedin_username",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "github_username",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "personal_site",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "country",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "state",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "city",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "phone_number",
+                    models.CharField(blank=True, max_length=15, null=True),
+                ),
+                (
+                    "photo_url",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
+                (
+                    "employment_status",
+                    models.CharField(
+                        choices=[
+                            ("Employed", "employed"),
+                            ("Searching", "searching"),
+                            ("Hiring", "hiring"),
+                            ("Student", "student"),
+                        ],
+                        default="Searching",
+                        max_length=20,
+                    ),
+                ),
+                (
+                    "job_title",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "company",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "bio",
+                    models.TextField(blank=True, max_length=600, null=True),
+                ),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='ResourceTag',
+            name="ResourceTag",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('resource', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ccserver.resource')),
-                ('tag', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ccserver.tag')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "resource",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="ccserver.resource",
+                    ),
+                ),
+                (
+                    "tag",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="ccserver.tag",
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('resource', 'tag')},
+                "unique_together": {("resource", "tag")},
             },
         ),
         migrations.AddField(
-            model_name='resource',
-            name='tags',
-            field=models.ManyToManyField(related_name='resource_tags', through='ccserver.ResourceTag', to='ccserver.tag'),
+            model_name="resource",
+            name="tags",
+            field=models.ManyToManyField(
+                related_name="resource_tags",
+                through="ccserver.ResourceTag",
+                to="ccserver.tag",
+            ),
         ),
         migrations.CreateModel(
-            name='ProfileTag',
+            name="ProfileTag",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('profile', models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='ccserver.profile')),
-                ('tag', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ccserver.tag')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "profile",
+                    models.ForeignKey(
+                        default=1,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="ccserver.profile",
+                    ),
+                ),
+                (
+                    "tag",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="ccserver.tag",
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('profile', 'tag')},
+                "unique_together": {("profile", "tag")},
             },
         ),
         migrations.AddField(
-            model_name='profile',
-            name='tags',
-            field=models.ManyToManyField(related_name='user_tags', through='ccserver.ProfileTag', to='ccserver.tag'),
+            model_name="profile",
+            name="tags",
+            field=models.ManyToManyField(
+                related_name="user_tags",
+                through="ccserver.ProfileTag",
+                to="ccserver.tag",
+            ),
         ),
         migrations.CreateModel(
-            name='PostTag',
+            name="PostTag",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ccserver.post')),
-                ('tag', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ccserver.tag')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "post",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="ccserver.post",
+                    ),
+                ),
+                (
+                    "tag",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="ccserver.tag",
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('post', 'tag')},
+                "unique_together": {("post", "tag")},
             },
         ),
         migrations.AddField(
-            model_name='post',
-            name='tags',
-            field=models.ManyToManyField(related_name='post_tags', through='ccserver.PostTag', to='ccserver.tag'),
+            model_name="post",
+            name="tags",
+            field=models.ManyToManyField(
+                related_name="post_tags",
+                through="ccserver.PostTag",
+                to="ccserver.tag",
+            ),
         ),
     ]
