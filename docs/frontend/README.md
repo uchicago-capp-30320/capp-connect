@@ -29,3 +29,6 @@ The entire app is designed to be searchable via tags. Across all four pages, the
 
 ## Styling
 As of 5/14, there are centralized styling files in the frontend/themes/ folder. These files are meant to make it easier to customize the look and feel of the app. Currently we have standards for coloring and box/container/text-input fields that are customizable from themes/. Please use these for designing pages and components, and if need be, update them to reflect an object or design that is consistent with the app's current design but not fully reflected by what is in the files.
+
+### Tag Carousel
+There is a tag carousel that should be used anytime we are displaying tags in the app for consistency. Tags in the carousel are in a flashlist that is scrollable while being in a single row.
