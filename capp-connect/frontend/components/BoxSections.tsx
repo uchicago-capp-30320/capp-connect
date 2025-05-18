@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, SafeAreaView, StyleProp, ViewStyle } from "react-native";
 import TextField from "@/components/TextField";
+import { Colors, Containers } from "@/themes";
 
 interface BoxSectionProps {
   title: string
@@ -25,31 +26,25 @@ export default function BoxSection(props: BoxSectionProps) {
             data={props.data}
             updateData={props.updateData}
             editMode={props.editMode}
-            style={styles.textbox}
+            style={styles.textField}
           />
         ))}
       </View>
     )
   }
 
-// for now -- I know we have a style sheet coming in PR 
-const styles = StyleSheet.create({
-  box: {
-    padding: 10,
-    borderWidth: 1,
-    borderColor: "#ddddd",
-    borderRadius: 5,
-    backgroundColor: "#fffff"
-  },
-  boxTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 5
-  },
-  textbox: {
-    height: 40,
-    borderWidth: 1,
-    borderColor: "#ccccc",
-    padding: 5
-  }
-})
+  const styles = StyleSheet.create({
+    box: {},
+    boxTitle: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: Colors.primary,
+      marginBottom: 10,
+    },
+    textField: {
+      marginBottom: 8,
+      borderWidth: 1,
+      borderColor: "#ccccc",
+      padding: 5,
+    }
+  });
