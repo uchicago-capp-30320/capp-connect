@@ -4,14 +4,6 @@ import { SafeAreaView, SafeAreaProvider} from "react-native-safe-area-context";
 import TagIcon from "@/components/TagIcon";
 import createTagColorMapper from "../utils/tagColorMapper"
 
-/* eslint-disable no-redeclare, @typescript-eslint/no-redeclare -- type Post exists only temporarily, will be renamed */
-type Post = { // This shares a name with the function at line 18. Doesn't seem to be used?
-  title: string;
-  description: string;
-  poster_name: string;
-  post_type: string;
-  tags: Array<string>;
-};
 
 // create Tag color mapper:
 const getColorForTag = createTagColorMapper();
