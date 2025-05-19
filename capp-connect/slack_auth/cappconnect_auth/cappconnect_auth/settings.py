@@ -19,16 +19,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get(
     "DJANGO_SECRET_KEY"
 )  # kj changed this. Before the key was out in the open.
+print("DJANGO_SECRET_KEY in settings.py:", SECRET_KEY) #sanitycheck
 
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "capp-connect.unnamed.computer", "127.0.0.1",
+    "capp-connect.unnamed.computer","localhost", "127.0.0.1",
 ] 
 
 # Application definition
 INSTALLED_APPS = [
-    "allauth", 
+    "allauth",
     "allauth.account", 
     "allauth.socialaccount", #kj added the top 3 for allauth
     "allauth.socialaccount.providers.slack", #added slack in...#2 
@@ -125,3 +126,11 @@ AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
 #adding the social account-ours = Slack! 
 SOCIALACCOUNT_PROVIDERS = {}
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://capp-connect.unnamed.computer","https://capp-connect.unnamed.computer:8010",
+]
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL= '/'
