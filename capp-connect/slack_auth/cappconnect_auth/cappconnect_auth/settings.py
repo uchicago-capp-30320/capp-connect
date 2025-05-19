@@ -23,14 +23,15 @@ SECRET_KEY = os.environ.get(
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "capp-connect.unnamed.computer",
-]  # the server is nOT added because it is HTTP. waiting for James to see if I can use nginx
+    "capp-connect.unnamed.computer", "127.0.0.1",
+] 
 
 # Application definition
 INSTALLED_APPS = [
     "allauth", 
     "allauth.account", 
     "allauth.socialaccount", #kj added the top 3 for allauth
+    "allauth.socialaccount.providers.slack", #added slack in...#2 
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
