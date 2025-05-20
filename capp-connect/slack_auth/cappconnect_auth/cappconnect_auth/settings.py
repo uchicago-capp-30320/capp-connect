@@ -10,10 +10,10 @@ Relevant information/to do::
 
 from pathlib import Path
 
-from ...config import DJANGO_SECRET_KEY
-from ...config import SLACK_CLIENT_ID as _SLACK_CLIENT_ID
-from ...config import SLACK_CLIENT_SECRET as _SLACK_CLIENT_SECRET
-from ...config import SLACK_REDIRECT_URI as _SLACK_REDIRECT_URI
+from slack_auth.config import DJANGO_SECRET_KEY
+from slack_auth.config import SLACK_CLIENT_ID as _SLACK_CLIENT_ID
+from slack_auth.config import SLACK_CLIENT_SECRET as _SLACK_CLIENT_SECRET
+from slack_auth.config import SLACK_REDIRECT_URI as _SLACK_REDIRECT_URI
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
