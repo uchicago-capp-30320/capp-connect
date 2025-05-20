@@ -13,7 +13,7 @@ type Resource = {
   tags: Array<string>;
 };
 
-// update still needed 
+// update still needed
 async function updateResources(): Promise<Resource[]> {
   // return await fetchData("http://127.0.0.1:8080/ccserver/resources", "GET", {})
   return resources;
@@ -39,7 +39,7 @@ export default function Resources() {
     <>
       <SearchBar
         placeholder="Search..."
-        style={{ 
+        style={{
           marginVertical: 10,
           width: "90%",
           alignSelf: "center"
