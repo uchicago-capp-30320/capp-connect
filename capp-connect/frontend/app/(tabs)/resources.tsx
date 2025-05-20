@@ -3,7 +3,7 @@ import FeedCard from "@/components/FeedCard";
 import { FlashList } from "@shopify/flash-list";
 import { useEffect, useState } from "react";
 import SearchBar from '../../components/SearchBar';
-import fetchData from '../../utils/fetchdata';
+// import fetchData from '../../utils/fetchdata';
 import * as Device from 'expo-device'
 
 type Resource = {
