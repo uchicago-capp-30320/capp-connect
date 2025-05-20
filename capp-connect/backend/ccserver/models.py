@@ -32,6 +32,7 @@ class Tag(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     slack_username = models.CharField(max_length=100, blank=True, null=True)
+    slack_dm_url = models.CharField(max_length=100, blank=True, null=True)
     linkedin_username = models.CharField(max_length=100, blank=True, null=True)
     github_username = models.CharField(max_length=100, blank=True, null=True)
     personal_site = models.CharField(max_length=100, blank=True, null=True)
@@ -129,9 +130,7 @@ class Resource(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    tags = models.ManyToManyField(
-        Tag, through="ResourceTag", related_name="resource_tags"
-    )
+
     links = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -139,11 +138,3 @@ class Resource(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
-
-
-class ResourceTag(models.Model):
-    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ("resource", "tag")

@@ -6,7 +6,7 @@ interface TextFieldProps {
     label: string
     dataKey: string
     data: Map<string, string>
-    updateData: Function
+    updateData: (data: Map<string, string>) => void
     editMode: boolean
     style: StyleProp<TextStyle>;
 }
