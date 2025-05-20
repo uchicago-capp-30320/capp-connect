@@ -15,7 +15,8 @@ type Resource = {
 
 // update still needed 
 async function updateResources(): Promise<Resource[]> {
-  return await fetchData("http://127.0.0.1:8080/ccserver/resources", "GET", {})
+  // return await fetchData("http://127.0.0.1:8080/ccserver/resources", "GET", {})
+  return resources;
 }
 
 export default function Resources() {
