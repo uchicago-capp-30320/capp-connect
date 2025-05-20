@@ -3,6 +3,11 @@
 
 import os
 import sys
+from pathlib import Path
+
+
+# This piece of code lets python resolve the path
+sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 
 def main():
