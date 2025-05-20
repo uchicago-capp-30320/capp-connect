@@ -34,7 +34,7 @@ export default function Resources() {
     }
     fetchResources();
   }, []);
-  
+
   return (
     <>
       <SearchBar
@@ -46,7 +46,7 @@ export default function Resources() {
         }}
         color="gray"
       />
-      
+
       <View style={{flex: 1, width:"100%"}}>
         <FlashList
           renderItem={({item}) => {
