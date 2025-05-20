@@ -8,18 +8,19 @@ Relevant information/to do::
 - Add DB here!
 """
 
-import os
 from pathlib import Path
+
+from slack_auth.config import DJANGO_SECRET_KEY
+from slack_auth.config import SLACK_CLIENT_ID as _SLACK_CLIENT_ID
+from slack_auth.config import SLACK_CLIENT_SECRET as _SLACK_CLIENT_SECRET
+from slack_auth.config import SLACK_REDIRECT_URI as _SLACK_REDIRECT_URI
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-SECRET_KEY = os.environ.get(
-    "DJANGO_SECRET_KEY"
-)  # kj changed this. Before the key was out in the open.
-print("DJANGO_SECRET_KEY in settings.py:", SECRET_KEY)  # sanitycheck
+SECRET_KEY = DJANGO_SECRET_KEY
 
 DEBUG = True
 
@@ -119,10 +120,6 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-SLACK_CLIENT_ID = os.environ.get("SLACK_CLIENT_ID")
-SLACK_REDIRECT_URI = os.environ.get("SLACK_REDIRECT_URI")
-SLACK_CLIENT_SECRET = os.environ.get("SLACK_CLIENT_SECRET")
-
 # adding authentication backend here:
 AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
 
@@ -137,3 +134,7 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+
+SLACK_CLIENT_ID = _SLACK_CLIENT_ID  # noqa: F401
+SLACK_CLIENT_SECRET = _SLACK_CLIENT_SECRET  # noqa: F401
+SLACK_REDIRECT_URI = _SLACK_REDIRECT_URI  # noqa: F401
