@@ -1,4 +1,3 @@
-f12-layout-resource-page
 import { View } from "react-native";
 import FeedCard from "@/components/FeedCard";
 import { FlashList } from "@shopify/flash-list";
@@ -18,9 +17,6 @@ type Resource = {
 async function updateResources(): Promise<Resource[]> {
   return await fetchData("http://127.0.0.1:8080/ccserver/resources", "GET", {})
 }
-import { Text } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-main
 
 export default function Resources() {
   // set data
