@@ -22,7 +22,7 @@ async function updateResources(): Promise<Resource[]> {
 export default function Resources() {
   // set data
   const [data, setData] = useState<Resource[]>([]);
-  
+
   useEffect(() => {
     async function fetchResources() {
       if (Device.deviceType === Device.DeviceType.DESKTOP) {
