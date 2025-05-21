@@ -1,4 +1,6 @@
-import { Image, View, Dimensions, useWindowDimensions, LayoutChangeEvent, Pressable, Keyboard, KeyboardAvoidingView, ScrollView  } from "react-native";
+/* eslint-disable @typescript-eslint/no-require-imports */
+
+import { Image, View, Dimensions, useWindowDimensions, LayoutChangeEvent, Pressable, Keyboard } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AutoComplete from "@/components/TagAutocomplete";
 import { useEffect, useState } from "react";
@@ -36,7 +38,7 @@ export default function Index() {
     <>
       {/* allow users to press anywhere to exit the search bar tagging on mobile, but not on desktop (doing so causes the hand icon to show)*/}
       {Device.deviceType !== Device.DeviceType.DESKTOP ? (
-      
+
         <KeyboardAwareScrollView
           contentContainerStyle={{ flexGrow: 1 }}
           enableOnAndroid={true}
@@ -53,13 +55,13 @@ export default function Index() {
               justifyContent: "center",
               alignItems: "center",
               flexDirection: "column",
-      
+
             }}
             key={key}
             focusable={true}
             onLayout={() => setScreenWidth(Dimensions.get('window').width)}
           >
-        
+
             <Pressable onPress={Keyboard.dismiss} style={{ alignItems: "center", justifyContent: "center" }}>
               <Image source={require('../../assets/images/CAPP Connect.png')} style={{height: 300}} />
               <View style={{flex: 1, flexDirection: "column"}}>
@@ -68,14 +70,14 @@ export default function Index() {
                     <TypeTab key={idx} name={tab} activeTab={searchType} setActiveTab={setSearchType} idx={idx} />
                   ))}
                 </View>
-                
+
                 <AutoComplete tags={tags} setTags={setTags} searchType={searchType} search handleLayout={handleLayout} styles={{width: screenWidth*.9}} />
               </View>
             </Pressable>
           </SafeAreaView>
         </SafeAreaProvider>
         </KeyboardAwareScrollView>
-        
+
       ) : (
         <SafeAreaProvider>
           <SafeAreaView
@@ -83,7 +85,7 @@ export default function Index() {
               justifyContent: "center",
               alignItems: "center",
               flexDirection: "column",
-      
+
             }}
             key={key}
             focusable={true}
@@ -96,7 +98,7 @@ export default function Index() {
                   <TypeTab key={idx} name={tab} activeTab={searchType} setActiveTab={setSearchType} idx={idx} />
                 ))}
               </View>
-              
+
               <AutoComplete tags={tags} setTags={setTags} searchType={searchType} search handleLayout={handleLayout} styles={{width: screenWidth*.8}} />
             </View>
           </SafeAreaView>

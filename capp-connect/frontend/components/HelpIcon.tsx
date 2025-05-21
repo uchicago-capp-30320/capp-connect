@@ -10,11 +10,6 @@ interface HelpIconProps {
     style: StyleProp<ViewStyle>;
 }
 
-const HomePageInst = ""
-const DirectoryPageInst = ""
-const ResourcesPageInst = ""
-const FeedPageInst = ""
-
 const TOOLTIPS: Record<string, string> = {
     "/": `\nWelcome to CAPP Connect!\n\nThis is the home page. From here you can search for information across the app, specifically you can search content in the 'Directory', 'Resources', and 'Feed' pages. Choose a tab to select what kind of content you are looking for.`,
     "/directory": `\nWelcome to the Directory page!\n\nHere you can explore CAPP students and alumni who have signed up for CAPP Connect. Click on any profile to learn more, including skills, interests, job title, and organization.`,
@@ -49,4 +44,3 @@ export default function HelpIcon({style}: HelpIconProps) {
         </SafeAreaView>
     )
 }
-

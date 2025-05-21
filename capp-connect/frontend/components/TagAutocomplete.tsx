@@ -72,10 +72,10 @@ function TagAutoComplete({usedTags, setTags, placeholder}: {usedTags: Array<stri
             setQuery('')
             setHideRec(true)
             setHighlightedIndex(-1)
-            setIsOpen(false) 
+            setIsOpen(false)
         } else {
             Keyboard.dismiss()
-            setIsOpen(false) 
+            setIsOpen(false)
         }
     }
 
@@ -179,19 +179,19 @@ export default function TagSearch({tags, setTags, search, handleLayout, styles, 
     const [searchBarHeight, setSearchbarHeight] = useState(0);
 
     return (
-       
+
         <View style={
                 [
                     {
-                        flexDirection: Device.deviceType === Device.DeviceType.DESKTOP ? "row" : "column", 
-                        alignItems: "flex-start", 
+                        flexDirection: Device.deviceType === Device.DeviceType.DESKTOP ? "row" : "column",
+                        alignItems: "flex-start",
                         margin:0
                     },
                     styles
                 ]
             }>
-            <View 
-                style={[Styles.textInput, {flexDirection: "row", width: "100%"}]} 
+            <View
+                style={[Styles.textInput, {flexDirection: "row", width: "100%"}]}
                 onLayout={
                     (e) => {
                         if (handleLayout) {
@@ -217,9 +217,9 @@ export default function TagSearch({tags, setTags, search, handleLayout, styles, 
                 ))}
                 <TagAutoComplete usedTags={tags} setTags={setTags} placeholder={search ? "Search...": ""}/>
             </View>
-            <SearchButton 
-                tags={tags} 
-                searchType={searchType} 
+            <SearchButton
+                tags={tags}
+                searchType={searchType}
                 styles={
                     {
                         height: Device.deviceType === Device.DeviceType.DESKTOP ? searchBarHeight : 50,
@@ -230,7 +230,7 @@ export default function TagSearch({tags, setTags, search, handleLayout, styles, 
                 }
             />
         </View>
-        
+
 
     )
 }

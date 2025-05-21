@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         height: 50,
         borderWidth: 2,
 
-        
+
     },
     tagText: {
         fontSize: 16,
@@ -60,4 +60,3 @@ export default function TypeTab({ name, activeTab, setActiveTab, idx }: TypeTabP
         </TouchableHighlight>
     );
 }
-
