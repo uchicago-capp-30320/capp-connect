@@ -87,21 +87,9 @@ class GetPost(APIView):
 
 class SearchPosts(APIView):
     def get(self, request):
-        query = request.GET.get("query", "").strip()
-
-        if query:
-            tags_to_search = Tag.objects.filter(
-                tag_name__icontains=query
-            ).values_list("tag_name", flat=True)
-            posts = (
-                Post.objects.annotate(
-                    search=SearchVector(
-                        "title", "description", "post_type", "location"
-                    )
-                )
-                .filter(Q(tags__tag_name__in=tags_to_search) | Q(search=query))
-                .distinct()
-            )
+        tag_names = request.GET.getlist("tags")
+        if tag_names:
+            posts = Post.objects.filter(tags__tag_name__in=tag_names).distinct()
         else:
             posts = Post.objects.all()
 
