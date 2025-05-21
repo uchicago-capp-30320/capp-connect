@@ -17,7 +17,16 @@ Including another URLconf
 
 from authentication import views
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
+from slack_bolt.adapter.django import SlackRequestHandler
+from slack_messages.app import app
+
+
+handler = SlackRequestHandler(app)  # added for msgs
+
+
+def slack_handler_view(request, *args, **kwargs):  # added for msgs
+    return handler.handle(request)  # added for msgs
 
 
 urlpatterns = [
@@ -25,4 +34,5 @@ urlpatterns = [
     path("auth/login/slack/", views.slack_login_redirect, name="slack_login"),
     path("auth/callback/slack/", views.slack_callback, name="slack_callback"),
     path("accounts/", include("allauth.urls")),
+    re_path(r"^slack/.*", slack_handler_view),  # added for msgs
 ]
