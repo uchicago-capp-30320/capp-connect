@@ -17,11 +17,12 @@ Including another URLconf
 
 from authentication import views
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/login/slack/", views.slack_login_redirect, name="slack_login"),
     path("auth/callback/slack/", views.slack_callback, name="slack_callback"),
+    path("accounts/", include("allauth.urls")),
 ]
