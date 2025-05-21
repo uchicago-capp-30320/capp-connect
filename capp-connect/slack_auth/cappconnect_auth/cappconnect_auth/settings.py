@@ -127,7 +127,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
 
 # adding the social account-ours = Slack!
-SOCIALACCOUNT_PROVIDERS = {}
+SOCIALACCOUNT_PROVIDERS = {"slack": {"SCOPE": ["openid", "email", "profile"]}}
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "none"
+SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SITE_ID = 1
 
 CSRF_TRUSTED_ORIGINS = [
     "https://capp-connect.unnamed.computer",
