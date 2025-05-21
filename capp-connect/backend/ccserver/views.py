@@ -1,10 +1,8 @@
-from django.contrib.postgres.search import SearchVector
-from django.db.models import Q
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Comment, Post, Profile, Tag
+from .models import Comment, Post, Profile
 from .serializers import (
     CommentSerializer,
     PostSerializer,
@@ -97,10 +95,7 @@ class SearchPosts(APIView):
                 # Update matching_posts to only include posts that also match previous tag(s)
                 matching_posts = matching_posts.intersection(tag_posts)
         serializer = PostSerializer(matching_posts, many=True)
-        return Response(serializer.data)        
-
-
-
+        return Response(serializer.data)
 
 
 class GetAllPosts(APIView):
