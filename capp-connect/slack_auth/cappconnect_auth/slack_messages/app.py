@@ -2,8 +2,14 @@ from slack_bolt import App
 from slack_bolt.oauth.oauth_settings import OAuthSettings
 from slack_bolt.oauth.internals import FileInstallationStore
 import os
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
-installation_store = FileInstallationStore(base_dir="./slack_install")
+print("Current working directory:", os.getcwd())
+INSTALL_STORE_PATH = "/home/capp-connect/capp-connect/capp-connect/slack_auth/cappconnect_auth/slack_install"
+print("Using FileInstallationStore at:", INSTALL_STORE_PATH)
+
+installation_store = FileInstallationStore(base_dir=INSTALL_STORE_PATH)
 oauth_settings = OAuthSettings(
     client_id=os.environ["SLACK_CLIENT_ID"],
     client_secret=os.environ["SLACK_CLIENT_SECRET"],
@@ -36,4 +42,12 @@ def get_events(event):
     # reactions= event.get("reactions")
     # )
 
+@app.middleware  # just for debugging
+def log_request(logger, body, next):
+    logger.debug(body)
+    return next()
 
+if __name__ == "__main__":
+    from slack_bolt.adapter.socket_mode import SocketModeHandler
+    print("Bolt running")
+    SocketModeHandler(app, os.environ["SLACK_APP_TOKEN"]).start()

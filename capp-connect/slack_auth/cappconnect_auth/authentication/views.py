@@ -89,3 +89,8 @@ def slack_callback(request):
         )
 
     return JsonResponse(decoded)
+#added as of May 21
+from django.http import HttpResponse
+
+def slack_install(request):
+    return HttpResponse("Slack install endpoint is live.")

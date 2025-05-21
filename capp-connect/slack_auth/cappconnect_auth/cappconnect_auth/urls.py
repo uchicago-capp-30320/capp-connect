@@ -16,8 +16,10 @@ Including another URLconf
 """
 
 from authentication import views
+from slack_messages import views as slack_views
 from django.contrib import admin
 from django.urls import include, path, re_path
+from slack_messages.views import slack_install 
 from slack_bolt.adapter.django import SlackRequestHandler
 from slack_messages.app import app
 
@@ -28,11 +30,26 @@ handler = SlackRequestHandler(app)  # added for msgs
 def slack_handler_view(request, *args, **kwargs):  # added for msgs
     return handler.handle(request)  # added for msgs
 
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/login/slack/", views.slack_login_redirect, name="slack_login"),
     path("auth/callback/slack/", views.slack_callback, name="slack_callback"),
     path("accounts/", include("allauth.urls")),
-    re_path(r"^slack/.*", slack_handler_view),  # added for msgs
-]
+    # the onnes below added for msgs
+    path("slack/install/", views.slack_install, name="slack_install"), 
+    path("slack/oauth_redirect/", slack_views.slack_oauth_redirect),
+    path("slack/", handler.handle),
+    re_path(r"^slack/.*$", handler.handle),]
+
+#urlpatterns = [
+ #   path("admin/", admin.site.urls),
+  #  path("auth/login/slack/", views.slack_login_redirect, name="slack_login"),
+   # path("auth/callback/slack/", views.slack_callback, name="slack_callback"),
+    #path("accounts/", include("allauth.urls")),
+
+    # Slack event/interaction endpoint for your Bolt app
+   # path("slack/events/", handler.handle),
+
+    # Endpoint to trigger Slack app installation (OAuth flow)
+    #path("slack/install/", slack_install, name="slack_install"),
+#]

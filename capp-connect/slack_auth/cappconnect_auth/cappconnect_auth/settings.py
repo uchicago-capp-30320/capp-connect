@@ -9,6 +9,7 @@ Relevant information/to do::
 """
 
 import os
+print("Using FileInstallationStore at:", os.path.abspath("./slack_install"))
 from pathlib import Path
 
 
@@ -19,7 +20,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get(
     "DJANGO_SECRET_KEY"
 )  # kj changed this. Before the key was out in the open.
-print("DJANGO_SECRET_KEY in settings.py:", SECRET_KEY)  # sanitycheck
 
 DEBUG = True
 
