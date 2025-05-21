@@ -30,7 +30,12 @@ const Containers = StyleSheet.create({
         elevation: 5,
     },
     buttons: {
-        backgroundColor: Colors.secondary
+        backgroundColor: Colors.secondary,
+        // padding: 10,
+        // margin: 15,
+        borderRadius: BORDER_RADIUS,
+        alignItems: "center",
+        alignContent: "center"
     },
     textFields: {
         backgroundColor: Colors.textFieldBackground
