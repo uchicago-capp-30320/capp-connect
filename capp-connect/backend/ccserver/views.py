@@ -1,9 +1,10 @@
 from django.contrib.postgres.search import SearchVector
+from django.db.models import Q
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Comment, Post, Profile
+from .models import Comment, Post, Profile, Tag
 from .serializers import (
     CommentSerializer,
     PostSerializer,
@@ -86,22 +87,24 @@ class GetPost(APIView):
 
 class SearchPosts(APIView):
     def get(self, request):
-        query = request.GET.get("query")
+        query = request.GET.get("query", "").strip()
 
         if query:
-            posts = Post.objects.annotate(
-                search=SearchVector(
-                    "user",
-                    "title",
-                    "description",
-                    "post_type",
-                    "tags",
-                    "location",
+            tags_to_search = Tag.objects.filter(
+                tag_name__icontains=query
+            ).values_list("tag_name", flat=True)
+            posts = (
+                Post.objects.annotate(
+                    search=SearchVector(
+                        "title", "description", "post_type", "location"
+                    )
                 )
-            ).filter(search=query)
-
+                .filter(Q(tags__tag_name__in=tags_to_search) | Q(search=query))
+                .distinct()
+            )
         else:
             posts = Post.objects.all()
+
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
