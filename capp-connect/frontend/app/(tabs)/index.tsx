@@ -1,3 +1,4 @@
+// using require() is useful for images
 /* eslint-disable @typescript-eslint/no-require-imports */
 
 import { Image, View, Dimensions, useWindowDimensions, LayoutChangeEvent, Pressable, Keyboard } from "react-native";
