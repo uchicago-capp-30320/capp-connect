@@ -1,10 +1,12 @@
 import Autocomplete from "react-native-autocomplete-input"
 import { useState, useEffect } from "react"
-import { View, Text, NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native"
+import { View, Text, NativeSyntheticEvent, TextInputKeyPressEventData, ViewStyle, Keyboard, LayoutChangeEvent } from "react-native"
 import TagIcon from "./TagIcon"
 import { StyleSheet } from "react-native"
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import createTagColorMapper from "@/utils/tagColorMapper"
+import createTagColorMapper from "@/utils/tagColorMapper";
+import SearchButton from "./SearchButton"
+import * as Device from 'expo-device';
 
 
 const DATA = [
@@ -58,7 +60,7 @@ function TagAutoComplete({usedTags, setTags, placeholder}: {usedTags: Array<stri
 
     //submit top choice
     const handleSubmit = () => {
-        if (data.length > 0) {
+        if (data.length > 0 && query) {
             let index = 0
             if (isOpen) {
                 index = highlightedIndex
@@ -70,7 +72,10 @@ function TagAutoComplete({usedTags, setTags, placeholder}: {usedTags: Array<stri
             setQuery('')
             setHideRec(true)
             setHighlightedIndex(-1)
-            setIsOpen(false)
+            setIsOpen(false) 
+        } else {
+            Keyboard.dismiss()
+            setIsOpen(false) 
         }
     }
 
@@ -130,6 +135,8 @@ function TagAutoComplete({usedTags, setTags, placeholder}: {usedTags: Array<stri
                             {item}
                     </Text>
                 ),
+                nestedScrollEnabled:true,
+                keyboardShouldPersistTaps: "handled"
             }}
             inputContainerStyle={{
                 borderWidth:0,
@@ -149,44 +156,93 @@ function TagAutoComplete({usedTags, setTags, placeholder}: {usedTags: Array<stri
                 width: "100%",
                 height: 50,
                 flex: 1,
-                minWidth: 50
+                minWidth: 100,
+                maxHeight: 300
             }}
         />
     )
 }
 
+interface TagSearchProps {
+    tags: string[];
+    setTags: (tags: string[]) => void;
+    searchType: string;
+    search?: boolean;
+    handleLayout?: (event: LayoutChangeEvent) => void;
+    styles?: ViewStyle;
+}
+
 
 // create a tag-based search bar
-export default function TagSearch({tags, setTags, search}: {tags: string[], setTags: (tags: string[]) => void, search?: boolean}) {
-     const colorMapper = createTagColorMapper()
+export default function TagSearch({tags, setTags, search, handleLayout, styles, searchType}: TagSearchProps) {
+    const colorMapper = createTagColorMapper();
+    const [searchBarHeight, setSearchbarHeight] = useState(0);
 
     return (
-        <View style={styles.textInput} >
-            {search ? <FontAwesome size={15} name="search" color={"#808080"} style={{}} />: null }
-            {tags.map((tag) => (
-                <TagIcon
-                    key={tag}
-                    tag={tag}
-                    color={colorMapper(tag)}
-                    style={{}}
-                    deletable={true}
-                    listSetter={setTags}
-                    listToRemoveFrom={tags}
-                />
-            ))}
-            <TagAutoComplete usedTags={tags} setTags={setTags} placeholder={search ? "Search...": ""}/>
+       
+        <View style={
+                [
+                    {
+                        flexDirection: Device.deviceType === Device.DeviceType.DESKTOP ? "row" : "column", 
+                        alignItems: "flex-start", 
+                        margin:0
+                    },
+                    styles
+                ]
+            }>
+            <View 
+                style={[Styles.textInput, {flexDirection: "row", width: "100%"}]} 
+                onLayout={
+                    (e) => {
+                        if (handleLayout) {
+                            handleLayout(e);
+                        }
+                        const {height} = e.nativeEvent.layout;
+                        setSearchbarHeight(height)
+                    }
+                }
+            >
+
+                {search ? <FontAwesome size={15} name="search" color={"#808080"} style={{}} />: null }
+                {tags.map((tag) => (
+                    <TagIcon
+                        key={tag}
+                        tag={tag}
+                        color={colorMapper(tag)}
+                        style={{}}
+                        deletable={true}
+                        listSetter={setTags}
+                        listToRemoveFrom={tags}
+                    />
+                ))}
+                <TagAutoComplete usedTags={tags} setTags={setTags} placeholder={search ? "Search...": ""}/>
+            </View>
+            <SearchButton 
+                tags={tags} 
+                searchType={searchType} 
+                styles={
+                    {
+                        height: Device.deviceType === Device.DeviceType.DESKTOP ? searchBarHeight : 50,
+                        width: Device.deviceType === Device.DeviceType.DESKTOP ? "auto" : "50%",
+                        margin: Device.deviceType === Device.DeviceType.DESKTOP ? 0 : 15,
+                        alignSelf: "center",
+                    }
+                }
+            />
         </View>
+        
+
     )
 }
 
-const styles = StyleSheet.create({
+const Styles = StyleSheet.create({
     textInput: {
         flexDirection: "row",
         backgroundColor: "white",
         borderWidth: 2,
 
-        bottom: 150,
-        width: "80%",
+        // bottom: 150,
+        width: "100%",
         minWidth: 50,
         alignItems: "center",
         flexWrap: "wrap",
