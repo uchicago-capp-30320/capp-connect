@@ -102,9 +102,9 @@ def slack_install_page(request):
     <html>
         <head><title>Install Slack App</title></head>
         <body>
-            <h1>Install Slack App</h1>
-            <p>Click the button below to add our app to your Slack workspace:</p>
-            <a href="/auth/login/slack/">
+            <h1>Install CAPP Connect Slack App</h1>
+            <p>Click the button below to install the Slack bot:</p>
+            <a href="/slack/bot-install/">
                 <img alt="Add to Slack" height="40" width="139"
                      src="https://platform.slack-edge.com/img/add_to_slack.png"
                      srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x,
@@ -114,3 +114,19 @@ def slack_install_page(request):
     </html>
     """
     return HttpResponse(html)
+#added May 21
+from django.shortcuts import redirect
+from django.conf import settings
+import urllib.parse
+
+def slack_bot_install(request):
+    """
+    Redirects to Slack OAuth v2 to install the bot with messaging permissions.
+    """
+    params = {
+        "client_id": settings.SLACK_CLIENT_ID,
+        "scope": "chat:write,channels:history,app_mentions:read",
+        "redirect_uri": settings.SLACK_REDIRECT_URI,
+    }
+    url = f"https://slack.com/oauth/v2/authorize?{urllib.parse.urlencode(params)}"
+    return redirect(url)

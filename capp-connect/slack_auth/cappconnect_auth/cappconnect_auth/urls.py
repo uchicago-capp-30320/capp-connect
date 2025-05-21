@@ -41,7 +41,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/login/slack/", views.slack_login_redirect, name="slack_login"),
     path("auth/callback/slack/", views.slack_callback, name="slack_callback"),
-    path("slack/install/", views.slack_install_page, name="slack_install"),  # new route for browser GET
+    path("slack/install/", views.slack_install_page, name="slack_install"),  
+    path("slack/bot-install/", views.slack_bot_install, name="slack_bot_install"), 
     path("accounts/", include("allauth.urls")),
-    re_path(r"^slack/.*", slack_handler_view),  # catches Slack API requests (e.g., POST to /slack/events)
+    re_path(r"^slack/.*", slack_handler_view),
 ]
