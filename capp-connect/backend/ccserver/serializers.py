@@ -20,8 +20,8 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         fields = [
             "user",
             "slack_username",
-            "linkedin_username",
-            "github_username",
+            "linkedin_url",
+            "github_url",
             "personal_site",
             "country",
             "state",
