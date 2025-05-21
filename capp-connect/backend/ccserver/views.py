@@ -1,7 +1,7 @@
+from django.contrib.postgres.search import SearchVector
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.contrib.postgres.search import SearchVector
 
 from .models import Comment, Post, Profile
 from .serializers import (
@@ -83,18 +83,27 @@ class GetPost(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class SearchPosts(APIView):
     def get(self, request):
         query = request.GET.get("query")
 
         if query:
-            posts = Post.objects.annotate(search=SearchVector("user", "title","description", "post_type","tags","location")).filter(search=query)
+            posts = Post.objects.annotate(
+                search=SearchVector(
+                    "user",
+                    "title",
+                    "description",
+                    "post_type",
+                    "tags",
+                    "location",
+                )
+            ).filter(search=query)
 
         else:
             posts = Post.objects.all()
-        serializer = PostSerializer(posts,many=True)
+        serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
-
 
 
 class GetAllPosts(APIView):
