@@ -89,3 +89,28 @@ def slack_callback(request):
         )
 
     return JsonResponse(decoded)
+
+from django.http import HttpResponse
+#added May 20 night and may 21 again 
+
+def slack_install_page(request):
+    """
+    Serves a simple HTML page with a Slack "Add to Slack" button
+    that redirects to the slack_login_redirect view.
+    """
+    html = """
+    <html>
+        <head><title>Install Slack App</title></head>
+        <body>
+            <h1>Install Slack App</h1>
+            <p>Click the button below to add our app to your Slack workspace:</p>
+            <a href="/auth/login/slack/">
+                <img alt="Add to Slack" height="40" width="139"
+                     src="https://platform.slack-edge.com/img/add_to_slack.png"
+                     srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x,
+                             https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" />
+            </a>
+        </body>
+    </html>
+    """
+    return HttpResponse(html)
