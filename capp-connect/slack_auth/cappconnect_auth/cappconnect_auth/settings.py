@@ -10,7 +10,7 @@ Relevant information/to do::
 
 from pathlib import Path
 
-from slack_auth.config import DJANGO_SECRET_KEY
+from slack_auth.config import DB_PASSWORD, DJANGO_SECRET_KEY
 from slack_auth.config import SLACK_CLIENT_ID as _SLACK_CLIENT_ID
 from slack_auth.config import SLACK_CLIENT_SECRET as _SLACK_CLIENT_SECRET
 from slack_auth.config import SLACK_REDIRECT_URI as _SLACK_REDIRECT_URI
@@ -79,9 +79,12 @@ WSGI_APPLICATION = "cappconnect_auth.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",  # ours is postgres not sqlite which is default! needs to be changed!!!
-        "NAME": BASE_DIR
-        / "db.sqlite3",  # added our db here #going to add more in next iteration...rn tests passing with this.
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "capp_connect",
+        "USER": "capp_connect",
+        "PASSWORD": DB_PASSWORD,
+        "HOST": "turing.unnamed.computer",
+        "PORT": "5432",
     }
 }
 
