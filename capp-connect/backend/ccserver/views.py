@@ -87,14 +87,20 @@ class GetPost(APIView):
 
 class SearchPosts(APIView):
     def get(self, request):
-        tag_names = request.GET.getlist("tags")
-        if tag_names:
-            posts = Post.objects.filter(tags__tag_name__in=tag_names).distinct()
-        else:
-            posts = Post.objects.all()
+        tag_names_list = request.GET.getlist("tags")
+        matching_posts = None
+        for tag_name in tag_names_list:
+            tag_posts = Post.objects.filter(tags__tag_name=tag_name)
+            if matching_posts is None:
+                matching_posts = tag_posts
+            else:
+                # Update matching_posts to only include posts that also match previous tag(s)
+                matching_posts = matching_posts.intersection(tag_posts)
+        serializer = PostSerializer(matching_posts, many=True)
+        return Response(serializer.data)        
 
-        serializer = PostSerializer(posts, many=True)
-        return Response(serializer.data)
+
+
 
 
 class GetAllPosts(APIView):
