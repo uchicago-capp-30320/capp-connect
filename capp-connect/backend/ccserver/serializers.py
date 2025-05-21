@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Post, Profile, ProfileTag, Tag
+from .models import Comment, Post, Profile, ProfileTag, Tag
 
 
 class TagSerializer(serializers.HyperlinkedModelSerializer):
@@ -20,8 +20,8 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         fields = [
             "user",
             "slack_username",
-            "linkedin_username",
-            "github_username",
+            "linkedin_url",
+            "github_url",
             "personal_site",
             "country",
             "state",
@@ -96,3 +96,22 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             "start_time",
             "location",
         ]
+
+
+class CommentSerializer(serializers.HyperlinkedModelSerializer):
+    user = serializers.StringRelatedField()
+    post = serializers.StringRelatedField()
+
+    class Meta:
+        model = Comment
+        fields = ["comment_id", "user", "post", "comment_text", "created_at"]
+
+    def create(self, validated_data):
+        user = validated_data.pop("user")
+        post = validated_data.pop("post")
+        comment = Comment.objects.create(user=user, post=post, **validated_data)
+        return comment
+
+    def delete(self, instance):
+        instance.delete()
+        return instance
