@@ -12,6 +12,7 @@ class SlackSocialAccountAdapter(DefaultSocialAccountAdapter):
     """
 
     def populate_user(self, request, sociallogin, data):
+        # This overrides how django all auth populates auth_user
         user = super().populate_user(request, sociallogin, data)
         extra = sociallogin.account.extra_data
 
@@ -22,10 +23,12 @@ class SlackSocialAccountAdapter(DefaultSocialAccountAdapter):
         return user
 
     def save_user(self, request, sociallogin, form=None):
+        # This overrides saving user data into ccserver_profile
         user = super().save_user(request, sociallogin, form)
         extra = sociallogin.account.extra_data
 
         # Create or get associated Profile
+        # The downside of this approach
         profile, _ = Profile.objects.get_or_create(user=user)
 
         profile.photo_url = extra.get("picture", "")
