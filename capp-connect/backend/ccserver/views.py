@@ -1,8 +1,8 @@
+from django.core.paginator import EmptyPage, Paginator
 from django.http import Http404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.core.paginator import Paginator, EmptyPage
 
 from .models import Comment, Post, Profile, Resource
 from .serializers import (
@@ -99,6 +99,7 @@ class GetPost(APIView):
 
 class GetPostList(APIView):
     POSTS_PER_TYPE = 25
+
     def get(self, request, format=None):
         page_number = request.GET.get("page", 1)
         group_data = {}
@@ -116,11 +117,13 @@ class GetPostList(APIView):
                 group_data[post_type] = []
         next_page = page_number + 1 if any(group_data.values()) else None
 
-        response_data = {"next_page": next_page,
-                         "current_page": page_number,
-                         "posts_per_type": self.POSTS_PER_TYPE,
-                         "posts": group_data}
-        
+        response_data = {
+            "next_page": next_page,
+            "current_page": page_number,
+            "posts_per_type": self.POSTS_PER_TYPE,
+            "posts": group_data,
+        }
+
         return Response(response_data)
 
     def post(self, request, format=None):
