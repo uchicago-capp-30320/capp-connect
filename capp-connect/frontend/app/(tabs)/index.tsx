@@ -1,25 +1,36 @@
 // using require() is useful for images
 /* eslint-disable @typescript-eslint/no-require-imports */
 
-import { Image, View, Dimensions, useWindowDimensions, LayoutChangeEvent, Pressable, Keyboard } from "react-native";
+import { Text, Image, View, Dimensions, useWindowDimensions, LayoutChangeEvent, Pressable, Keyboard } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import AutoComplete from "@/components/TagAutocomplete";
+import TagSearch from "@/components/TagSearch";
 import { useEffect, useState } from "react";
 import * as Device from 'expo-device';
 import TypeTab from "@/components/TypeTab";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { TextStyles } from "@/themes";
+
+const TAG_LIMIT = 5
 
 export default function Index() {
+  const tabNames = ["Directory", "Resources", "Feed"]
+
+
   // list of tags
-  const [ tags, setTags ] = useState<string[]>([]);
+  // const [ tags, setTags ] = useState<string[]>([]);
   // get width of search bar
-  const [searchbarWidth, setSearchbarWidth] = useState(0);
+  const [searchbarWidth, setSearchbarWidth] = useState(500);
   // get width of screen
-  const [screenWidth, setScreenWidth] = useState(0);
+  const [screenWidth, setScreenWidth] = useState(1000);
   // set search type
   const [searchType, setSearchType] = useState("Directory");
   // use key to force remount when window dimensions change
   const [key, setKey] = useState(0)
+  // manage error state
+  const [ warning, setWarning ] = useState("")
+  const [ err, setErr ] = useState("")
+
+
 
   // adjust width of search bar
   const handleLayout = (event: LayoutChangeEvent) => {
@@ -32,8 +43,6 @@ export default function Index() {
   useEffect(()=> {
     setKey(key + 1)
   }, [width, height])
-
-  const tabNames = ["Directory", "Resources", "Feed"]
 
   return (
     <>
@@ -66,13 +75,17 @@ export default function Index() {
             <Pressable onPress={Keyboard.dismiss} style={{ alignItems: "center", justifyContent: "center" }}>
               <Image source={require('../../assets/images/CAPP Connect.png')} style={{height: 300}} />
               <View style={{flex: 1, flexDirection: "column"}}>
+
+                {warning ? <Text numberOfLines={3} adjustsFontSizeToFit style={TextStyles.warning}>Warning: {warning}</Text> : null}
+                {err ? <Text numberOfLines={3} adjustsFontSizeToFit style={TextStyles.error}>Error: {err}</Text> : null}
+
                 <View style={{flexDirection: "row", width: searchbarWidth/3 + 13, padding: 0, margin: 0, justifyContent: "space-between"}}>
                   {tabNames.map((tab, idx) => (
                     <TypeTab key={idx} name={tab} activeTab={searchType} setActiveTab={setSearchType} idx={idx} />
                   ))}
                 </View>
 
-                <AutoComplete tags={tags} setTags={setTags} searchType={searchType} search handleLayout={handleLayout} styles={{width: screenWidth*.9}} />
+                <TagSearch searchType={searchType} search handleLayout={handleLayout} styles={{width: screenWidth*.9}} limit={TAG_LIMIT} raiseWarning={setWarning} raiseErr={setErr}/>
               </View>
             </Pressable>
           </SafeAreaView>
@@ -100,8 +113,10 @@ export default function Index() {
                 ))}
               </View>
 
-              <AutoComplete tags={tags} setTags={setTags} searchType={searchType} search handleLayout={handleLayout} styles={{width: screenWidth*.8}} />
+              <TagSearch searchType={searchType} search handleLayout={handleLayout} styles={{width: screenWidth*.8}} limit={TAG_LIMIT} raiseWarning={setWarning} raiseErr={setErr}/>
             </View>
+            {warning ? <Text numberOfLines={3} adjustsFontSizeToFit style={TextStyles.warning}>{warning}</Text> : null}
+            {err ? <Text numberOfLines={3} adjustsFontSizeToFit style={TextStyles.error}>Error: {err}</Text> : null}
           </SafeAreaView>
         </SafeAreaProvider>
       )}
