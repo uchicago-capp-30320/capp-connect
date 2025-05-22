@@ -205,7 +205,7 @@ export default function TagSearch({search, handleLayout, styles, searchType, lim
     }, [searchType])
 
     return (
-        
+
         <View style={
                 [
                     {
@@ -246,7 +246,7 @@ export default function TagSearch({search, handleLayout, styles, searchType, lim
                     raiseWarning("")
                     return <TagAutoComplete usedTags={tagsForType} setTags={setTagsForType} placeholder={search ? "Search...": ""} />
                 })() : (
-                    (() => { 
+                    (() => {
                         raiseWarning(`You can search for a maximum of ${limit} tags`)
                         return null
                 })()
