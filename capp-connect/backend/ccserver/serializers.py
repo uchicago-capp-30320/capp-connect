@@ -12,8 +12,10 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.StringRelatedField()
     tags = serializers.SlugRelatedField(
-        many=True, slug_field="tag_name", queryset=Tag.objects.all(),
-        required=False
+        many=True,
+        slug_field="tag_name",
+        queryset=Tag.objects.all(),
+        required=False,
     )
 
     class Meta:
@@ -119,7 +121,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             for tag_name in tags_data:
                 tag, _ = Tag.objects.get_or_create(tag_name=tag_name)
                 instance.tags.add(tag)
-        
+
         return instance
 
     def delete(self, instance):
