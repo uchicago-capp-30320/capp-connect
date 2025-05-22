@@ -29,7 +29,7 @@ class GetProfile(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-    def post(self, request, username, format=None):
+    def put(self, request, username, format=None):
         try:
             profile = Profile.objects.get(user__username=username)
         except Profile.DoesNotExist:
@@ -38,7 +38,7 @@ class GetProfile(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        serializer = ProfileSerializer(profile, data=request.data)
+        serializer = ProfileSerializer(profile, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
