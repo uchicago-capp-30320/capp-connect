@@ -36,7 +36,9 @@ urlpatterns = [
         views.GetProfileList.as_view(),
         name="get_profile_list",
     ),
-    path("ccserver/posts/<int:pk>/", views.GetPost.as_view(), name="post_detail"),
+    path(
+        "ccserver/posts/<int:pk>/", views.GetPost.as_view(), name="post_detail"
+    ),
     path("ccserver/posts/", views.GetPostList.as_view(), name="all_posts"),
     path(
         "ccserver/posts/<int:pk>/comments/",

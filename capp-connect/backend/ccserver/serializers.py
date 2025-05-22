@@ -116,10 +116,11 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             tag, _ = Tag.objects.get_or_create(tag_name=tag_name)
             instance.tags.add(tag)
         return instance
-    
+
     def delete(self, instance):
         instance.delete()
         return instance
+
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.StringRelatedField()

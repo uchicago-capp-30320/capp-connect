@@ -1,3 +1,4 @@
+from django.http import Http404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -9,7 +10,7 @@ from .serializers import (
     ProfileListSerializer,
     ProfileSerializer,
 )
-from django.http import Http404
+
 
 # tutorial: https://www.django-rest-framework.org/tutorial/3-class-based-views/
 
@@ -93,18 +94,20 @@ class GetPost(APIView):
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class GetPostList(APIView):
     def get(self, request, format=None):
         posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
-    
+
     def post(self, request, format=None):
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class GetComment(APIView):
     def get(self, request, pk, comment_id, format=None):
@@ -138,6 +141,7 @@ class GetComment(APIView):
                 {"error": "Comment not found."},
                 status=status.HTTP_404_NOT_FOUND,
             )
+
 
 class GetAllComments(APIView):
     def get(self, request, pk, format=None):
