@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Comment, Post, Profile, ProfileTag, Tag
+from .models import Comment, Post, Profile, ProfileTag, Tag, Resource
 
 
 class TagSerializer(serializers.HyperlinkedModelSerializer):
@@ -139,3 +139,8 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
     def delete(self, instance):
         instance.delete()
         return instance
+    
+class ResourceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Resource
+        fields = ["resource_id", "title", "description", "created_at", "updated_at", "links"]

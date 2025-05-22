@@ -3,12 +3,13 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Comment, Post, Profile
+from .models import Comment, Post, Profile, Resource
 from .serializers import (
     CommentSerializer,
     PostSerializer,
     ProfileListSerializer,
     ProfileSerializer,
+    ResourceSerializer
 )
 
 
@@ -146,7 +147,7 @@ class GetComment(APIView):
 class GetAllComments(APIView):
     def get(self, request, pk, format=None):
         try:
-            post = Post.objects.get(pk=pk)
+            post = Post.objects.all(pk=pk)
             comments = post.comments.all()
             serializer = CommentSerializer(comments, many=True)
             return Response(serializer.data)
@@ -172,3 +173,10 @@ class GetAllComments(APIView):
             serializer.save(post=post, user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class GetResource(APIView):
+    def get(self, request, format=None):
+        resources = Resource.objects.all()
+        serializer = ResourceSerializer(resources, many=True)
+        return Response(serializer.data)
+        
