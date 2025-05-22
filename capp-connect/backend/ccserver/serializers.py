@@ -12,7 +12,8 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.StringRelatedField()
     tags = serializers.SlugRelatedField(
-        many=True, slug_field="tag_name", queryset=Tag.objects.all()
+        many=True, slug_field="tag_name", queryset=Tag.objects.all(),
+        required=False
     )
 
     class Meta:
@@ -37,12 +38,13 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         unique_together = ("profile", "tag")
 
     def update(self, instance, validated_data):
-        tags_data = validated_data.pop("tags", [])
+        tags_data = validated_data.pop("tags", None)
         instance = super().update(instance, validated_data)
-        instance.tags.clear()
-        for tag_name in tags_data:
-            tag, _ = Tag.objects.get_or_create(tag_name=tag_name)
-            instance.tags.add(tag)
+        if tags_data is not None:
+            instance.tags.clear()
+            for tag_name in tags_data:
+                tag, _ = Tag.objects.get_or_create(tag_name=tag_name)
+                instance.tags.add(tag)
         return instance
 
     def delete(self, instance):
@@ -109,12 +111,15 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
         return post
 
     def update(self, instance, validated_data):
-        tags_data = validated_data.pop("tags", [])
+        tags_data = validated_data.pop("tags", None)
         instance = super().update(instance, validated_data)
-        instance.tags.clear()
-        for tag_name in tags_data:
-            tag, _ = Tag.objects.get_or_create(tag_name=tag_name)
-            instance.tags.add(tag)
+
+        if tags_data is not None:
+            instance.tags.clear()
+            for tag_name in tags_data:
+                tag, _ = Tag.objects.get_or_create(tag_name=tag_name)
+                instance.tags.add(tag)
+        
         return instance
 
     def delete(self, instance):
