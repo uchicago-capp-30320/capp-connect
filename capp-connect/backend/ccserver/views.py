@@ -62,6 +62,21 @@ class GetProfileList(APIView):
         serializer = ProfileListSerializer(users, many=True)
         return Response(serializer.data)
 
+class SearchProfiles(APIView):
+    def get(self, request):
+        tag_names_list = request.GET.getlist("tags")
+        matching_profiles = None
+        for tag_name in tag_names_list:
+            tag_profiles = Profile.objects.filter(tags__tag_name=tag_name)
+            if matching_profiles is None:
+                matching_profiles = tag_profiles
+            else:
+                # Update matching_posts to only include posts that also match previous tag(s)
+                matching_profiles = matching_profiles.intersection(tag_profiles)
+        serializer = ProfileSerializer(matching_profiles, many=True)
+        return Response(serializer.data)
+
+
 
 class GetPost(APIView):
     def get(self, request, pk, format=None):
