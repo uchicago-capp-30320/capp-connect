@@ -36,7 +36,7 @@ urlpatterns = [
         views.GetProfileList.as_view(),
         name="get_profile_list",
     ),
-        path(
+    path(
         "ccserver/profiles/search/",
         views.SearchProfiles.as_view(),
         name="search_profiles",

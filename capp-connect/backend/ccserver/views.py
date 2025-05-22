@@ -62,6 +62,7 @@ class GetProfileList(APIView):
         serializer = ProfileListSerializer(users, many=True)
         return Response(serializer.data)
 
+
 class SearchProfiles(APIView):
     def get(self, request):
         tag_names_list = request.GET.getlist("tags")
@@ -75,7 +76,6 @@ class SearchProfiles(APIView):
                 matching_profiles = matching_profiles.intersection(tag_profiles)
         serializer = ProfileSerializer(matching_profiles, many=True)
         return Response(serializer.data)
-
 
 
 class GetPost(APIView):
