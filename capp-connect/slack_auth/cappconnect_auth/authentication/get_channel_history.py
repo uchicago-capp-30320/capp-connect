@@ -42,9 +42,10 @@ def get_ts():
     ts_set = set()  
     for key, item_list in conversation_history.items():  
         for dict_ in item_list: 
-            for k, i in dict_.items():
-                if k == "ts":
-                    ts_set.add(i)
+            if "reply_count" in dict_ and dict_["reply_count"] > 0: 
+                for k, i in dict_.items():
+                    if k == "ts":
+                        ts_set.add(i)
     return ts_set
 
 
@@ -52,4 +53,5 @@ if __name__ == "__main__":
     history = convo_history()
     print(history)
     ts_set = get_ts()
-    print(ts_set) #need this for get_replies.py
+    #print("this is ts!!!!",ts_set) #need this for get_replies.py
+    print(ts_set)

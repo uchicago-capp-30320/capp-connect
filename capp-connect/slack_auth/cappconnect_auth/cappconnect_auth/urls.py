@@ -25,4 +25,5 @@ urlpatterns = [
     path("auth/login/slack/", views.slack_login_redirect, name="slack_login"),
     path("auth/callback/slack/", views.slack_callback, name="slack_callback"),
     path("accounts/", include("allauth.urls")),
+    path('fetch-slack/', views.fetch_slack_data, name='fetch_slack'), #added for getting old msgs and replies! 
 ]

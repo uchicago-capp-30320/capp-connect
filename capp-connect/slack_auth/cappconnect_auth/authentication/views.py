@@ -89,3 +89,17 @@ def slack_callback(request):
         )
 
     return JsonResponse(decoded)
+
+#adding in for getting older messaging and replies!: 
+
+from .get_slack_channels import retrieve_messages
+from .get_channel_history import convo_history, get_ts
+from .get_replies import get_replies
+
+def fetch_slack_data(request):
+    history = convo_history()
+    for channel_id, msgs in history.items():
+        for m in msgs:
+            print(m)
+    get_replies(history)               
+    return JsonResponse({"status": "done"})                
