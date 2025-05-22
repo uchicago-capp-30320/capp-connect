@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { View, Text, StyleSheet} from "react-native";
 import { useState, useEffect } from "react";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ProfilePhoto from '@/components/ProfilePhoto';
@@ -75,9 +75,6 @@ export default function Profile() {
       DATA = data
     }
   }, [editMode])
-
-  // dimentions for layout
-  const windowWidth = Dimensions.get('window').width
 
   // tag carousel
   const getColorForTag = createTagColorMapper();
