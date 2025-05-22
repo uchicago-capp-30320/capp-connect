@@ -83,6 +83,21 @@ class GetPost(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class SearchPosts(APIView):
+    def get(self, request):
+        tag_names_list = request.GET.getlist("tags")
+        matching_posts = None
+        for tag_name in tag_names_list:
+            tag_posts = Post.objects.filter(tags__tag_name=tag_name)
+            if matching_posts is None:
+                matching_posts = tag_posts
+            else:
+                # Update matching_posts to only include posts that also match previous tag(s)
+                matching_posts = matching_posts.intersection(tag_posts)
+        serializer = PostSerializer(matching_posts, many=True)
+        return Response(serializer.data)
+
+
 class GetAllPosts(APIView):
     def get(self, request, format=None):
         posts = Post.objects.all()
