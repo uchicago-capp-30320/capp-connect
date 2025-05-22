@@ -94,10 +94,9 @@ class GetPost(APIView):
         post = self.get_object(pk)
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-      
-      
-class GetPostList(APIView):
 
+
+class GetPostList(APIView):
     def get(self, request, format=None):
         posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True)
@@ -109,6 +108,7 @@ class GetPostList(APIView):
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class SearchPosts(APIView):
     def get(self, request):
@@ -123,6 +123,7 @@ class SearchPosts(APIView):
                 matching_posts = matching_posts.intersection(tag_posts)
         serializer = PostSerializer(matching_posts, many=True)
         return Response(serializer.data)
+
 
 class GetComment(APIView):
     def get(self, request, pk, comment_id, format=None):
