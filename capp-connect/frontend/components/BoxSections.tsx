@@ -17,10 +17,10 @@ export default function BoxSection(props: BoxSectionProps) {
     return (
       <View style={[styles.box, props.style]}>
         <Text style={styles.boxTitle}>{props.title}</Text>
-        
+
         {props.fields.map(field => (
           <TextField
-            key={field} 
+            key={field}
             label={props.labelDataMap[field]}
             dataKey={field}
             data={props.data}

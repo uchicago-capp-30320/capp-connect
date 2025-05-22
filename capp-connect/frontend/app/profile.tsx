@@ -13,8 +13,8 @@ import createTagColorMapper from "../utils/tagColorMapper";
 // should be replaced by function that obtains data from the relevant endpoints
 let DATA = new Map([
   // basic info
-  ["name", "Bob"], 
-  // bio 
+  ["name", "Bob"],
+  // bio
   ["bio", "Software engineer"],
   ["tags", "Python"],
   // info
@@ -51,7 +51,7 @@ const labelDataMap = {
   "linkedin_username": "LinkedIn",
   "github_username": "GitHub",
   "personal_site": "Website",
-  //contact 
+  //contact
   "phone_number": "Phone",
   "slack_url": "Slack Message"
 }
@@ -80,7 +80,7 @@ export default function Profile() {
   const windowWidth = Dimensions.get('window').width
   const boxWidth = windowWidth / 2 - 15
 
-  // tag carousel 
+  // tag carousel
   const getColorForTag = createTagColorMapper();
   const tagsString = data.get("tags") || "";
   const tagsArray = tagsString.split(", ").filter(tag => tag.length > 0);
@@ -95,74 +95,74 @@ export default function Profile() {
       <View style={styles.headerSection}>
         <View style={styles.profileHeader}>
           <ProfilePhoto style={styles.profilePhoto}/>
-          
+
           <View style={styles.headerInfo}>
             <Text style={styles.nameText}>{data.get("name")}</Text>
             <Text style={styles.positionText}>
               {data.get("job_title")} | {data.get("company")}
             </Text>
           </View>
-          
+
           <EditButton editMode={editMode} changeEditMode={changeEditMode}/>
         </View>
-        
+
         {/* Tags Carousel */}
         <View style={styles.tagsContainer}>
           <TagCarousel tags={tagObjects} />
         </View>
       </View>
-      
+
       {/* Bio section */}
       <View style={styles.bioSection}>
         <Text style={styles.sectionTitle}>Biography</Text>
         <Text style={styles.bioText}>{data.get("bio")}</Text>
       </View>
-      
+
       {/* Other info */}
       <SafeAreaView style={styles.infoSections}>
         <View style={styles.boxRow}>
-          <BoxSection 
-            title="Info" 
-            fields={infoFields} 
-            labelDataMap={labelDataMap} 
-            data={data} 
-            editMode={editMode} 
+          <BoxSection
+            title="Info"
+            fields={infoFields}
+            labelDataMap={labelDataMap}
+            data={data}
+            editMode={editMode}
             updateData={changeData}
             style={Device.deviceType === Device.DeviceType.DESKTOP ? styles.halfBox : styles.fullBox}
           />
-          
+
           {Device.deviceType === Device.DeviceType.DESKTOP && (
-            <BoxSection 
-              title="Websites" 
-              fields={websiteFields} 
-              labelDataMap={labelDataMap} 
-              data={data} 
-              editMode={editMode} 
+            <BoxSection
+              title="Websites"
+              fields={websiteFields}
+              labelDataMap={labelDataMap}
+              data={data}
+              editMode={editMode}
               updateData={changeData}
               style={styles.halfBox}
             />
           )}
         </View>
-        
+
         <View style={styles.boxRow}>
           {Device.deviceType !== Device.DeviceType.DESKTOP && (
-            <BoxSection 
-              title="Websites" 
-              fields={websiteFields} 
-              labelDataMap={labelDataMap} 
-              data={data} 
-              editMode={editMode} 
+            <BoxSection
+              title="Websites"
+              fields={websiteFields}
+              labelDataMap={labelDataMap}
+              data={data}
+              editMode={editMode}
               updateData={changeData}
               style={styles.fullBox}
             />
           )}
-          
+
           <BoxSection
-            title="Contact" 
-            fields={contactFields} 
-            labelDataMap={labelDataMap} 
-            data={data} 
-            editMode={editMode} 
+            title="Contact"
+            fields={contactFields}
+            labelDataMap={labelDataMap}
+            data={data}
+            editMode={editMode}
             updateData={changeData}
             style={Device.deviceType === Device.DeviceType.DESKTOP ? styles.halfBox : styles.fullBox}
           />

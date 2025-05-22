@@ -1,11 +1,13 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Stack, Tabs } from 'expo-router';
+import { Tabs } from 'expo-router';
 import ProfilePhoto from '@/components/ProfilePhoto';
 import SettingsIcon from '@/components/SettingsIcon';
 import { View, StyleSheet } from 'react-native';
-import * as Device from 'expo-device'
+import * as Device from 'expo-device';
+import * as React from "react";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
+import Colors from '@/themes/colors';
 
 const ICON_SIZE = Device.deviceType ===  Device.DeviceType.PHONE ? 35: 50
 
@@ -25,8 +27,14 @@ function makeTab(fileName: string, label: string, icon: React.ComponentProps<typ
             <View style={{marginLeft: 16}}>
               <SettingsIcon style={styles.icon} color="grey"/>
             </View>
-          )
+          ),
+          // set background color for the header bar and scene/page related to it
+          headerStyle: {backgroundColor: Colors.header},
+          sceneStyle: {backgroundColor: Colors.background},
+          // set color for the header text
+          headerTintColor: Colors.headerText
         }}
+
       />
   )
 }
@@ -46,7 +54,12 @@ function makeDrawerScreen(fileName: string, label: string) {
 
             <SettingsIcon style={styles.icon} color="grey"/>
             </>
-          )
+          ),
+          // set background color for the header bar and scene/page related to it
+          headerStyle: {backgroundColor: Colors.header},
+          sceneStyle: {backgroundColor: Colors.background},
+          // set color for the header text
+          headerTintColor: Colors.headerText
         }}
       />
   )
@@ -57,7 +70,14 @@ export default function Layout() {
   if (Device.deviceType == Device.DeviceType.DESKTOP) {
     return (
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <Drawer >
+        <Drawer
+          screenOptions={{
+            // add background color and active and inactive text color (tint)
+            drawerStyle: { backgroundColor: Colors.menuBackground },
+            drawerActiveTintColor: Colors.activeText,
+            drawerInactiveTintColor:  Colors.inactiveText
+          }}>
+          {/* returns JSX drawer screen objects for all the pages */}
           {makeDrawerScreen("index", "Home")}
           {makeDrawerScreen("feed", "Feed")}
           {makeDrawerScreen("resources", "Resources")}
@@ -68,7 +88,14 @@ export default function Layout() {
 
   // use tab navigation on mobile
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: "blue" }}>
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: Colors.iconActive,
+        tabBarInactiveTintColor: Colors.iconInactive,
+        tabBarStyle: {backgroundColor: Colors.footer}
+      }}
+    >
+    {/* returns JSX tab objects for all the pages */}
       {makeTab("feed", "Feed", "rss")}
       {makeTab("index", "Home", "home")}
       {makeTab("resources", "Resources", "file")}
