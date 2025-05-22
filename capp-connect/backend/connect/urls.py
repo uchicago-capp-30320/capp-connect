@@ -50,9 +50,8 @@ urlpatterns = [
         views.GetComment.as_view(),
         name="delete_comment",
     ),
-    path(
-        "ccserver/resources/", views.GetResource.as_view(), name="get_resources"
-    ),
+    path("ccserver/resources/", views.GetResource.as_view(), name="get_resources"),
+    path("ccserver/posts/search/", views.SearchPosts.as_view(), name="search_posts")
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
