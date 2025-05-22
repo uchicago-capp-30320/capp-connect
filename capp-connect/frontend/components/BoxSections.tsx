@@ -1,13 +1,13 @@
-import { View, Text, StyleSheet, SafeAreaView, StyleProp, ViewStyle } from "react-native";
+import { View, Text, StyleSheet, StyleProp, ViewStyle } from "react-native";
 import TextField from "@/components/TextField";
-import { Colors, Containers } from "@/themes";
+import { Colors } from "@/themes";
 
 interface BoxSectionProps {
   title: string
   fields: string[]
   labelDataMap: {[key: string]: string}
   data: Map<string, string>
-  updateData: Function
+  updateData: (value: Map<string, string>) => void;
   editMode: boolean
   style: StyleProp<ViewStyle>
 }

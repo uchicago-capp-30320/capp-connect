@@ -57,7 +57,7 @@ const labelDataMap = {
 }
 
 // grouping -- removed some
-const bioFields = ["bio"]
+const bioFields = ["bio"];
 const infoFields = ["city", "state", "country", "employment_status"]
 const websiteFields = ["linkedin_username", "github_username", "personal_site"]
 const contactFields = ["phone_number", "slack_url"]
@@ -78,7 +78,6 @@ export default function Profile() {
 
   // dimentions for layout
   const windowWidth = Dimensions.get('window').width
-  const boxWidth = windowWidth / 2 - 15
 
   // tag carousel
   const getColorForTag = createTagColorMapper();
@@ -113,10 +112,16 @@ export default function Profile() {
       </View>
 
       {/* Bio section */}
-      <View style={styles.bioSection}>
-        <Text style={styles.sectionTitle}>Biography</Text>
-        <Text style={styles.bioText}>{data.get("bio")}</Text>
-      </View>
+      <BoxSection
+        title="Biography"
+        fields={bioFields}
+        labelDataMap={labelDataMap}
+        data={data}
+        editMode={editMode}
+        updateData={changeData}
+        style={styles.fullBox}
+      />
+
 
       {/* Other info */}
       <SafeAreaView style={styles.infoSections}>
