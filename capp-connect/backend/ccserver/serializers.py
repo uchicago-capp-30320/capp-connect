@@ -79,7 +79,9 @@ class ProfileTagSerializer(serializers.HyperlinkedModelSerializer):
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.StringRelatedField()
-    tags = serializers.StringRelatedField(many=True)
+    tags = serializers.SlugRelatedField(
+        many=True, slug_field="tag_name", queryset=Tag.objects.all()
+    )
 
     class Meta:
         model = Post
@@ -96,7 +98,28 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             "start_time",
             "location",
         ]
+        unique_together = ("post_id", "tag")
 
+    def create(self, validated_data):
+        tags_data = validated_data.pop("tags", [])
+        post = Post.objects.create(**validated_data)
+        for tag_name in tags_data:
+            tag, _ = Tag.objects.get_or_create(tag_name=tag_name)
+            post.tags.add(tag)
+        return post
+
+    def update(self, instance, validated_data):
+        tags_data = validated_data.pop("tags", [])
+        instance = super().update(instance, validated_data)
+        instance.tags.clear()
+        for tag_name in tags_data:
+            tag, _ = Tag.objects.get_or_create(tag_name=tag_name)
+            instance.tags.add(tag)
+        return instance
+    
+    def delete(self, instance):
+        instance.delete()
+        return instance
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.StringRelatedField()
