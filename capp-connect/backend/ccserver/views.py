@@ -9,7 +9,7 @@ from .serializers import (
     PostSerializer,
     ProfileListSerializer,
     ProfileSerializer,
-    ResourceSerializer
+    ResourceSerializer,
 )
 
 
@@ -173,10 +173,10 @@ class GetAllComments(APIView):
             serializer.save(post=post, user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
 class GetResource(APIView):
     def get(self, request, format=None):
         resources = Resource.objects.all()
         serializer = ResourceSerializer(resources, many=True)
         return Response(serializer.data)
-        
