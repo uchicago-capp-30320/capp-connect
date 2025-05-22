@@ -69,8 +69,8 @@ class GetPost(APIView):
     def get_object(self, pk):
         try:
             return Post.objects.get(pk=pk)
-        except Post.DoesNotExist:
-            raise Http404
+        except Post.DoesNotExist as e:
+            raise Http404(f"Post with id {pk} does not exist.") from e
 
     def get(self, request, pk, format=None):
         try:
