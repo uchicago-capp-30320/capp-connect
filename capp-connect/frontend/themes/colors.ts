@@ -2,7 +2,7 @@ const Colors = {
     primary: "#720000",
     secondary: "#ffa319",
     tertiary: "#49acd1",
-    error: "",
+    error: "#e20707",
 
     background: "#ffffff",
 
