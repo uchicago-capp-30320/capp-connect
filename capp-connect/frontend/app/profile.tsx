@@ -38,7 +38,7 @@ const labelDataMap = {
   // basic info
   "name": "Name",
   // bio
-  "bio": "Biography",
+  "bio": "",
   "tags": "Tags",
   // info
   "city": "City",
@@ -121,15 +121,30 @@ export default function Profile() {
         />
 
         {/* Other info */}
-         <BoxSection
-            title="Info"
-            fields={infoFields}
-            labelDataMap={labelDataMap}
-            data={data}
-            editMode={editMode}
-            updateData={changeData}
-            style={Device.deviceType === Device.DeviceType.DESKTOP ? styles.halfBox : styles.fullBox}
-          />
+        <View style={{flex: 1, flexDirection: "row"}}>
+          <BoxSection
+              title="Info"
+              fields={infoFields}
+              labelDataMap={labelDataMap}
+              data={data}
+              editMode={editMode}
+              updateData={changeData}
+              style={styles.halfBox}
+            />
+
+            <View style={{ flex: 1 }} />
+
+            <BoxSection
+              title="Contact"
+              fields={contactFields}
+              labelDataMap={labelDataMap}
+              data={data}
+              editMode={editMode}
+              updateData={changeData}
+              style={styles.halfBox}
+            />
+
+          </View>
 
           <View style={{ height: 10 }} />
 
@@ -143,15 +158,7 @@ export default function Profile() {
             style={styles.fullBox}
           />
 
-          <BoxSection
-            title="Contact"
-            fields={contactFields}
-            labelDataMap={labelDataMap}
-            data={data}
-            editMode={editMode}
-            updateData={changeData}
-            style={Device.deviceType === Device.DeviceType.DESKTOP ? styles.halfBox : styles.fullBox}
-          />
+
         </ScrollView>
       </SafeAreaProvider>
     );
