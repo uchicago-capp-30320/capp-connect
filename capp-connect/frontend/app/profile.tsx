@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet} from "react-native";
+import { View, Text, StyleSheet, ScrollView} from "react-native";
 import { useState, useEffect } from "react";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ProfilePhoto from '@/components/ProfilePhoto';
@@ -87,43 +87,41 @@ export default function Profile() {
 
   return (
     <SafeAreaProvider style={styles.container}>
-      {/* Profile */}
-      <View style={styles.headerSection}>
-        <View style={styles.profileHeader}>
-          <ProfilePhoto style={styles.profilePhoto}/>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        {/* Profile */}
+        <View style={styles.headerSection}>
+          <View style={styles.profileHeader}>
+            <ProfilePhoto style={styles.profilePhoto}/>
 
-          <View style={styles.headerInfo}>
-            <Text style={styles.nameText}>{data.get("name")}</Text>
-            <Text style={styles.positionText}>
-              {data.get("job_title")} | {data.get("company")}
-            </Text>
+            <View style={styles.headerInfo}>
+              <Text style={styles.nameText}>{data.get("name")}</Text>
+              <Text style={styles.positionText}>
+                {data.get("job_title")} | {data.get("company")}
+              </Text>
+            </View>
+
+            <EditButton editMode={editMode} changeEditMode={changeEditMode}/>
           </View>
 
-          <EditButton editMode={editMode} changeEditMode={changeEditMode}/>
+          {/* Tags Carousel */}
+          <View style={styles.tagsContainer}>
+            <TagCarousel tags={tagObjects} />
+          </View>
         </View>
 
-        {/* Tags Carousel */}
-        <View style={styles.tagsContainer}>
-          <TagCarousel tags={tagObjects} />
-        </View>
-      </View>
+        {/* Bio section */}
+        <BoxSection
+          title="Biography"
+          fields={bioFields}
+          labelDataMap={labelDataMap}
+          data={data}
+          editMode={editMode}
+          updateData={changeData}
+          style={styles.fullBox}
+        />
 
-      {/* Bio section */}
-      <BoxSection
-        title="Biography"
-        fields={bioFields}
-        labelDataMap={labelDataMap}
-        data={data}
-        editMode={editMode}
-        updateData={changeData}
-        style={styles.fullBox}
-      />
-
-
-      {/* Other info */}
-      <SafeAreaView style={styles.infoSections}>
-        <View style={styles.boxRow}>
-          <BoxSection
+        {/* Other info */}
+         <BoxSection
             title="Info"
             fields={infoFields}
             labelDataMap={labelDataMap}
@@ -133,32 +131,18 @@ export default function Profile() {
             style={Device.deviceType === Device.DeviceType.DESKTOP ? styles.halfBox : styles.fullBox}
           />
 
-          {Device.deviceType === Device.DeviceType.DESKTOP && (
-            <BoxSection
-              title="Websites"
-              fields={websiteFields}
-              labelDataMap={labelDataMap}
-              data={data}
-              editMode={editMode}
-              updateData={changeData}
-              style={styles.halfBox}
-            />
-          )}
-        </View>
+          <View style={{ height: 10 }} />
 
-        <View style={styles.boxRow}>
-          {Device.deviceType !== Device.DeviceType.DESKTOP && (
-            <BoxSection
-              title="Websites"
-              fields={websiteFields}
-              labelDataMap={labelDataMap}
-              data={data}
-              editMode={editMode}
-              updateData={changeData}
-              style={styles.fullBox}
-            />
-          )}
-
+          <BoxSection
+            title="Websites"
+            fields={websiteFields}
+            labelDataMap={labelDataMap}
+            data={data}
+            editMode={editMode}
+            updateData={changeData}
+            style={styles.fullBox}
+          />
+            
           <BoxSection
             title="Contact"
             fields={contactFields}
@@ -168,17 +152,20 @@ export default function Profile() {
             updateData={changeData}
             style={Device.deviceType === Device.DeviceType.DESKTOP ? styles.halfBox : styles.fullBox}
           />
-        </View>
-      </SafeAreaView>
-    </SafeAreaProvider>
-  );
-}
+        </ScrollView>
+      </SafeAreaProvider>
+    );
+  }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
     padding: 15,
+  },
+  scrollContainer: {
+    padding: 15,
+    paddingBottom: 40,
   },
   headerSection: {
     marginBottom: 20,
@@ -211,7 +198,7 @@ const styles = StyleSheet.create({
   },
   tagsContainer: {
     marginTop: 12,
-    height: 40,
+    height: 70,
   },
   bioSection: {
     ...Containers.cards,
