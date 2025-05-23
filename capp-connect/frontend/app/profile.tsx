@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView} from "react-native";
 import { useState, useEffect } from "react";
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import ProfilePhoto from '@/components/ProfilePhoto';
 import EditButton from "@/components/EditButton";
 import BoxSection from '@/components/BoxSections';
@@ -142,7 +142,7 @@ export default function Profile() {
             updateData={changeData}
             style={styles.fullBox}
           />
-            
+
           <BoxSection
             title="Contact"
             fields={contactFields}
