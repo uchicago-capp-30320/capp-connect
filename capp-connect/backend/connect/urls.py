@@ -38,6 +38,21 @@ urlpatterns = [
     ),
     path("ccserver/post/<int:pk>/", views.GetPost.as_view(), name="get_post"),
     path("ccserver/posts/", views.GetAllPosts.as_view(), name="get_all_posts"),
+    path(
+        "ccserver/posts/<int:pk>/comments/",
+        views.GetAllComments.as_view(),
+        name="get_post_comments",
+    ),
+    path(
+        "ccserver/posts/<int:pk>/comments/<int:comment_id>/",
+        views.GetComment.as_view(),
+        name="delete_comment",
+    ),
+    path(
+        "ccserver/posts/search/",
+        views.SearchPosts.as_view(),
+        name="search_posts",
+    ),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

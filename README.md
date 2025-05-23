@@ -11,9 +11,17 @@ The below is credited to Michael Plunkett, 2024 CAPP TA
 
 1. Download uv: [link](https://docs.astral.sh/uv/).
 2. Download Node.js and npm: [link](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-2. Go into the base directory of the repository and type `make env` into the terminal.
-3. Install requirements with `make install`
+3. Go into the base directory of the repository and type `make env` into the terminal.
 4. Use the `make run-all` command.
+
+### Connecting to the server to test auth:
+ **You should only have to do this process once**
+1. Connect to the server using the command: `ssh -p 2222 capp-connect@turing.unnamed.computer`
+2. Create a new uv virtual environment: `source .venv/bin/activate`
+3. cd to `capp-connect/slack_auth/cappconnect_auth`
+4. Run `python manage.py runserver 0.0.0.0:8010` (may be python3 on your machine)
+5. Then go to this [link](https://capp-connect.unnamed.computer/auth/login/slack/)
+
 
 ### Technical Notes
 - Any new Python modules should be added via the `uv add [module]` command.

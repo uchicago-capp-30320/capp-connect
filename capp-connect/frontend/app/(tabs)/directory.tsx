@@ -3,7 +3,6 @@ import ProfileCard from "@/components/ProfileCard";
 import { FlashList } from "@shopify/flash-list";
 import { useEffect, useState } from "react";
 import SearchBar from '../../components/SearchBar';
-import fetchData from '../../utils/fetchdata';
 import * as Device from 'expo-device'
 
 type UserProfile = {
@@ -20,14 +19,14 @@ type UserProfile = {
 // will update for production
 async function fetchProfiles(): Promise<UserProfile[]> {
   // return await fetchData("http://127.0.0.1:8080/ccserver/users", "GET", {})
-  // return mock data 
+  // return mock data
   return userProfiles;
 }
 
 export default function Directory() {
     // set data
     const [data, setData] = useState<UserProfile[]>([]);
-    
+
     useEffect(() => {
       async function fetchDirectory() {
         if (Device.deviceType === Device.DeviceType.DESKTOP) {
@@ -40,7 +39,7 @@ export default function Directory() {
       }
       fetchDirectory();
     }, []);
-    
+
     return (
       <>
         <SearchBar
@@ -52,7 +51,7 @@ export default function Directory() {
           }}
           color="gray"
         />
-        
+
         <View style={{flex: 1, width:"100%"}}>
           <FlashList
             renderItem={({item}) => {

@@ -1,43 +1,20 @@
 import { Text, View, StyleSheet, TouchableHighlight } from "react-native";
-import { useState } from "react";
 import * as Device from 'expo-device';
 import ProfilePhoto from "./ProfilePhoto";
 import TagIcon from "./TagIcon";
 import createTagColorMapper from "../utils/tagColorMapper"
-import { useNavigation, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
+import { Colors, Containers} from "@/themes";
 
 
 // create conditional styling for desktop vs mobile
-const CARD_HEIGHT = Device.deviceType === Device.DeviceType.DESKTOP ? 500: 350
-const NUM_TEXT_LINES = Device.deviceType === Device.DeviceType.DESKTOP ? 10: 4
-const PADDING = Device.deviceType === Device.DeviceType.DESKTOP ? 5: 5
 const PROFILE_PHOTO_SIZE = Device.deviceType === Device.DeviceType.DESKTOP ? 90: 60
-
-const BORDER_RADIUS = 5
+const NUM_TEXT_LINES = Device.deviceType === Device.DeviceType.DESKTOP ? 10: 4
 
 const styles = StyleSheet.create({
-    container: {
-        borderRadius: BORDER_RADIUS,
-        alignSelf:"center",
-        height: CARD_HEIGHT,
-        width: "100%",
-        padding: PADDING
-    },
     cardBackground: {
         height: "100%",
         width: "100%",
-        backgroundColor: "grey",
-        borderWidth: 1,
-        borderRadius: BORDER_RADIUS,
-        //Help getting shadow effect from ChatGPT. Prompt: I am creating a card in react for react native (expo). I want to create a shadow around it. How do i do that? Here is my card so far:
-        boxShadow: '0 4px 8px rgba(0,0,0,0.15)',
-        // Native shadow (optional, for mobile)
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-        elevation: 5,
-        padding: 15
     },
     textTitleContainer: {
         alignItems: "center"
@@ -73,6 +50,7 @@ const getColorForTag = createTagColorMapper();
 export default function FeedCard({title, body, tags}: FeedCardProps) {
     return (
         <TouchableHighlight
+        // on press route to the post page with this post's content
             onPress={() => {
                 const router = useRouter()
                 router.push(
@@ -81,11 +59,11 @@ export default function FeedCard({title, body, tags}: FeedCardProps) {
             }}
             // how the card changes when pressed
             activeOpacity={.6}
-            underlayColor="#DDDDDD"
-            style={styles.container}
+            underlayColor={Colors.background}
+            style={[Containers.container]}
             >
 
-            <View style={styles.cardBackground} >
+            <View style={[Containers.cards, styles.cardBackground]} >
                 {/* create profile photo for poster */}
                 <View style={{paddingBottom: 5}}>
                     <ProfilePhoto style={styles.image}/>
