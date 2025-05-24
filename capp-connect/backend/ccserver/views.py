@@ -82,6 +82,27 @@ class GetTagsList(APIView):
         return Response(serializer.data)
 
 
+class SearchProfiles(APIView):
+    def get(self, request):
+        tag_names_list = request.GET.getlist("tags")
+        matching_profiles = None
+
+        for tag_name in tag_names_list:
+            # Check for tag matches within tags or names
+            tag_profiles = Profile.objects.filter(tags__tag_name=tag_name)
+            name_profiles = Profile.objects.filter(slack_username=tag_name)
+            tag_or_name_matches = tag_profiles.union(name_profiles)
+            if matching_profiles is None:
+                matching_profiles = tag_or_name_matches
+            else:
+                # Update matching_posts to only include profiles that also match previous tag(s)
+                matching_profiles = matching_profiles.intersection(
+                    tag_or_name_matches
+                )
+        serializer = ProfileSerializer(matching_profiles, many=True)
+        return Response(serializer.data)
+
+
 class GetPost(APIView):
     def get_object(self, pk):
         try:
@@ -234,4 +255,21 @@ class GetResource(APIView):
     def get(self, request, format=None):
         resources = Resource.objects.all()
         serializer = ResourceSerializer(resources, many=True)
+        return Response(serializer.data)
+
+
+class SearchResources(APIView):
+    def get(self, request):
+        tag_names_list = request.GET.getlist("tags")
+        matching_resources = None
+        for tag_name in tag_names_list:
+            tag_resources = Resource.objects.filter(tags__tag_name=tag_name)
+            if matching_resources is None:
+                matching_resources = tag_resources
+            else:
+                # Update matching_posts to only include posts that also match previous tag(s)
+                matching_resources = matching_resources.intersection(
+                    tag_resources
+                )
+        serializer = PostSerializer(matching_resources, many=True)
         return Response(serializer.data)
