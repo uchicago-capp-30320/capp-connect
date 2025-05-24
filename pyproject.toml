@@ -10,6 +10,7 @@ dependencies = [
     "django-allauth[socialaccount]>=65.8.1",
     "django-cors-headers>=4.7.0",
     "djangorestframework>=3.16.0",
+    "dotenv>=0.9.9",
     "faker>=37.1.0",
     "pre-commit>=4.0.1",
     "psycopg>=3.2.7",

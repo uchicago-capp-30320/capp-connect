@@ -1,13 +1,18 @@
+from django.core.paginator import EmptyPage, Paginator
+from django.http import Http404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Comment, Post, Profile, Resource
+from .models import Comment, Post, Profile, Resource, Tag
 from .serializers import (
     CommentSerializer,
+    NameSerializer,
     PostSerializer,
     ProfileListSerializer,
     ProfileSerializer,
+    ResourceSerializer,
+    TagSerializer,
 )
 
 
@@ -26,7 +31,7 @@ class GetProfile(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-    def post(self, request, username, format=None):
+    def put(self, request, username, format=None):
         try:
             profile = Profile.objects.get(user__username=username)
         except Profile.DoesNotExist:
@@ -35,7 +40,7 @@ class GetProfile(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        serializer = ProfileSerializer(profile, data=request.data)
+        serializer = ProfileSerializer(profile, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -63,6 +68,20 @@ class GetProfileList(APIView):
         return Response(serializer.data)
 
 
+class GetNamesList(APIView):
+    def get(self, request, format=None):
+        users = Profile.objects.all()
+        serializer = NameSerializer(users, many=True)
+        return Response(serializer.data)
+
+
+class GetTagsList(APIView):
+    def get(self, request, format=None):
+        tags = Tag.objects.all()
+        serializer = TagSerializer(tags, many=True)
+        return Response(serializer.data)
+
+
 class SearchProfiles(APIView):
     def get(self, request):
         tag_names_list = request.GET.getlist("tags")
@@ -84,14 +103,13 @@ class SearchProfiles(APIView):
         return Response(serializer.data)
 
 
-# class GetProfileList(APIView):
-#     def get(self, request, format=None):
-#         users = Profile.objects.all()
-#         serializer = ProfileListSerializer(users, many=True)
-#         return Response(serializer.data)
-
-
 class GetPost(APIView):
+    def get_object(self, pk):
+        try:
+            return Post.objects.get(pk=pk)
+        except Post.DoesNotExist as e:
+            raise Http404(f"Post with id {pk} does not exist.") from e
+
     def get(self, request, pk, format=None):
         try:
             post = Post.objects.get(pk=pk)
@@ -102,12 +120,54 @@ class GetPost(APIView):
                 {"error": "Post not found."}, status=status.HTTP_404_NOT_FOUND
             )
 
-    def post(self, request, pk, format=None):
+    def put(self, request, pk, format=None):
         post = self.get_object(pk)
-        serializer = PostSerializer(post, data=request.data)
+        serializer = PostSerializer(post, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        post = self.get_object(pk)
+        post.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class GetPostList(APIView):
+    POSTS_PER_TYPE = 25
+
+    def get(self, request, format=None):
+        page_number = request.GET.get("page", 1)
+        group_data = {}
+        post_types = [choice[0] for choice in Post.PostType.choices]
+
+        for post_type in post_types:
+            posts = Post.objects.filter(post_type=post_type)
+            paginator = Paginator(posts, self.POSTS_PER_TYPE)
+
+            try:
+                page = paginator.page(page_number)
+                serializer = PostSerializer(page.object_list, many=True)
+                group_data[post_type] = serializer.data
+            except EmptyPage:
+                group_data[post_type] = []
+        next_page = page_number + 1 if any(group_data.values()) else None
+
+        response_data = {
+            "next_page": next_page,
+            "current_page": page_number,
+            "posts_per_type": self.POSTS_PER_TYPE,
+            "posts": group_data,
+        }
+
+        return Response(response_data)
+
+    def post(self, request, format=None):
+        serializer = PostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -123,13 +183,6 @@ class SearchPosts(APIView):
                 # Update matching_posts to only include posts that also match previous tag(s)
                 matching_posts = matching_posts.intersection(tag_posts)
         serializer = PostSerializer(matching_posts, many=True)
-        return Response(serializer.data)
-
-
-class GetAllPosts(APIView):
-    def get(self, request, format=None):
-        posts = Post.objects.all()
-        serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
 
@@ -170,7 +223,7 @@ class GetComment(APIView):
 class GetAllComments(APIView):
     def get(self, request, pk, format=None):
         try:
-            post = Post.objects.get(pk=pk)
+            post = Post.objects.all(pk=pk)
             comments = post.comments.all()
             serializer = CommentSerializer(comments, many=True)
             return Response(serializer.data)
@@ -196,6 +249,13 @@ class GetAllComments(APIView):
             serializer.save(post=post, user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetResource(APIView):
+    def get(self, request, format=None):
+        resources = Resource.objects.all()
+        serializer = ResourceSerializer(resources, many=True)
+        return Response(serializer.data)
 
 
 class SearchResources(APIView):

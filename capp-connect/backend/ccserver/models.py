@@ -1,3 +1,12 @@
+"""
+Not a best practice, we should likely have had one not two  django projects.
+However, since we are where we are, it was easier and less disruptive to just
+copy over the one model I needed than it was to import it from your project,
+since doing so would have required messing with your imports on your app and
+I don't want to touch that at all. Any changes made on ccserver/models.py Profile
+need to be made at authentication/models.py as well
+"""
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -8,14 +17,6 @@ class EmploymentStatus(models.TextChoices):
     SEARCHING = "Searching", "searching"
     HIRING = "Hiring", "hiring"
     STUDENT = "Student", "student"
-
-
-class PostType(models.TextChoices):
-    JOB = "Job", "job"
-    GENERAL = "General", "general"
-    RESOURCE = "Resource", "resource"
-    EVENT = "Event", "event"
-    PROJECT = "Project", "project"
 
 
 # Models
@@ -71,6 +72,12 @@ class Post(models.Model):
     class Source(models.TextChoices):
         SLACK = "Slack", "Slack"
         APP = "App", "App"
+
+    class PostType(models.TextChoices):
+        JOB = "Job", "job"
+        GENERAL = "General", "general"
+        EVENT = "Event", "event"
+        PROJECT = "Project", "project"
 
     post_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -147,3 +147,6 @@ LOGOUT_REDIRECT_URL = "/"
 SLACK_CLIENT_ID = _SLACK_CLIENT_ID  # noqa: F401
 SLACK_CLIENT_SECRET = _SLACK_CLIENT_SECRET  # noqa: F401
 SLACK_REDIRECT_URI = _SLACK_REDIRECT_URI  # noqa: F401
+
+# Using our custom version
+SOCIALACCOUNT_ADAPTER = "authentication.adapters.SlackSocialAccountAdapter"

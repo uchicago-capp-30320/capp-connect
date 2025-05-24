@@ -37,8 +37,7 @@ frontend:
 	cd capp-connect/frontend && npx expo start --tunnel
 
 .PHONY: run-all
-run-all:
-	make backend & make frontend
+run-all: backend frontend
 
 .PHONY: install
 install:

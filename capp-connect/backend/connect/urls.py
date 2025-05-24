@@ -41,8 +41,13 @@ urlpatterns = [
         views.SearchProfiles.as_view(),
         name="search_profiles",
     ),
-    path("ccserver/post/<int:pk>/", views.GetPost.as_view(), name="get_post"),
-    path("ccserver/posts/", views.GetAllPosts.as_view(), name="get_all_posts"),
+    path("ccserver/tags/", views.GetTagsList.as_view(), name="get_tags"),
+    path("ccserver/names/", views.GetNamesList.as_view(), name="get_names"),
+
+    path(
+        "ccserver/posts/<int:pk>/", views.GetPost.as_view(), name="post_detail"
+    ),
+    path("ccserver/posts/", views.GetPostList.as_view(), name="all_posts"),
     path(
         "ccserver/posts/<int:pk>/comments/",
         views.GetAllComments.as_view(),
@@ -53,16 +58,19 @@ urlpatterns = [
         views.GetComment.as_view(),
         name="delete_comment",
     ),
-    path(
+        path(
         "ccserver/posts/search/",
         views.SearchPosts.as_view(),
         name="search_posts",
     ),
     path(
+        "ccserver/resources/", views.GetResource.as_view(), name="get_resources"
+    ),
+    path(
         "ccserver/resources/search/",
         views.SearchResources.as_view(),
         name="search_resources",
-    ),
+    )
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

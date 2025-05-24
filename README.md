@@ -7,7 +7,7 @@ This project is a work in progress. [Link to Notion](https://www.notion.so/Proje
 
 ### Instructions to Run the Project
 
-The below is credited to Michael Plunkett, 2024 CAPP TA
+The below is credited to @michplunkett, 2024 CAPP TA
 
 1. Download uv: [link](https://docs.astral.sh/uv/).
 2. Download Node.js and npm: [link](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
