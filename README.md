@@ -34,6 +34,7 @@ The below is credited to Michael Plunkett, 2024 CAPP TA
 - `make install`: Installs all packages needed in `requirements.txt`
 - `make env`: Creates or activates a `uv` virtual environment. Also installs the npm dependencies for the project.
 - `make lint`: Runs `pre-commit`.
-- `make frontend`: Runs the frontend React Native project with Expo Go.
-- `make run-all`: Runs the `main` function in the `project` folder in parallel with starting the node.js development server for the frontend app.
+- `make frontend-dev`: Runs a Node development server to serve the frontend React Native project with Expo Go.
+- `make frontend-build`: Compiles the React code into static files currently located in frontend/static/.
+- To update: `make run-all`: Runs the `main` function in the `project` folder in parallel with starting the node.js development server for the frontend app.
 - `make test`: Runs test cases in the `tests` directory.
