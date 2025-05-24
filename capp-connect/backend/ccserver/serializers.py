@@ -6,7 +6,19 @@ from .models import Comment, Post, Profile, ProfileTag, Resource, Tag
 class TagSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Tag
-        fields = ["tag_id", "tag_name"]
+        fields = ["tag_name"]
+
+    def to_representation(self, instance):
+        return instance.tag_name
+
+
+class NameSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ["user"]
+
+    def to_representation(self, instance):
+        return instance.user.username
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
