@@ -25,6 +25,7 @@ class Tag(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     slack_username = models.CharField(max_length=100, blank=True, null=True)
+    slack_user_id = models.CharField(max_length=50, blank=True, null=True)
     slack_dm_url = models.CharField(max_length=100, blank=True, null=True)
     linkedin_url = models.CharField(max_length=100, blank=True, null=True)
     github_url = models.CharField(max_length=100, blank=True, null=True)
@@ -73,6 +74,8 @@ class Post(models.Model):
 
     post_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    slack_user_id = models.CharField(max_length=50, blank=True, null=True)
+    client_msg_id = models.CharField(max_length=50, blank=True, null=True)
     title = models.CharField(max_length=100)
     description = models.TextField()
     post_type = models.CharField(
@@ -80,11 +83,12 @@ class Post(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    slack_ts = models.CharField(max_length=50, blank=True, null=True)
     tags = models.ManyToManyField(
         Tag, through="PostTag", related_name="post_tags"
     )
     links = models.TextField(blank=True, null=True)
-    start_time = models.DateTimeField()
+    start_time = models.DateTimeField(blank=True, null=True)
     location = models.CharField(max_length=100, blank=True, null=True)
     source = models.CharField(
         max_length=5,
