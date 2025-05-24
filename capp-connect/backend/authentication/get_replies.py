@@ -1,7 +1,7 @@
 import logging
 import os
 
-from get_channel_history import convo_history
+from authentication.get_channel_history import convo_history
 
 # Import WebClient from Python SDK (github.com/slackapi/python-slack-sdk)
 from slack_sdk import WebClient
