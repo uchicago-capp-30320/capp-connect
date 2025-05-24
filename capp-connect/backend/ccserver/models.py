@@ -1,3 +1,12 @@
+"""
+Not a best practice, we should likely have had one not two  django projects.
+However, since we are where we are, it was easier and less disruptive to just
+copy over the one model I needed than it was to import it from your project,
+since doing so would have required messing with your imports on your app and
+I don't want to touch that at all. Any changes made on ccserver/models.py Profile
+need to be made at authentication/models.py as well
+"""
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -11,10 +20,11 @@ class EmploymentStatus(models.TextChoices):
 
 
 # Models
-# Tags, to be used for users/posts
+# Tags, to be used for users/posts/resources
 class Tag(models.Model):
     tag_id = models.AutoField(primary_key=True)
     tag_name = models.CharField(max_length=50, unique=True)
+    allowed_on_profile = models.BooleanField(default=True)
 
     def __str__(self):
         return self.tag_name
@@ -137,3 +147,11 @@ class Resource(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+
+
+class ResourceTag(models.Model):
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("resource", "tag")
