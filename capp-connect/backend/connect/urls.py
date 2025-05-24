@@ -62,9 +62,15 @@ urlpatterns = [
         name="delete_comment",
     ),
     path(
-        "ccserver/resources/", cc_views.GetResourceList.as_view(), name="all_resources"
+        "ccserver/resources/",
+        cc_views.GetResourceList.as_view(),
+        name="all_resources",
     ),
-    path("ccserver/resources/<int:pk>/", cc_views.GetResource.as_view(), name="resource_detail"),
+    path(
+        "ccserver/resources/<int:pk>/",
+        cc_views.GetResource.as_view(),
+        name="resource_detail",
+    ),
     path(
         "ccserver/posts/search/",
         cc_views.SearchPosts.as_view(),

@@ -260,7 +260,7 @@ class GetResourceList(APIView):
         resources = Resource.objects.all()
         serializer = ResourceSerializer(resources, many=True)
         return Response(serializer.data)
-    
+
     def post(self, request, format=None):
         serializer = ResourceSerializer(data=request.data)
         if serializer.is_valid():
@@ -268,14 +268,14 @@ class GetResourceList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    
+
 class GetResource(APIView):
     def get_object(self, pk):
         try:
             return Resource.objects.get(pk=pk)
         except Resource.DoesNotExist as e:
             raise Http404(f"Post with id {pk} does not exist.") from e
-        
+
     def get(self, request, pk, format=None):
         try:
             resource = Resource.objects.get(pk=pk)
@@ -296,12 +296,14 @@ class GetResource(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        serializer = ResourceSerializer(resource, data=request.data, partial=True)
+        serializer = ResourceSerializer(
+            resource, data=request.data, partial=True
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def delete(self, request, pk, format=None):
         resource = self.get_object(pk)
         resource.delete()
