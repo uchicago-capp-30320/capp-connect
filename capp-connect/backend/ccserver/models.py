@@ -1,12 +1,3 @@
-"""
-Not a best practice, we should likely have had one not two  django projects.
-However, since we are where we are, it was easier and less disruptive to just
-copy over the one model I needed than it was to import it from your project,
-since doing so would have required messing with your imports on your app and
-I don't want to touch that at all. Any changes made on ccserver/models.py Profile
-need to be made at authentication/models.py as well
-"""
-
 from django.contrib.auth.models import User
 from django.db import models
 
