@@ -326,3 +326,10 @@ class SearchResources(APIView):
                 )
         serializer = PostSerializer(matching_resources, many=True)
         return Response(serializer.data)
+
+
+class MyProfileView(APIView):
+    def get(self, request):
+        profile = Profile.objects.get(user=request.user)
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data)

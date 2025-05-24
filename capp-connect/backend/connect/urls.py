@@ -87,6 +87,7 @@ urlpatterns = [
         cc_views.SearchResources.as_view(),
         name="search_resources",
     ),
+    path("ccserver/auth/", cc_views.MyProfileView.as_view(), name="my_profile"),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
