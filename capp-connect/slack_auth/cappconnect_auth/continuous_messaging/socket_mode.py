@@ -187,7 +187,7 @@ def get_msg(message, say):
     Output (printed):
         - Select fields in the message dictionary that we need to translate over to our DB.
     """
-    filtered_message = {
+    """filtered_message = {
         "type": message["type"],
         "channel": message["channel"],
         "user": message["user"],
@@ -195,7 +195,7 @@ def get_msg(message, say):
         "ts": message["ts"],
         "event_ts": message["event_ts"],
         "edited": message.get("edited"),
-    }
+    }"""
     # print (filtered_message)
     message_tag = create_tag(message["text"])
 
