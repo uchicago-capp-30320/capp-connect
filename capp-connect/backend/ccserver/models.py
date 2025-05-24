@@ -25,6 +25,7 @@ class Tag(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     slack_username = models.CharField(max_length=100, blank=True, null=True)
+    slack_user_id = models.CharField(max_length=50, blank=True, null=True)
     slack_dm_url = models.CharField(max_length=100, blank=True, null=True)
     linkedin_url = models.CharField(max_length=100, blank=True, null=True)
     github_url = models.CharField(max_length=100, blank=True, null=True)
