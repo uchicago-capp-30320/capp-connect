@@ -10,14 +10,6 @@ class EmploymentStatus(models.TextChoices):
     STUDENT = "Student", "student"
 
 
-class PostType(models.TextChoices):
-    JOB = "Job", "job"
-    GENERAL = "General", "general"
-    RESOURCE = "Resource", "resource"
-    EVENT = "Event", "event"
-    PROJECT = "Project", "project"
-
-
 # Models
 # Tags, to be used for users/posts
 class Tag(models.Model):
@@ -33,13 +25,14 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     slack_username = models.CharField(max_length=100, blank=True, null=True)
     slack_dm_url = models.CharField(max_length=100, blank=True, null=True)
-    linkedin_username = models.CharField(max_length=100, blank=True, null=True)
-    github_username = models.CharField(max_length=100, blank=True, null=True)
+    linkedin_url = models.CharField(max_length=100, blank=True, null=True)
+    github_url = models.CharField(max_length=100, blank=True, null=True)
     personal_site = models.CharField(max_length=100, blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
     state = models.CharField(max_length=100, blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
+    email = models.CharField(max_length=254, blank=True, null=True)
     photo_url = models.CharField(max_length=255, blank=True, null=True)
     employment_status = models.CharField(
         max_length=20,
@@ -70,6 +63,12 @@ class Post(models.Model):
     class Source(models.TextChoices):
         SLACK = "Slack", "Slack"
         APP = "App", "App"
+
+    class PostType(models.TextChoices):
+        JOB = "Job", "job"
+        GENERAL = "General", "general"
+        EVENT = "Event", "event"
+        PROJECT = "Project", "project"
 
     post_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
