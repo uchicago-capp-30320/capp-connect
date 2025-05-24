@@ -20,10 +20,11 @@ class EmploymentStatus(models.TextChoices):
 
 
 # Models
-# Tags, to be used for users/posts
+# Tags, to be used for users/posts/resources
 class Tag(models.Model):
     tag_id = models.AutoField(primary_key=True)
     tag_name = models.CharField(max_length=50, unique=True)
+    allowed_on_profile = models.BooleanField(default=True)
 
     def __str__(self):
         return self.tag_name
