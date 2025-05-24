@@ -3,7 +3,7 @@ import uuid
 
 import jwt
 import requests
-from cappconnect_auth.load_slack_key import load_rsa_public_key
+from authentication.load_slack_key import load_rsa_public_key
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import redirect

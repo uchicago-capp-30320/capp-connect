@@ -1,6 +1,8 @@
 import logging
 import os
 
+from get_channel_history import convo_history
+
 # Import WebClient from Python SDK (github.com/slackapi/python-slack-sdk)
 from slack_sdk import WebClient
 
@@ -9,6 +11,8 @@ from slack_sdk import WebClient
 # When using Bolt, you can use either `app.client` or the `client` passed to listeners.
 client = WebClient(token=os.environ.get("SLACK_BOT_TOKEN"))
 logger = logging.getLogger(__name__)
+
+conversation_history = convo_history()
 
 
 def get_replies(conversation_history, limit=100):
@@ -24,4 +28,4 @@ def get_replies(conversation_history, limit=100):
 
 
 if __name__ == "__main__":
-    get_replies()
+    get_replies(conversation_history, limit=100)
