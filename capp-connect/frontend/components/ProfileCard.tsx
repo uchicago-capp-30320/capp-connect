@@ -30,21 +30,21 @@ const getColorForTag = createTagColorMapper();
 export default function ProfileCard(props: ProfileCardProps) {
   const [ cardWidth, setCardWidth ] = useState(100)
   const [ profileWidth, setProfileWidth ] = useState(60)
-  
+
   // format location
   const location = [props.city, props.state, props.country]
-    .filter(item => item) 
+    .filter(item => item)
     .join(", ");
 
   const tagObjects = props.tags.map(tag => ({
     name: tag,
     color: getColorForTag(tag)
   }));
-  
+
   return (
     <TouchableHighlight
       onPress={() => {
-        const router = useRouter()  
+        const router = useRouter()
         router.push(
             `/profile?id=${encodeURIComponent(props.user)}`)
       }}
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   },
   tagsContainer: {
     marginTop: Device.deviceType === Device.DeviceType.DESKTOP ? 5 : 3,
-    flex: 1, 
+    flex: 1,
     justifyContent: "center",
     alignContent: "center"
   },

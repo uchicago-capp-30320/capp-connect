@@ -81,7 +81,7 @@ export default function Layout() {
           {makeDrawerScreen("index", "Home")}
           {makeDrawerScreen("feed", "Feed")}
           {makeDrawerScreen("resources", "Resources")}
-          {makeDrawerScreen("directory", "Directory")} 
+          {makeDrawerScreen("directory", "Directory")}
         </Drawer>
       </GestureHandlerRootView>
     );
