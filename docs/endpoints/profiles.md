@@ -1,12 +1,12 @@
-# Profiles Endpoints Documentation  
+# Profiles Endpoints Documentation
 
-## **Profiles**  
+## **Profiles**
 
-### **Get All Profiles**  
-**GET** `/ccserver/profiles/`  
-Returns a list of all user profiles.  
+### **Get All Profiles**
+**GET** `/ccserver/profiles/`
+Returns a list of all user profiles.
 
-**Response:**  
+**Response:**
 ```json
 [
   {
@@ -17,23 +17,23 @@ Returns a list of all user profiles.
     ...
   }
 ]
-```  
+```
 
 ---
 
-### **Get/Update/Delete a Profile**  
-**GET, PUT, DELETE** `/ccserver/profile/<str:username>/`  
-Retrieve, update, or delete a profile by username.  
+### **Get/Update/Delete a Profile**
+**GET, PUT, DELETE** `/ccserver/profile/<str:username>/`
+Retrieve, update, or delete a profile by username.
 
-**PUT Request Body (Partial Update):**  
+**PUT Request Body (Partial Update):**
 ```json
 {
   "slack_username": "new_slack",
   "tags": ["new_tag"]
 }
-```  
+```
 
-**Response (GET):**  
+**Response (GET):**
 ```json
 {
   "user": "username",
@@ -42,18 +42,18 @@ Retrieve, update, or delete a profile by username.
   "bio": "About me...",
   ...
 }
-```  
+```
 
-**Response (DELETE):**  
-`204 No Content`  
+**Response (DELETE):**
+`204 No Content`
 
 ---
 
-### **Get All Usernames**  
-**GET** `/ccserver/names/`  
-Returns a list of all usernames.  
+### **Get All Usernames**
+**GET** `/ccserver/names/`
+Returns a list of all usernames.
 
-**Response:**  
+**Response:**
 ```json
 ["user1", "user2", ...]
-```  
+```

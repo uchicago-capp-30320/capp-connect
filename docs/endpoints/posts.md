@@ -1,15 +1,15 @@
 # Posts Endpoints Documentation
 
-## **Posts**  
+## **Posts**
 
-### **Get All Posts (Paginated by Type)**  
-**GET** `/ccserver/posts/`  
-Fetches paginated posts grouped by type (Job, General, Event, Project).  
+### **Get All Posts (Paginated by Type)**
+**GET** `/ccserver/posts/`
+Fetches paginated posts grouped by type (Job, General, Event, Project).
 
-**Query Parameters:**  
-- `page` (optional): Page number (default: `1`).  
+**Query Parameters:**
+- `page` (optional): Page number (default: `1`).
 
-**Response:**  
+**Response:**
 ```json
 {
   "next_page": 2,
@@ -22,15 +22,15 @@ Fetches paginated posts grouped by type (Job, General, Event, Project).
     "Project": [ ... ]
   }
 }
-```  
+```
 
 ---
 
-### **Create a Post**  
-**POST** `/ccserver/posts/`  
-Creates a new post.  
+### **Create a Post**
+**POST** `/ccserver/posts/`
+Creates a new post.
 
-**Request Body (JSON):**  
+**Request Body (JSON):**
 ```json
 {
   "title": "Post Title",
@@ -41,9 +41,9 @@ Creates a new post.
   "start_time": "2024-01-01T00:00:00Z",  // Required for events
   "location": "City"  // Optional
 }
-```  
+```
 
-**Response (Success):**  
+**Response (Success):**
 ```json
 {
   "post_id": 1,
@@ -53,23 +53,23 @@ Creates a new post.
   "created_at": "2024-01-01T00:00:00Z",
   ...
 }
-```  
+```
 
 ---
 
-### **Get/Update/Delete a Post**  
-**GET, PUT, DELETE** `/ccserver/posts/<int:pk>/`  
-Retrieve, update, or delete a post by ID.  
+### **Get/Update/Delete a Post**
+**GET, PUT, DELETE** `/ccserver/posts/<int:pk>/`
+Retrieve, update, or delete a post by ID.
 
-**PUT Request Body (Partial Update):**  
+**PUT Request Body (Partial Update):**
 ```json
 {
   "title": "Updated Title",
   "tags": ["new_tag"]
 }
-```  
+```
 
-**Response (GET):**  
+**Response (GET):**
 ```json
 {
   "post_id": 1,
@@ -79,21 +79,21 @@ Retrieve, update, or delete a post by ID.
   "tags": ["tag1"],
   ...
 }
-```  
+```
 
-**Response (DELETE):**  
-`204 No Content`  
+**Response (DELETE):**
+`204 No Content`
 
 ---
 
-### **Search Posts by Tags**  
-**GET** `/ccserver/posts/search/`  
-Fetches posts matching **all** specified tags.  
+### **Search Posts by Tags**
+**GET** `/ccserver/posts/search/`
+Fetches posts matching **all** specified tags.
 
-**Query Parameters:**  
-- `tags` (multiple): Tags to filter by (e.g., `?tags=tag1&tags=tag2`).  
+**Query Parameters:**
+- `tags` (multiple): Tags to filter by (e.g., `?tags=tag1&tags=tag2`).
 
-**Response:**  
+**Response:**
 ```json
 [
   {
@@ -103,17 +103,17 @@ Fetches posts matching **all** specified tags.
     ...
   }
 ]
-```  
+```
 
 ---
 
-## **Comments**  
+## **Comments**
 
-### **Get All Comments for a Post**  
-**GET** `/ccserver/posts/<int:pk>/comments/`  
-Returns all comments on a post.  
+### **Get All Comments for a Post**
+**GET** `/ccserver/posts/<int:pk>/comments/`
+Returns all comments on a post.
 
-**Response:**  
+**Response:**
 ```json
 [
   {
@@ -123,20 +123,20 @@ Returns all comments on a post.
     "created_at": "2024-01-01T00:00:00Z"
   }
 ]
-```  
+```
 
 ---
 
-### **Create a Comment**  
-**POST** `/ccserver/posts/<int:pk>/comments/`  
-Adds a comment to a post.  
+### **Create a Comment**
+**POST** `/ccserver/posts/<int:pk>/comments/`
+Adds a comment to a post.
 
-**Request Body (JSON):**  
+**Request Body (JSON):**
 ```json
 { "comment_text": "New comment..." }
-```  
+```
 
-**Response (Success):**  
+**Response (Success):**
 ```json
 {
   "comment_id": 2,
@@ -144,13 +144,13 @@ Adds a comment to a post.
   "comment_text": "New comment...",
   "created_at": "2024-01-01T00:00:00Z"
 }
-```  
+```
 
 ---
 
-### **Delete a Comment**  
-**DELETE** `/ccserver/posts/<int:pk>/comments/<int:comment_id>/`  
-Deletes a comment by ID.  
+### **Delete a Comment**
+**DELETE** `/ccserver/posts/<int:pk>/comments/<int:comment_id>/`
+Deletes a comment by ID.
 
-**Response:**  
-`204 No Content`  
+**Response:**
+`204 No Content`

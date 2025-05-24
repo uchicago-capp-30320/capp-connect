@@ -1,25 +1,25 @@
-# Other Endpoints Documentation  
+# Other Endpoints Documentation
 
-## **Tags**  
+## **Tags**
 
-### **Get All Tags**  
-**GET** `/ccserver/tags/`  
-Returns a list of all tags for filtering.  
+### **Get All Tags**
+**GET** `/ccserver/tags/`
+Returns a list of all tags for filtering.
 
-**Response:**  
+**Response:**
 ```json
 ["tag1", "tag2", ...]
-```  
+```
 
 ---
 
-## **Resources**  
+## **Resources**
 
-### **Get All Resources**  
-**GET** `/ccserver/resources/`  
-Returns all resources.  
+### **Get All Resources**
+**GET** `/ccserver/resources/`
+Returns all resources.
 
-**Response:**  
+**Response:**
 ```json
 [
   {
@@ -30,4 +30,4 @@ Returns all resources.
     ...
   }
 ]
-```  
+```
