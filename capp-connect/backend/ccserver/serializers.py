@@ -7,17 +7,19 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Tag
         fields = ["tag_name"]
-    
+
     def to_representation(self, instance):
         return instance.tag_name
+
 
 class NameSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Profile
-        fields =["user"]
-    
+        fields = ["user"]
+
     def to_representation(self, instance):
         return instance.user.username
+
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.StringRelatedField()
