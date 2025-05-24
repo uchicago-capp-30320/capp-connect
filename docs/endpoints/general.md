@@ -1,7 +1,7 @@
 # Endpoint Documentation
 
 ## Tags
-- Get a list of all tags (for search filtering)
+- Get a list of all tags for filtering
 
 ## Posts
 
