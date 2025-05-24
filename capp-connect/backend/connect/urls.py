@@ -58,6 +58,11 @@ urlpatterns = [
         views.SearchPosts.as_view(),
         name="search_posts",
     ),
+    path(
+        "ccserver/resources/search/",
+        views.SearchResources.as_view(),
+        name="search_resources",
+    ),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
