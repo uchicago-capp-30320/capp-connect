@@ -58,8 +58,8 @@ urlpatterns = [
         views.SearchPosts.as_view(),
         name="search_posts",
     ),
-    path("ccserver/tags/", views.GetTagsList.as_view(), name="get_tags"),
-    path("ccserver/names/", views.GetNamesList.as_view(), name="get_names"),
+    path("ccserver/tags/", views.SearchOthersList.as_view(), name="tags_list"),
+    path("ccserver/directory/", views.SearchDirectoryList.as_view(), name="directory_list"),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

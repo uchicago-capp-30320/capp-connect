@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+import re
 from .models import Comment, Post, Profile, ProfileTag, Resource, Tag
 
 
@@ -15,10 +15,12 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
 class NameSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Profile
-        fields = ["user"]
+        fields = ["slack_username"]
 
     def to_representation(self, instance):
-        return instance.user.username
+        slack_name = instance.slack_username
+        cleaned_name = re.sub(r'\(.*?\)', '', slack_name).strip()
+        return cleaned_name
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
