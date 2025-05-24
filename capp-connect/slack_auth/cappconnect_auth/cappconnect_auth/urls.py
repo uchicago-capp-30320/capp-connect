@@ -12,6 +12,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/login/slack/", oauth2_login, name="slack_login"),
     path("accounts/", include("allauth.urls")),
-    # Temporary redirect so we know that this worked
-    path("", lambda request: HttpResponse("You're logged in via Slack!")),
-]
+    path("fetch-slack/", views.fetch_slack_data, name="fetch_slack"), # added for getting old msgs and replies!
+    path("", lambda request: HttpResponse("You're logged in via Slack!")),] # Temporary redirect so we know that this worked
+   
+
