@@ -61,6 +61,8 @@ export default function ProfileCard(props: ProfileCardProps) {
             setProfileWidth(e.nativeEvent.layout.width)
           }}>
            <ProfilePhoto style={styles.image}/>
+           {/* create more space */}
+           <View style={{height: 50}}></View>
           </View>
           {/* offset container to the left by the size of the profile photo to be truly centered */}
           <View style={[styles.infoContainer, {marginLeft: -profileWidth}]}>
