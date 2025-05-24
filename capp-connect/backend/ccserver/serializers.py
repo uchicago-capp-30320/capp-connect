@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Comment, Post, Profile, ProfileTag, Tag
+from .models import Comment, Post, Profile, ProfileTag, Resource, Tag
 
 
 class TagSerializer(serializers.HyperlinkedModelSerializer):
@@ -12,7 +12,10 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.StringRelatedField()
     tags = serializers.SlugRelatedField(
-        many=True, slug_field="tag_name", queryset=Tag.objects.all()
+        many=True,
+        slug_field="tag_name",
+        queryset=Tag.objects.all(),
+        required=False,
     )
 
     class Meta:
@@ -37,12 +40,13 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         unique_together = ("profile", "tag")
 
     def update(self, instance, validated_data):
-        tags_data = validated_data.pop("tags", [])
+        tags_data = validated_data.pop("tags", None)
         instance = super().update(instance, validated_data)
-        instance.tags.clear()
-        for tag_name in tags_data:
-            tag, _ = Tag.objects.get_or_create(tag_name=tag_name)
-            instance.tags.add(tag)
+        if tags_data is not None:
+            instance.tags.clear()
+            for tag_name in tags_data:
+                tag, _ = Tag.objects.get_or_create(tag_name=tag_name)
+                instance.tags.add(tag)
         return instance
 
     def delete(self, instance):
@@ -79,7 +83,9 @@ class ProfileTagSerializer(serializers.HyperlinkedModelSerializer):
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.StringRelatedField()
-    tags = serializers.StringRelatedField(many=True)
+    tags = serializers.SlugRelatedField(
+        many=True, slug_field="tag_name", queryset=Tag.objects.all()
+    )
 
     class Meta:
         model = Post
@@ -96,6 +102,31 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             "start_time",
             "location",
         ]
+        unique_together = ("post_id", "tag")
+
+    def create(self, validated_data):
+        tags_data = validated_data.pop("tags", [])
+        post = Post.objects.create(**validated_data)
+        for tag_name in tags_data:
+            tag, _ = Tag.objects.get_or_create(tag_name=tag_name)
+            post.tags.add(tag)
+        return post
+
+    def update(self, instance, validated_data):
+        tags_data = validated_data.pop("tags", None)
+        instance = super().update(instance, validated_data)
+
+        if tags_data is not None:
+            instance.tags.clear()
+            for tag_name in tags_data:
+                tag, _ = Tag.objects.get_or_create(tag_name=tag_name)
+                instance.tags.add(tag)
+
+        return instance
+
+    def delete(self, instance):
+        instance.delete()
+        return instance
 
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
@@ -115,3 +146,16 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
     def delete(self, instance):
         instance.delete()
         return instance
+
+
+class ResourceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Resource
+        fields = [
+            "resource_id",
+            "title",
+            "description",
+            "created_at",
+            "updated_at",
+            "links",
+        ]

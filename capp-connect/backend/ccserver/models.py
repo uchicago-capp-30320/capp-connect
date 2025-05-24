@@ -10,14 +10,6 @@ class EmploymentStatus(models.TextChoices):
     STUDENT = "Student", "student"
 
 
-class PostType(models.TextChoices):
-    JOB = "Job", "job"
-    GENERAL = "General", "general"
-    RESOURCE = "Resource", "resource"
-    EVENT = "Event", "event"
-    PROJECT = "Project", "project"
-
-
 # Models
 # Tags, to be used for users/posts
 class Tag(models.Model):
@@ -71,6 +63,12 @@ class Post(models.Model):
     class Source(models.TextChoices):
         SLACK = "Slack", "Slack"
         APP = "App", "App"
+
+    class PostType(models.TextChoices):
+        JOB = "Job", "job"
+        GENERAL = "General", "general"
+        EVENT = "Event", "event"
+        PROJECT = "Project", "project"
 
     post_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
