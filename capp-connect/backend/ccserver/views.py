@@ -4,13 +4,15 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Comment, Post, Profile, Resource
+from .models import Comment, Post, Profile, Resource, Tag
 from .serializers import (
     CommentSerializer,
     PostSerializer,
     ProfileListSerializer,
     ProfileSerializer,
     ResourceSerializer,
+    TagSerializer,
+    NameSerializer
 )
 
 
@@ -65,6 +67,17 @@ class GetProfileList(APIView):
         serializer = ProfileListSerializer(users, many=True)
         return Response(serializer.data)
 
+class GetNamesList(APIView):
+    def get(self, request, format=None):
+        users = Profile.objects.all()
+        serializer = NameSerializer(users, many=True)
+        return Response(serializer.data)
+    
+class GetTagsList(APIView):
+    def get(self, request, format=None):
+        tags = Tag.objects.all()
+        serializer = TagSerializer(tags, many=True)
+        return Response(serializer.data)
 
 class GetPost(APIView):
     def get_object(self, pk):
