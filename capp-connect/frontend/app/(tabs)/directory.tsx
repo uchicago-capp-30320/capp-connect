@@ -3,10 +3,7 @@ import ProfileCard from "@/components/ProfileCard";
 import { FlashList } from "@shopify/flash-list";
 import { useEffect, useState } from "react";
 import SearchBar from '../../components/SearchBar';
-<<<<<<< HEAD
 // import fetchData from '../../utils/fetchdata';
-=======
->>>>>>> fdd6f2811eecb4d368eeca746daabd795e9c15c0
 import * as Device from 'expo-device'
 
 type UserProfile = {
