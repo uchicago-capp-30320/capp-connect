@@ -3,12 +3,10 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from "expo-router";
 import { Colors, Containers } from "@/themes";
 
-
 // note: ran in mobile & web & looks good for now
 // also - ran with it as a tab
 export default function NotAuthorized() {
  const router = useRouter();
-
 
  return (
    <SafeAreaProvider>
