@@ -88,7 +88,7 @@ class Post(models.Model):
         Tag, through="PostTag", related_name="post_tags"
     )
     links = models.TextField(blank=True, null=True)
-    start_time = models.DateTimeField()
+    start_time = models.DateTimeField(blank=True, null=True)
     location = models.CharField(max_length=100, blank=True, null=True)
     source = models.CharField(
         max_length=5,
