@@ -3,6 +3,8 @@ import os
 
 # Import WebClient from Python SDK (github.com/slackapi/python-slack-sdk)
 from slack_sdk import WebClient
+from get_channel_history import * 
+
 
 
 # WebClient instantiates a client that can call API methods
@@ -10,7 +12,7 @@ from slack_sdk import WebClient
 client = WebClient(token=os.environ.get("SLACK_BOT_TOKEN"))
 logger = logging.getLogger(__name__)
 
-
+conversation_history = convo_history()
 def get_replies(conversation_history, limit=100):
     for channel_id, messages in conversation_history.items():
         for msg in messages:
@@ -24,4 +26,4 @@ def get_replies(conversation_history, limit=100):
 
 
 if __name__ == "__main__":
-    get_replies()
+    get_replies(conversation_history, limit=100)
