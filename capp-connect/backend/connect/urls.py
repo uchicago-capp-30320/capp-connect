@@ -51,15 +51,16 @@ urlpatterns = [
         name="delete_comment",
     ),
     path(
-        "ccserver/resources/", views.GetResource.as_view(), name="get_resources"
+        "ccserver/resources/", views.GetResourceList.as_view(), name="all_resources"
     ),
+    path("ccserver/resources/<int:pk>/", views.GetResource.as_view(), name="resource_detail"),
     path(
         "ccserver/posts/search/",
         views.SearchPosts.as_view(),
         name="search_posts",
     ),
     path("ccserver/tags/", views.GetTagsList.as_view(), name="get_tags"),
-    path("ccserver/names/", views.GetNamesList.as_view(), name="get_names"),
+    path("ccserver/names/", views.GetNamesList.as_view(), name="get_names")
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
