@@ -129,13 +129,22 @@ def create_tag(text):
         "Spark",
         "agile",
         "human-centered design",
-        "coursework",
         "tutorial",
         "startup",
         "full-time",
         "part-time",
         "internship",
         "fellowship",
+        "salary",
+        "electives",
+        "alumni",
+        "curriculum",
+        "tutorial",
+        "interview preparation",
+        "job board",
+        "hackathon",
+        "networking",
+        "resume",
     ]
 
     prompt = f"""
@@ -212,10 +221,10 @@ def get_msg(message, say):
         # "type": message["type"],
         "post_type": post_type,
         "user_id": message["user"], #in theirs it is slack_user_id
-        "client_message_id": message["client_msg_id"],
+        "client_msg_id": message["client_msg_id"],
         "description": message["text"],
-        "tag": message_tag,
-        "ts": message["ts"],
+        "tags": message_tag,
+        "ts": message["ts"], #they are going to replace with when it came into DB 
         # "event_ts": message["event_ts"],
         "edited": message.get("edited"),
     }
@@ -241,6 +250,18 @@ def record_changed_messages(body, logger):
 
     """
     event = body["event"]
+    channel = event["channel"]
+    post_type = None
+    if channel == 'C08QT9ZUJA0':
+        post_type = "General"
+    elif channel == 'C08RR4NJNHK': 
+        post_type = 'Project'
+    elif channel ==  'C08RWUE8ZKN':
+        post_type = "Job"
+    elif channel == 'C08S5MWNW3T':
+        post_type = "Event"
+
+    
     message_data = event.get("message", {})
     message_tag = create_tag(
         message_data.get("text", "")
@@ -248,13 +269,14 @@ def record_changed_messages(body, logger):
 
     if event["subtype"] == "message_changed":
         changed_message = {
-            "channel": event["channel"],
+            "post_type": post_type,
             # "hidden": event["hidden"],
-            "ts": event["ts"],
+            # "ts": event["ts"],
+            "client_msg_id": message_data.get("client_msg_id"),
             # "message": event.get("message", {}),
-            "edited": message_data.get("edited", {}),
+            # "edited": message_data.get("edited", {}),
             "description": message_data.get("text", ""),
-            "tag": message_tag,
+            "tags": message_tag,
         }
         print(changed_message)
 
@@ -262,9 +284,9 @@ def record_changed_messages(body, logger):
         event["subtype"] == "message_deleted"
     ):  # https://api.slack.com/events/message/message_deleted
         deleted_message = {
-            "channel": event["channel"],
-            "ts": event["ts"],
-            "deleted_ts": event["deleted_ts"],
+            "post_type": post_type,
+            # "ts": event["ts"],
+            "ts": event["deleted_ts"], #reminder this is the deleted ts which matches. 
         }
         print(deleted_message)
 
