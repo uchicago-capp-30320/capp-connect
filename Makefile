@@ -38,7 +38,7 @@ frontend-dev:
 
 
 .PHONY: frontend-build
-frontend-dev:
+frontend-build:
 	cd capp-connect/frontend && npx expo export --platform web --output-dir static
 
 # .PHONY: run-all
