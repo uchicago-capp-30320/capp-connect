@@ -4,9 +4,10 @@ import ProfilePhoto from "./ProfilePhoto";
 import createTagColorMapper from "../utils/tagColorMapper";
 import { useRouter } from "expo-router";
 import TagCarousel from "./TagCarousel";
+import { useState } from "react";
 
 // create conditional styling for desktop vs mobile
-const CARD_HEIGHT = Device.deviceType === Device.DeviceType.DESKTOP ? 200 : 120;
+// const CARD_HEIGHT = Device.deviceType === Device.DeviceType.DESKTOP ? 200 : 120;
 const PADDING = Device.deviceType === Device.DeviceType.DESKTOP ? 10 : 6;
 const PROFILE_PHOTO_SIZE = Device.deviceType === Device.DeviceType.DESKTOP ? 90 : 60;
 const BORDER_RADIUS = 5;
@@ -27,6 +28,8 @@ const getColorForTag = createTagColorMapper();
 
 // Create profile card component for directory
 export default function ProfileCard(props: ProfileCardProps) {
+  const [ cardWidth, setCardWidth ] = useState(100)
+  const [ profileWidth, setProfileWidth ] = useState(60)
   
   // format location
   const location = [props.city, props.state, props.country]
@@ -48,21 +51,30 @@ export default function ProfileCard(props: ProfileCardProps) {
       activeOpacity={.6}
       underlayColor="#DDDDDD"
       style={styles.container}
+      onLayout={(e) => {
+        setCardWidth(e.nativeEvent.layout.width)
+      }}
     >
       <View style={styles.cardBackground}>
-        <ProfilePhoto style={styles.image}/>
-        
-        {/* profile info */}
-        <View style={styles.infoContainer}>
-          <Text style={styles.name}>{props.name}</Text>
-          <Text style={styles.location}>{location}</Text>
-          <Text style={styles.job_title}>{props.job_title}</Text>
-          <Text style={styles.company}>{props.company}</Text>
-          
-          {/* tags */}
-          <View style={styles.tagsContainer}>
-            <TagCarousel tags={tagObjects} />
+        <View style={{flexDirection: "row"}}>
+          <View onLayout={(e) => {
+            setProfileWidth(e.nativeEvent.layout.width)
+          }}>
+           <ProfilePhoto style={styles.image}/>
           </View>
+          {/* offset container to the left by the size of the profile photo to be truly centered */}
+          <View style={[styles.infoContainer, {marginLeft: -profileWidth}]}>
+             {/* profile info */}
+           <Text style={[styles.name]}>{props.name}</Text>
+            <Text style={styles.job_title}>{props.job_title}</Text>
+            <Text style={styles.company}>{props.company}</Text>
+            <Text style={styles.location}>{location}</Text>
+          </View>
+        </View>
+
+        {/* tags */}
+        <View style={[styles.tagsContainer]}>
+          <TagCarousel tags={tagObjects} style={{alignSelf: "center", maxWidth: cardWidth*.95, minWidth: 80, flexShrink: 1}}/>
         </View>
       </View>
     </TouchableHighlight>
@@ -73,7 +85,7 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: BORDER_RADIUS,
     alignSelf: "center",
-    height: CARD_HEIGHT,
+    height: "auto",
     width: "95%",
     padding: PADDING
   },
@@ -91,12 +103,14 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     padding: Device.deviceType === Device.DeviceType.DESKTOP ? 15 : 10,
-    flexDirection: "row"
+    flexDirection: "column"
   },
   infoContainer: {
     flex: 1,
     marginLeft: Device.deviceType === Device.DeviceType.DESKTOP ? 15 : 10,
-    justifyContent: "center"
+    justifyContent: "center",
+    alignSelf: "center",
+    alignItems: "center"
   },
   name: {
     fontSize: Device.deviceType === Device.DeviceType.DESKTOP ? 18 : 16,
@@ -118,8 +132,10 @@ const styles = StyleSheet.create({
     marginBottom: Device.deviceType === Device.DeviceType.DESKTOP ? 10 : 6
   },
   tagsContainer: {
-    width: "100%",
-    marginTop: Device.deviceType === Device.DeviceType.DESKTOP ? 5 : 3
+    marginTop: Device.deviceType === Device.DeviceType.DESKTOP ? 5 : 3,
+    flex: 1, 
+    justifyContent: "center",
+    alignContent: "center"
   },
   image: {
     width: PROFILE_PHOTO_SIZE,
