@@ -47,9 +47,7 @@ class GetProfile(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(
-        self, request, username, format=None
-    ):
+    def delete(self, request, username, format=None):
         try:
             profile = Profile.objects.get(user__username=username)
         except Profile.DoesNotExist:
