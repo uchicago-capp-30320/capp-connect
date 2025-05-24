@@ -74,6 +74,8 @@ class Post(models.Model):
 
     post_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    slack_user_id = models.CharField(max_length=50, blank=True, null=True)
+    client_msg_id = models.CharField(max_length=50, blank=True, null=True)
     title = models.CharField(max_length=100)
     description = models.TextField()
     post_type = models.CharField(
@@ -81,6 +83,7 @@ class Post(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    slack_ts = models.CharField(max_length=50, blank=True, null=True)
     tags = models.ManyToManyField(
         Tag, through="PostTag", related_name="post_tags"
     )
