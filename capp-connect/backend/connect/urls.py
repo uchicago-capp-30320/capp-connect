@@ -43,7 +43,6 @@ urlpatterns = [
     ),
     path("ccserver/tags/", views.GetTagsList.as_view(), name="get_tags"),
     path("ccserver/names/", views.GetNamesList.as_view(), name="get_names"),
-
     path(
         "ccserver/posts/<int:pk>/", views.GetPost.as_view(), name="post_detail"
     ),
@@ -58,7 +57,7 @@ urlpatterns = [
         views.GetComment.as_view(),
         name="delete_comment",
     ),
-        path(
+    path(
         "ccserver/posts/search/",
         views.SearchPosts.as_view(),
         name="search_posts",
@@ -70,7 +69,7 @@ urlpatterns = [
         "ccserver/resources/search/",
         views.SearchResources.as_view(),
         name="search_resources",
-    )
+    ),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
