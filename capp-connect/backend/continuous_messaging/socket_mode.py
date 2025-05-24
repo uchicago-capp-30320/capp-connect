@@ -198,15 +198,25 @@ def get_msg(message, say):
     }"""
     # print (filtered_message)
     message_tag = create_tag(message["text"])
-
+    channel = message["channel"]
+    post_type = None
+    if channel == 'C08QT9ZUJA0':
+        post_type = "General"
+    elif channel == 'C08RR4NJNHK': 
+        post_type = 'Project'
+    elif channel ==  'C08RWUE8ZKN':
+        post_type = "Job"
+    elif channel == 'C08S5MWNW3T':
+        post_type = "Event"
     message_for_db = {
-        "type": message["type"],
-        "channel": message["channel"],
-        "user": message["user"],
-        "text": message["text"],
+        # "type": message["type"],
+        "post_type": post_type,
+        "user_id": message["user"], #in theirs it is slack_user_id
+        "client_message_id": message["client_msg_id"],
+        "description": message["text"],
         "tag": message_tag,
         "ts": message["ts"],
-        "event_ts": message["event_ts"],
+        # "event_ts": message["event_ts"],
         "edited": message.get("edited"),
     }
     print(message_for_db)
@@ -239,11 +249,11 @@ def record_changed_messages(body, logger):
     if event["subtype"] == "message_changed":
         changed_message = {
             "channel": event["channel"],
-            "hidden": event["hidden"],
+            # "hidden": event["hidden"],
             "ts": event["ts"],
-            "message": event.get("message", {}),
+            # "message": event.get("message", {}),
             "edited": message_data.get("edited", {}),
-            "text": message_data.get("text", ""),
+            "description": message_data.get("text", ""),
             "tag": message_tag,
         }
         print(changed_message)
