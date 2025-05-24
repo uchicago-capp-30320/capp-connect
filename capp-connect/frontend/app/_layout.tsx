@@ -15,12 +15,12 @@ export default function RootLayout() {
           headerStyle: {backgroundColor: Colors.header},
           headerTintColor: Colors.headerText
         }} />
-      <Stack.Screen name="settings"
+      {/* <Stack.Screen name="settings"
         options={{
           title: "Settings",
           headerStyle: {backgroundColor: Colors.header},
           headerTintColor: Colors.headerText
-        }} />
+        }} /> */}
       <Stack.Screen name="post"
         options={{
           title: "Feed",

@@ -1,19 +1,20 @@
-# Endpoint Documentation
+# Endpoints List
+
+## Tags
+- Get a list of all tags for filter/search
 
 ## Posts
 
-- Get all posts, organized by most recent
-- Get all posts that have X tag
-- Get all posts that have "text" in title or description
-- Get all posts that are events/projects/jobs/etc
+- Get paginated posts, organized by most recent and grouped by post type
+- Get all posts that have X tag (filter/search)
 - Create new post
+- Update post, only if the user is the author
 - Delete post, only if the user is the author
 
 ## Resources
 
 - Get all resources, organized by most recent
 - Get all resources that have X tag
-- Get all resources that have "text" in title or description
 
 ## Comments
 
@@ -23,9 +24,9 @@
 
 ## Profiles
 
+- Get a list of names for filter/search
 - Get all profiles
-- Get one profile, based on profile_id
-- Get all profiles that have X tag
-- Get all profiles that have "text" in job title or description
+- Get one profile, based on user_name
+- Get all profiles that have X tag (filter/search)
 - Update profile, only if the user is the owner
-- Delete profile
+- Delete profile, only if the user is the owner
