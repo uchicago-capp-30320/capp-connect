@@ -1,59 +1,156 @@
-# Endpoint Documentation
+# Posts Endpoints Documentation
 
-## Posts
+## **Posts**  
 
-These endpoints are connected to the app's ability to create and load posts
+### **Get All Posts (Paginated by Type)**  
+**GET** `/ccserver/posts/`  
+Fetches paginated posts grouped by type (Job, General, Event, Project).  
 
-### POST /create_post/
+**Query Parameters:**  
+- `page` (optional): Page number (default: `1`).  
 
-Creates a new post or comment. If super_post_id is provided, the post is treated as a comment on another post.
+**Response:**  
+```json
+{
+  "next_page": 2,
+  "current_page": 1,
+  "posts_per_type": 25,
+  "posts": {
+    "Job": [ ... ],
+    "General": [ ... ],
+    "Event": [ ... ],
+    "Project": [ ... ]
+  }
+}
+```  
 
-Parameters:
-- user_id: user id of poster
-- super_post_id: post id of post this post is a comment of, will be NULL for top-level post
-- body: text content of post
-- tags: tags associated with the post's content
-- post_type: general, event, project, job, or CAPP resource
+---
 
-Response:
-- id: unique identifier for this post
-- timestamp: timestamp for post
+### **Create a Post**  
+**POST** `/ccserver/posts/`  
+Creates a new post.  
 
-### GET /fetch_post_ids/
+**Request Body (JSON):**  
+```json
+{
+  "title": "Post Title",
+  "description": "Post content...",
+  "post_type": "Job",  // Job/General/Event/Project
+  "tags": ["tag1", "tag2"],
+  "links": "https://example.com",
+  "start_time": "2024-01-01T00:00:00Z",  // Required for events
+  "location": "City"  // Optional
+}
+```  
 
-Fetches ids of relevant posts, either the most recent or posts that match the user's query.
+**Response (Success):**  
+```json
+{
+  "post_id": 1,
+  "user": "username",
+  "title": "Post Title",
+  "post_type": "Job",
+  "created_at": "2024-01-01T00:00:00Z",
+  ...
+}
+```  
 
-Parameters:
-- n: number of ids to return for each type (default 20)
-- query: user query to filter the returned ids (if NULL, returns the most recent ids)
-- post_type: restriction on what type of posts
+---
 
-Response:
-- general_posts:
-    - post_id: array of unique general post identifiers (general, job, and resources are all types of posts delineated by a type variable in the db)
-- job_posts:
-    - post_id: array of unique job post identifiers
-- resources_posts:
-    - post_id: array of unique post identifiers
-- event_posts:
-    - event_id: array of unique event post identifiers
-- projects_posts:
-    - project_id: array of unique project post identifiers
+### **Get/Update/Delete a Post**  
+**GET, PUT, DELETE** `/ccserver/posts/<int:pk>/`  
+Retrieve, update, or delete a post by ID.  
 
+**PUT Request Body (Partial Update):**  
+```json
+{
+  "title": "Updated Title",
+  "tags": ["new_tag"]
+}
+```  
 
-### GET /fetch_post_info/
+**Response (GET):**  
+```json
+{
+  "post_id": 1,
+  "user": "username",
+  "title": "Post Title",
+  "description": "Content...",
+  "tags": ["tag1"],
+  ...
+}
+```  
 
-Fetches the relevant information for the posts specified by their ids.
+**Response (DELETE):**  
+`204 No Content`  
 
-Parameters:
-- ids: array of ids (currently capped to 20 ids)
-- post_type: type of post
+---
 
-Response:
-- posts: array of posts
-    - id: unique identifier for this post
-    - user_id: user id of poster
-    - body: text content of post
-    - timestamp: timestamp for post
-    - super_post_id: post id of post this post is a comment of, will be NULL for top-level post
-    - tags: tags associated with the post's content
+### **Search Posts by Tags**  
+**GET** `/ccserver/posts/search/`  
+Fetches posts matching **all** specified tags.  
+
+**Query Parameters:**  
+- `tags` (multiple): Tags to filter by (e.g., `?tags=tag1&tags=tag2`).  
+
+**Response:**  
+```json
+[
+  {
+    "post_id": 1,
+    "title": "Matching Post",
+    "tags": ["tag1", "tag2"],
+    ...
+  }
+]
+```  
+
+---
+
+## **Comments**  
+
+### **Get All Comments for a Post**  
+**GET** `/ccserver/posts/<int:pk>/comments/`  
+Returns all comments on a post.  
+
+**Response:**  
+```json
+[
+  {
+    "comment_id": 1,
+    "user": "username",
+    "comment_text": "Great post!",
+    "created_at": "2024-01-01T00:00:00Z"
+  }
+]
+```  
+
+---
+
+### **Create a Comment**  
+**POST** `/ccserver/posts/<int:pk>/comments/`  
+Adds a comment to a post.  
+
+**Request Body (JSON):**  
+```json
+{ "comment_text": "New comment..." }
+```  
+
+**Response (Success):**  
+```json
+{
+  "comment_id": 2,
+  "user": "username",
+  "comment_text": "New comment...",
+  "created_at": "2024-01-01T00:00:00Z"
+}
+```  
+
+---
+
+### **Delete a Comment**  
+**DELETE** `/ccserver/posts/<int:pk>/comments/<int:comment_id>/`  
+Deletes a comment by ID.  
+
+**Response:**  
+`204 No Content`  

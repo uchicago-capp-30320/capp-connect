@@ -1,4 +1,4 @@
-# Endpoint Documentation
+# Endpoints List
 
 ## Tags
 - Get a list of all tags for filtering
