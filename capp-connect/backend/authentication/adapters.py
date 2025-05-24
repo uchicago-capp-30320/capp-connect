@@ -36,6 +36,7 @@ class SlackSocialAccountAdapter(DefaultSocialAccountAdapter):
         profile.email = extra.get("email", "")
 
         slack_user_id = extra.get("https://slack.com/user_id", "")
+        profile.slack_user_id = slack_user_id
         profile.slack_dm_url = (
             f"{SLACK_PROFILE_BASE_URL}{slack_user_id}" if slack_user_id else ""
         )
