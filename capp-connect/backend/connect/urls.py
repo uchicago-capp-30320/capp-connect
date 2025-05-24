@@ -44,7 +44,7 @@ urlpatterns = [
     path("ccserver/tags/", views.GetTagsList.as_view(), name="get_tags"),
     path("ccserver/names/", views.GetNamesList.as_view(), name="get_names"),
     path(
-        "ccserver/posts/<int:pk>/", views.GetPost.as_view(), name="post_detail"
+        "ccserver/posts/<int:pk>/", views.GetPost.as_view(), name="post_detail",
     ),
     path("ccserver/posts/", views.GetPostList.as_view(), name="all_posts"),
     path(
@@ -62,8 +62,13 @@ urlpatterns = [
         views.SearchPosts.as_view(),
         name="search_posts",
     ),
+    path("ccserver/tags/", views.SearchOthersList.as_view(), name="tags_list"),
     path(
-        "ccserver/resources/", views.GetResource.as_view(), name="get_resources"
+        "ccserver/directory/",
+        views.SearchDirectoryList.as_view(),
+        name="directory_list",
+    path(
+        "ccserver/resources/", views.GetResource.as_view(), name="get_resources",
     ),
     path(
         "ccserver/resources/search/",
