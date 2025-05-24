@@ -42,13 +42,12 @@ class GetProfile(APIView):
 
         serializer = ProfileSerializer(profile, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.save()
+            if request.user == profile.user:
+                serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(
-        self, request, username, format=None
-    ):  # Missing permission check
+    def delete(self, request, username, format=None):
         try:
             profile = Profile.objects.get(user__username=username)
         except Profile.DoesNotExist:
@@ -56,8 +55,8 @@ class GetProfile(APIView):
                 {"error": "Profile not found."},
                 status=status.HTTP_404_NOT_FOUND,
             )
-
-        profile.delete()
+        if request.user == profile.user:
+            profile.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -128,13 +127,15 @@ class GetPost(APIView):
         post = self.get_object(pk)
         serializer = PostSerializer(post, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.save()
+            if request.user == post.user:
+                serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
         post = self.get_object(pk)
-        post.delete()
+        if request.user == post.user:
+            post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -211,7 +212,8 @@ class GetComment(APIView):
         try:
             post = Post.objects.get(pk=pk)
             comment = post.comments.get(pk=comment_id)
-            comment.delete()
+            if request.user == comment.user:
+                comment.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Post.DoesNotExist:
             return Response(
@@ -300,13 +302,15 @@ class GetResource(APIView):
             resource, data=request.data, partial=True
         )
         if serializer.is_valid():
-            serializer.save()
+            if request.user == resource.user:
+                serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
         resource = self.get_object(pk)
-        resource.delete()
+        if request.user == resource.user:
+            resource.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -324,4 +328,11 @@ class SearchResources(APIView):
                     tag_resources
                 )
         serializer = PostSerializer(matching_resources, many=True)
+        return Response(serializer.data)
+
+
+class MyProfileView(APIView):
+    def get(self, request):
+        profile = Profile.objects.get(user=request.user)
+        serializer = ProfileSerializer(profile)
         return Response(serializer.data)
