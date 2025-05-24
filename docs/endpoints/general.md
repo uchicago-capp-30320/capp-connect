@@ -1,12 +1,12 @@
 # Endpoints List
 
 ## Tags
-- Get a list of all tags for filtering
+- Get a list of all tags for filter/search
 
 ## Posts
 
 - Get paginated posts, organized by most recent and grouped by post type
-- Get all posts that have X tag
+- Get all posts that have X tag (filter/search)
 - Create new post
 - Update post, only if the user is the author
 - Delete post, only if the user is the author
@@ -24,9 +24,9 @@
 
 ## Profiles
 
-- Get a list of names for filtering
+- Get a list of names for filter/search
 - Get all profiles
 - Get one profile, based on user_name
-- Get all profiles that have X tag
+- Get all profiles that have X tag (filter/search)
 - Update profile, only if the user is the owner
 - Delete profile, only if the user is the owner
