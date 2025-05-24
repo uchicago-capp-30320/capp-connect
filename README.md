@@ -15,10 +15,9 @@ The below is credited to @michplunkett, 2024 CAPP TA
 4. Use the `make run-all` command.
 
 ### Connecting to the server to test auth:
- **You should only have to do this process once**
 1. Connect to the server using the command: `ssh -p 2222 capp-connect@turing.unnamed.computer`
 2. Create a new uv virtual environment: `source .venv/bin/activate`
-3. cd to `capp-connect/slack_auth/cappconnect_auth`
+3. cd to `capp-connect/backend`
 4. Run `python manage.py runserver 0.0.0.0:8010` (may be python3 on your machine)
 5. Then go to this [link](https://capp-connect.unnamed.computer/auth/login/slack/)
 
