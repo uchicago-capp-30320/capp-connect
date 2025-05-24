@@ -104,7 +104,7 @@ def load_tag_list(apps, schema_editor):
         "tutorial",
         "startup",
     ]
-    
+
     non_profile_tag_list = [
         "full-time",
         "part-time",
@@ -121,13 +121,16 @@ def load_tag_list(apps, schema_editor):
         "networking",
         "resume",
     ]
-    
+
     for tag_name in overall_tag_list:
-        Tag.objects.update_or_create(tag_name=tag_name,defaults={"allowed_on_profile": True})
+        Tag.objects.update_or_create(
+            tag_name=tag_name, defaults={"allowed_on_profile": True}
+        )
 
     for tag_name in non_profile_tag_list:
-        Tag.objects.update_or_create(tag_name=tag_name,defaults={"allowed_on_profile": False})
-
+        Tag.objects.update_or_create(
+            tag_name=tag_name, defaults={"allowed_on_profile": False}
+        )
 
 
 class Migration(migrations.Migration):

@@ -4,20 +4,28 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ccserver', '0004_rename_github_username_profile_github_url_and_more'),
+        ("ccserver", "0004_rename_github_username_profile_github_url_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='tag',
-            name='allowed_on_profile',
+            model_name="tag",
+            name="allowed_on_profile",
             field=models.BooleanField(default=True),
         ),
         migrations.AlterField(
-            model_name='post',
-            name='post_type',
-            field=models.CharField(choices=[('Job', 'job'), ('General', 'general'), ('Event', 'event'), ('Project', 'project')], default='General', max_length=20),
+            model_name="post",
+            name="post_type",
+            field=models.CharField(
+                choices=[
+                    ("Job", "job"),
+                    ("General", "general"),
+                    ("Event", "event"),
+                    ("Project", "project"),
+                ],
+                default="General",
+                max_length=20,
+            ),
         ),
     ]
