@@ -79,9 +79,9 @@ export default function Layout() {
           }}>
           {/* returns JSX drawer screen objects for all the pages */}
           {makeDrawerScreen("index", "Home")}
-          {makeDrawerScreen("feed", "Feed")}
-          {makeDrawerScreen("resources", "Resources")}
           {makeDrawerScreen("directory", "Directory")}
+          {makeDrawerScreen("resources", "Resources")}
+          {makeDrawerScreen("feed", "Feed")}
         </Drawer>
       </GestureHandlerRootView>
     );
@@ -97,10 +97,10 @@ export default function Layout() {
       }}
     >
     {/* returns JSX tab objects for all the pages */}
-      {makeTab("feed", "Feed", "rss")}
       {makeTab("index", "Home", "home")}
-      {makeTab("resources", "Resources", "file")}
       {makeTab("directory", "Directory", "address-book")}
+      {makeTab("resources", "Resources", "list-alt")}
+      {makeTab("feed", "Feed", "rss")}
     </Tabs>
   );
   }
