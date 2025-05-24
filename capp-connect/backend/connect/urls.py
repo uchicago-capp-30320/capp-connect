@@ -45,11 +45,6 @@ urlpatterns = [
     ),
     path("ccserver/tags/", cc_views.GetTagsList.as_view(), name="get_tags"),
     path("ccserver/names/", cc_views.GetNamesList.as_view(), name="get_names"),
-    path(
-        "ccserver/posts/<int:pk>/",
-        cc_views.GetPost.as_view(),
-        name="post_detail",
-    ),
     path("ccserver/posts/", cc_views.GetPostList.as_view(), name="all_posts"),
     path(
         "ccserver/posts/<int:pk>/comments/",
