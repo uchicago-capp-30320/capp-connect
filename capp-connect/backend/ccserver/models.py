@@ -139,3 +139,11 @@ class Resource(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+
+
+class ResourceTag(models.Model):
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("resource", "tag")

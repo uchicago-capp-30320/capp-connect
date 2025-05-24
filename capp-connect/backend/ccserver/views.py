@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Comment, Post, Profile
+from .models import Comment, Post, Profile, Resource
 from .serializers import (
     CommentSerializer,
     PostSerializer,
@@ -67,15 +67,28 @@ class SearchProfiles(APIView):
     def get(self, request):
         tag_names_list = request.GET.getlist("tags")
         matching_profiles = None
+
         for tag_name in tag_names_list:
+            # Check for tag matches within tags or names
             tag_profiles = Profile.objects.filter(tags__tag_name=tag_name)
+            name_profiles = Profile.objects.filter(slack_username=tag_name)
+            tag_or_name_matches = tag_profiles.union(name_profiles)
             if matching_profiles is None:
-                matching_profiles = tag_profiles
+                matching_profiles = tag_or_name_matches
             else:
-                # Update matching_posts to only include posts that also match previous tag(s)
-                matching_profiles = matching_profiles.intersection(tag_profiles)
+                # Update matching_posts to only include profiles that also match previous tag(s)
+                matching_profiles = matching_profiles.intersection(
+                    tag_or_name_matches
+                )
         serializer = ProfileSerializer(matching_profiles, many=True)
         return Response(serializer.data)
+
+
+# class GetProfileList(APIView):
+#     def get(self, request, format=None):
+#         users = Profile.objects.all()
+#         serializer = ProfileListSerializer(users, many=True)
+#         return Response(serializer.data)
 
 
 class GetPost(APIView):
@@ -183,3 +196,20 @@ class GetAllComments(APIView):
             serializer.save(post=post, user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SearchResources(APIView):
+    def get(self, request):
+        tag_names_list = request.GET.getlist("tags")
+        matching_resources = None
+        for tag_name in tag_names_list:
+            tag_resources = Resource.objects.filter(tags__tag_name=tag_name)
+            if matching_resources is None:
+                matching_resources = tag_resources
+            else:
+                # Update matching_posts to only include posts that also match previous tag(s)
+                matching_resources = matching_resources.intersection(
+                    tag_resources
+                )
+        serializer = PostSerializer(matching_resources, many=True)
+        return Response(serializer.data)
