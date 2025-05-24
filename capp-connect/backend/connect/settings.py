@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
+from config import DB_PASSWORD, DJANGO_SECRET_KEY
+from config import SLACK_CLIENT_ID as _SLACK_CLIENT_ID
+from config import SLACK_CLIENT_SECRET as _SLACK_CLIENT_SECRET
+from config import SLACK_REDIRECT_URI as _SLACK_REDIRECT_URI
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,9 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (
-    "django-insecure-3y1b-65)h0&e&i3olf)^isofrn_k4$)yq6(f^jfz#m0#)ke!5+"
-)
+SECRET_KEY = DJANGO_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -92,7 +95,10 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "capp_connect",
-        "OPTIONS": {"service": "my_service"},
+        "USER": "capp_connect",
+        "PASSWORD": DB_PASSWORD,
+        "HOST": "turing.unnamed.computer",
+        "PORT": "5432",
     }
 }
 
@@ -144,4 +150,9 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
+SOCIALACCOUNT_PROVIDERS = {"slack": {"SCOPE": ["openid", "email", "profile"]}}
 SOCIALACCOUNT_ADAPTER = "authentication.adapters.SlackSocialAccountAdapter"
+
+SLACK_CLIENT_ID = _SLACK_CLIENT_ID  # noqa: F401
+SLACK_CLIENT_SECRET = _SLACK_CLIENT_SECRET  # noqa: F401
+SLACK_REDIRECT_URI = _SLACK_REDIRECT_URI  # noqa: F401
