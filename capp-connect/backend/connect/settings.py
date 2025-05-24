@@ -34,16 +34,25 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Django built-in apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "ccserver",
-    "rest_framework",
     "django.contrib.postgres",
+    # Third-party apps
+    "rest_framework",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.slack",
+    # Our apps
+    "ccserver",
+    "authentication",
 ]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
