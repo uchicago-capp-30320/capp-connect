@@ -1,5 +1,5 @@
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
-from authentication.models import Profile
+from ccserver.models import Profile
 
 
 SLACK_PROFILE_BASE_URL = "https://harriscapp.slack.com/team/"
