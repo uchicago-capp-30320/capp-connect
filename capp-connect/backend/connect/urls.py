@@ -37,6 +37,8 @@ urlpatterns = [
         "ccserver/posts/<int:pk>/",
         cc_views.GetPost.as_view(),
         name="post_detail",
+    ),
+    path(
         "ccserver/profiles/search/",
         cc_views.SearchProfiles.as_view(),
         name="search_profiles",
@@ -44,7 +46,9 @@ urlpatterns = [
     path("ccserver/tags/", cc_views.GetTagsList.as_view(), name="get_tags"),
     path("ccserver/names/", cc_views.GetNamesList.as_view(), name="get_names"),
     path(
-        "ccserver/posts/<int:pk>/", cc_views.GetPost.as_view(), name="post_detail",
+        "ccserver/posts/<int:pk>/",
+        cc_views.GetPost.as_view(),
+        name="post_detail",
     ),
     path("ccserver/posts/", cc_views.GetPostList.as_view(), name="all_posts"),
     path(
@@ -62,17 +66,22 @@ urlpatterns = [
         cc_views.SearchPosts.as_view(),
         name="search_posts",
     ),
-    path("ccserver/tags/", views.SearchOthersList.as_view(), name="tags_list"),
+    path(
+        "ccserver/tags/", cc_views.SearchOthersList.as_view(), name="tags_list"
+    ),
     path(
         "ccserver/directory/",
-        views.SearchDirectoryList.as_view(),
+        cc_views.SearchDirectoryList.as_view(),
         name="directory_list",
+    ),
     path(
-        "ccserver/resources/", views.GetResource.as_view(), name="get_resources",
+        "ccserver/resources/",
+        cc_views.GetResource.as_view(),
+        name="get_resources",
     ),
     path(
         "ccserver/resources/search/",
-        views.SearchResources.as_view(),
+        cc_views.SearchResources.as_view(),
         name="search_resources",
     ),
 ]
