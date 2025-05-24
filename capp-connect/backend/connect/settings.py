@@ -31,7 +31,11 @@ SECRET_KEY = DJANGO_SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "capp-connect.unnamed.computer",
+    "localhost",
+    "127.0.0.1",
+]
 
 
 # Application definition
@@ -150,9 +154,20 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
+ACCOUNT_SIGNUP_FIELDS = []
+ACCOUNT_EMAIL_VERIFICATION = "none"
+SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_AUTO_SIGNUP = True
+
 SOCIALACCOUNT_PROVIDERS = {"slack": {"SCOPE": ["openid", "email", "profile"]}}
 SOCIALACCOUNT_ADAPTER = "authentication.adapters.SlackSocialAccountAdapter"
 
 SLACK_CLIENT_ID = _SLACK_CLIENT_ID  # noqa: F401
 SLACK_CLIENT_SECRET = _SLACK_CLIENT_SECRET  # noqa: F401
 SLACK_REDIRECT_URI = _SLACK_REDIRECT_URI  # noqa: F401
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://capp-connect.unnamed.computer",
+    "https://capp-connect.unnamed.computer:8010",
+]
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
