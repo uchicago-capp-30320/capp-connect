@@ -43,8 +43,6 @@ urlpatterns = [
         cc_views.SearchProfiles.as_view(),
         name="search_profiles",
     ),
-    path("ccserver/tags/", cc_views.GetTagsList.as_view(), name="get_tags"),
-    path("ccserver/names/", cc_views.GetNamesList.as_view(), name="get_names"),
     path("ccserver/posts/", cc_views.GetPostList.as_view(), name="all_posts"),
     path(
         "ccserver/posts/<int:pk>/comments/",
