@@ -1,5 +1,7 @@
-from rest_framework import serializers
 import re
+
+from rest_framework import serializers
+
 from .models import Comment, Post, Profile, ProfileTag, Resource, Tag
 
 
@@ -19,7 +21,7 @@ class NameSerializer(serializers.HyperlinkedModelSerializer):
 
     def to_representation(self, instance):
         slack_name = instance.slack_username
-        cleaned_name = re.sub(r'\(.*?\)', '', slack_name).strip()
+        cleaned_name = re.sub(r"\(.*?\)", "", slack_name).strip()
         return cleaned_name
 
 

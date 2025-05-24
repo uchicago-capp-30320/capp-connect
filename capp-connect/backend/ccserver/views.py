@@ -74,7 +74,9 @@ class SearchDirectoryList(APIView):
         user_serializer = NameSerializer(users, many=True)
         tags = Tag.objects.filter(allowed_on_profile=True)
         tag_serializer = TagSerializer(tags, many=True)
-        return Response({"users": user_serializer.data, "tags": tag_serializer.data})
+        return Response(
+            {"users": user_serializer.data, "tags": tag_serializer.data}
+        )
 
 
 class SearchOthersList(APIView):
