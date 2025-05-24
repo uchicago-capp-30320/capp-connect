@@ -56,10 +56,7 @@ export default function ProfileCard(props: ProfileCardProps) {
     >
       <View style={[Containers.cards, styles.cardBackground]}>
         {/* Profile Image */}
-        {/* <View style={styles.imageWrapper}>
-          <ProfilePhoto style={styles.image} />
-        </View> */}
-        <View style={{flex: 1, flexDirection: "row"}}>
+        <View style={{flex: 1, flexDirection: "row", justifyContent: "flex-start"}}>
           <View
             style={styles.imageWrapper}
             onLayout={(e) => {
@@ -89,7 +86,8 @@ export default function ProfileCard(props: ProfileCardProps) {
 const styles = StyleSheet.create({
   compactContainer: {
     flex: 1,
-    height: Device.deviceType === Device.DeviceType.DESKTOP ? 210 : 160,
+    flexShrink: 1,
+    height: "auto"
   },
   cardBackground: {
     flex: 1,
@@ -135,7 +133,7 @@ const styles = StyleSheet.create({
     marginBottom: 6
   },
   tagsContainer: {
-    marginTop: 5,
+    marginTop: 20,
     flex: 1,
     alignContent: "center",
     justifyContent: "center",
