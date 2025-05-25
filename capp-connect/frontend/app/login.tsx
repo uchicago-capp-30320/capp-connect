@@ -18,7 +18,7 @@ export default function SignIn() {
       <Image
         source={require("../assets/images/capp_connect_splash_icon.png")}
         style={styles.logo}
-      /> 
+      />
       */}
 
      <Text style={styles.description}>

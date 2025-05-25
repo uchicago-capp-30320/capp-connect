@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default function ProfileDeleteButton({ username }: Props) {
-  // const router = useRouter(); // use with login 1st page 
+  // const router = useRouter(); // use with login 1st page
 
   const handleDelete = () => {
     if (!username) {
