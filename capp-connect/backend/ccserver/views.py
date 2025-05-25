@@ -1,9 +1,9 @@
 from django.core.paginator import EmptyPage, Paginator
 from django.http import Http404
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication  # For Slack Posts
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.authentication import TokenAuthentication #For Slack Posts
 
 from .models import Comment, Post, Profile, Resource, Tag
 from .serializers import (
@@ -340,7 +340,6 @@ class MyProfileView(APIView):
 
 
 class SlackPost(APIView):
-    
     authentication_classes = [TokenAuthentication]
 
     def get_object(self, ts, post_type):
