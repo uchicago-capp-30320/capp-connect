@@ -339,23 +339,23 @@ class MyProfileView(APIView):
 
 
 class SlackPost(APIView):
-    def get_object(self,ts,channel):
+    def get_object(self, ts, channel):
         try:
-            return Post.objects.get(ts=ts,channel=channel)
+            return Post.objects.get(ts=ts, channel=channel)
         except Post.DoesNotExist:
             return None
-        
+
     def post(self, request):
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def put(self, request):
         ts = request.data.get("ts")
         channel = request.data.get("channel")
-        post = self.get_object(ts,channel)
+        post = self.get_object(ts, channel)
         if not post:
             return Response(
                 {"error": "Post not found."},
@@ -366,12 +366,11 @@ class SlackPost(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def delete(self, request):
         ts = request.data.get("ts")
         channel = request.data.get("channel")
-        post = self.get_object(ts,channel)
+        post = self.get_object(ts, channel)
         if post:
             post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-        
