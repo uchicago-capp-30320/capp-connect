@@ -7,7 +7,7 @@ import { defineConfig } from "eslint/config";
 
 export default defineConfig([
   {
-    ignores: ["**/*.json", "**/*.png", "**/*.jpg", "**/*.ttf", "**/*.txt", "app-example/"],
+    ignores: ["**/*.json", "**/*.png", "**/*.jpg", "**/*.ttf", "**/*.txt", "app-example/", "static/"],
   },
   {
     files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],

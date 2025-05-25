@@ -15,6 +15,8 @@ We have 4 main pages that users can navigate across:
 ### Home page
 The Home page is the landing page for users onto the app. Intentionally simple, users can search the entire app via this page and get a basic understanding of how the app works.
 
+The current layout lets users search the entire app based on tags related to Directory, Resources, and Feed.
+
 ### Directory
 The Directory showcases all the CAPP students and alumni that are using the app. It displays basic information about them including their current position, company, location, and skills.interests. Users can navigate to users' individual pages via the directory.
 
