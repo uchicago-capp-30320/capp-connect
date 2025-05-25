@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     # Third-party apps
     "rest_framework",
+    'rest_framework.authtoken',
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -175,6 +176,7 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.authentication.TokenAuthentication"
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
