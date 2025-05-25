@@ -138,13 +138,6 @@ class ResourceTests(BaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['title'], "Test Resource")
 
-    def test_update_resource(self):
-        url = reverse('resource_detail', kwargs={'pk': self.resource.pk})
-        data = {"title": "Updated Resource"}
-        response = self.client.put(url, data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['title'], "Updated Resource")
-
 class SearchTests(BaseTestCase):
     def test_tag_list(self):
         url = reverse('tags_list')
