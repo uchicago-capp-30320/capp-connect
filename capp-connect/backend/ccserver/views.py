@@ -57,7 +57,12 @@ class GetProfile(APIView):
             )
         if request.user == profile.user:
             profile.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(
+                {"error": "You do not have permission to delete this profile."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
 
 
 class GetProfileList(APIView):
