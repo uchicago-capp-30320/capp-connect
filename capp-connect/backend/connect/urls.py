@@ -22,7 +22,7 @@ urlpatterns = [
         "ccserver/profile/<str:username>/",
         cc_views.GetProfile.as_view(),
         name="get_profile",
-    ),  # Supports delete method
+    ),
     path(
         "ccserver/profile/<str:username>/update/",
         cc_views.GetProfile.as_view(),
@@ -88,6 +88,7 @@ urlpatterns = [
         name="search_resources",
     ),
     path("ccserver/auth/", cc_views.MyProfileView.as_view(), name="my_profile"),
+    path("slack-sync/", cc_views.SlackPost.as_view(), name="slack_sync"),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
