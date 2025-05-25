@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView} from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useState, useEffect } from "react";
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import ProfilePhoto from '@/components/ProfilePhoto';
@@ -7,7 +7,9 @@ import BoxSection from '@/components/BoxSections';
 import TagCarousel from '@/components/TagCarousel';
 import * as Device from 'expo-device';
 import { Colors, Containers } from "@/themes";
-import createTagColorMapper from "../utils/tagColorMapper";
+import createTagColorMapper from "@/utils/tagColorMapper";
+import ProfileDeleteButton from "@/components/ProfileDelete";
+import LogoutButton from "@/components/LogoutButton";
 
 // fake data
 // should be replaced by function that obtains data from the relevant endpoints
@@ -158,7 +160,11 @@ export default function Profile() {
             style={styles.fullBox}
           />
 
-
+          {/* Action-Alert Buttons */}
+          <View style={styles.actionButtons}>
+            <LogoutButton />
+            <ProfileDeleteButton username={data.get("name")} />
+          </View>
         </ScrollView>
       </SafeAreaProvider>
     );
@@ -238,4 +244,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     ...Containers.cards,
   },
-});
+  actionButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+    paddingHorizontal: 10,
+  },
+}
+);
