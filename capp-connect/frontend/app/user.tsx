@@ -123,9 +123,9 @@ export default function UserProfile() {
               updateData={changeData}
               style={styles.halfBox}
             />
-          
+
           <View style={{ flex: 1 }} />
-          
+
           <BoxSection
               title="Contact"
               fields={contactFields}

@@ -120,9 +120,9 @@ export default function Me() {
               updateData={changeData}
               style={styles.halfBox}
             />
-          
+
           <View style={{ flex: 1 }} />
-          
+
           <BoxSection
               title="Contact"
               fields={contactFields}
