@@ -6,6 +6,7 @@ from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 import requests
 from requests import RequestException
+import datetime
 
 API_SLACK_SYNC_URL = os.environ["API_SLACK_SYNC_URL"]
 API_AUTH_TOKEN = os.environ["API_AUTH_TOKEN"]
@@ -15,7 +16,7 @@ HEADERS = {
     "Content-Type": "application/json"
 }
 
-def sync_with_api(method, data): #from Paula! 
+def sync_with_api(method, data):  # from Paula!
     """Helper function to sync with Django API"""
     try:
         response = requests.request(
@@ -28,6 +29,10 @@ def sync_with_api(method, data): #from Paula!
         return True
     except RequestException as e:
         print(f"API {method} error: {str(e)}")
+        if e.response is not None:
+            print("Status code:", e.response.status_code)
+            print("Response content:", e.response.text)
+            print("Payload that caused error:", data)
         return False
 
 
@@ -154,7 +159,6 @@ def create_tag(text):
         "Spark",
         "agile",
         "human-centered design",
-        "tutorial",
         "startup",
         "full-time",
         "part-time",
@@ -203,9 +207,13 @@ def create_tag(text):
         content = response.choices[0].message.content.strip()
         tag_list = json.loads(content)
         if isinstance(tag_list, list):
-            return tag_list
-        return []  # for when there are no relevant tags
-
+            for tag in tag_list:
+                if tag not in full_tag_list:
+                    tag_list.remove(tag) #adding this manual check because chat WONT stop hallucinating even though temp = 0. 
+            return tag_list 
+        else:
+            return []  
+  
     except Exception:
         return []  # i dont want error - just give me empty tag list. If we had more time, we would have better error handling...
 
@@ -246,18 +254,22 @@ def get_msg(message, say):
     try: 
         message_for_db = {
             # "type": message["type"],
+            "title": f"{post_type} from Slack",
+            "start_time": "2025-05-26T16:30:50+00:00",
             "post_type": post_type,
-            "user_id": message["user"], #in theirs it is slack_user_id
+            "slack_user_id": message["user"], #in theirs it is slack_user_id #changed may 26 from user_id
             "client_msg_id": message["client_msg_id"],
             "description": message["text"],
             "tags": message_tag,
             "ts": message["ts"], #they are going to replace with when it came into DB 
             # "event_ts": message["event_ts"],
-            "edited": message.get("edited"),
+            "edited": message.get("edited")
         }
-        print(message_for_db)
+        # print(message_for_db)
+        print("Prepared message for DB:", message_for_db) 
         if not sync_with_api('POST', message_for_db):
             print(f"Failed to create post for message {message['ts']}")
+            
     
     except KeyError as e:
         print(f"Missing key in message: {str(e)}")
@@ -336,4 +348,4 @@ def record_changed_messages(body, logger):
 
 if __name__ == "__main__":
     print("Starting Slack Socket Mode listener...")
-SocketModeHandler(app, os.environ["SLACK_APP_TOKEN"]).start()
+    SocketModeHandler(app, os.environ["SLACK_APP_TOKEN"]).start()
