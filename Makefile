@@ -32,12 +32,18 @@ backend:
 # uv run python -m capp-connect
 	cd capp-connect/backend && uv run python manage.py runserver 8080
 
-.PHONY: frontend
-frontend:
+.PHONY: frontend-dev
+frontend-dev:
 	cd capp-connect/frontend && npx expo start --tunnel
 
-.PHONY: run-all
-run-all: backend frontend
+
+.PHONY: frontend-build
+frontend-build:
+	cd capp-connect/frontend && npx expo export --platform web --output-dir static
+
+# .PHONY: run-all
+# run-all:
+# 	make backend & make frontend
 
 .PHONY: install
 install:
