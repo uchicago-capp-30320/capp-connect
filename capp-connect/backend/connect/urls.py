@@ -78,11 +78,6 @@ urlpatterns = [
         name="directory_list",
     ),
     path(
-        "ccserver/resources/",
-        cc_views.GetResource.as_view(),
-        name="get_resources",
-    ),
-    path(
         "ccserver/resources/search/",
         cc_views.SearchResources.as_view(),
         name="search_resources",
