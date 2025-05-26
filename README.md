@@ -15,10 +15,9 @@ The below is credited to @michplunkett, 2024 CAPP TA
 4. Use the `make run-all` command.
 
 ### Connecting to the server to test auth:
- **You should only have to do this process once**
 1. Connect to the server using the command: `ssh -p 2222 capp-connect@turing.unnamed.computer`
 2. Create a new uv virtual environment: `source .venv/bin/activate`
-3. cd to `capp-connect/slack_auth/cappconnect_auth`
+3. cd to `capp-connect/backend`
 4. Run `python manage.py runserver 0.0.0.0:8010` (may be python3 on your machine)
 5. Then go to this [link](https://capp-connect.unnamed.computer/auth/login/slack/)
 
@@ -34,6 +33,7 @@ The below is credited to @michplunkett, 2024 CAPP TA
 - `make install`: Installs all packages needed in `requirements.txt`
 - `make env`: Creates or activates a `uv` virtual environment. Also installs the npm dependencies for the project.
 - `make lint`: Runs `pre-commit`.
-- `make frontend`: Runs the frontend React Native project with Expo Go.
-- `make run-all`: Runs the `main` function in the `project` folder in parallel with starting the node.js development server for the frontend app.
+- `make frontend-dev`: Runs a Node development server to serve the frontend React Native project with Expo Go.
+- `make frontend-build`: Compiles the React code into static files currently located in frontend/static/.
+- To update: `make run-all`: Runs the `main` function in the `project` folder in parallel with starting the node.js development server for the frontend app.
 - `make test`: Runs test cases in the `tests` directory.

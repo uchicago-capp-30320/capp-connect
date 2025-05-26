@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
+from config import DB_PASSWORD, DJANGO_SECRET_KEY
+from config import SLACK_CLIENT_ID as _SLACK_CLIENT_ID
+from config import SLACK_CLIENT_SECRET as _SLACK_CLIENT_SECRET
+from config import SLACK_REDIRECT_URI as _SLACK_REDIRECT_URI
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,33 +26,45 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (
-    "django-insecure-3y1b-65)h0&e&i3olf)^isofrn_k4$)yq6(f^jfz#m0#)ke!5+"
-)
+SECRET_KEY = DJANGO_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "capp-connect.unnamed.computer",
+    "localhost",
+    "127.0.0.1",
+]
 
 # For development ONLY — allows all origins
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True # delete for prod
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    # Django built-in apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "ccserver",
-    "rest_framework",
     "django.contrib.postgres",
-    "corsheaders",
+    # Third-party apps
+    "rest_framework",
+    "rest_framework.authtoken",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.slack",
+    "corsheaders", # delete for prod
+    # Our apps
+    "ccserver",
+    "authentication",
 ]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -57,7 +74,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
+    "corsheaders.middleware.CorsMiddleware", # delete for prod
 ]
 
 ROOT_URLCONF = "connect.urls"
@@ -87,7 +105,10 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "capp_connect",
-        "OPTIONS": {"service": "my_service"},
+        "USER": "capp_connect",
+        "PASSWORD": DB_PASSWORD,
+        "HOST": "turing.unnamed.computer",
+        "PORT": "5432",
     }
 }
 
@@ -132,3 +153,37 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# All Auth Stuff
+AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
+SITE_ID = 1
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
+ACCOUNT_SIGNUP_FIELDS = []
+ACCOUNT_EMAIL_VERIFICATION = "none"
+SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_AUTO_SIGNUP = True
+
+SOCIALACCOUNT_PROVIDERS = {"slack": {"SCOPE": ["openid", "email", "profile"]}}
+SOCIALACCOUNT_ADAPTER = "authentication.adapters.SlackSocialAccountAdapter"
+
+SLACK_CLIENT_ID = _SLACK_CLIENT_ID  # noqa: F401
+SLACK_CLIENT_SECRET = _SLACK_CLIENT_SECRET  # noqa: F401
+SLACK_REDIRECT_URI = _SLACK_REDIRECT_URI  # noqa: F401
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://capp-connect.unnamed.computer",
+    "https://capp-connect.unnamed.computer:8010",
+]
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+}

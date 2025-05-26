@@ -1,6 +1,7 @@
 from django.core.paginator import EmptyPage, Paginator
 from django.http import Http404
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication  # For Slack Posts
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -42,13 +43,12 @@ class GetProfile(APIView):
 
         serializer = ProfileSerializer(profile, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.save()
+            if request.user == profile.user:
+                serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(
-        self, request, username, format=None
-    ):  # Missing permission check
+    def delete(self, request, username, format=None):
         try:
             profile = Profile.objects.get(user__username=username)
         except Profile.DoesNotExist:
@@ -56,9 +56,14 @@ class GetProfile(APIView):
                 {"error": "Profile not found."},
                 status=status.HTTP_404_NOT_FOUND,
             )
-
-        profile.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if request.user == profile.user:
+            profile.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(
+                {"error": "You do not have permission to delete this profile."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
 
 
 class GetProfileList(APIView):
@@ -68,17 +73,42 @@ class GetProfileList(APIView):
         return Response(serializer.data)
 
 
-class GetNamesList(APIView):
+class SearchDirectoryList(APIView):
     def get(self, request, format=None):
         users = Profile.objects.all()
-        serializer = NameSerializer(users, many=True)
-        return Response(serializer.data)
+        user_serializer = NameSerializer(users, many=True)
+        tags = Tag.objects.filter(allowed_on_profile=True)
+        tag_serializer = TagSerializer(tags, many=True)
+        return Response(
+            {"users": user_serializer.data, "tags": tag_serializer.data}
+        )
 
 
-class GetTagsList(APIView):
+class SearchOthersList(APIView):
     def get(self, request, format=None):
         tags = Tag.objects.all()
         serializer = TagSerializer(tags, many=True)
+        return Response(serializer.data)
+
+
+class SearchProfiles(APIView):
+    def get(self, request):
+        tag_names_list = request.GET.getlist("tags")
+        matching_profiles = None
+
+        for tag_name in tag_names_list:
+            # Check for tag matches within tags or names
+            tag_profiles = Profile.objects.filter(tags__tag_name=tag_name)
+            name_profiles = Profile.objects.filter(slack_username=tag_name)
+            tag_or_name_matches = tag_profiles.union(name_profiles)
+            if matching_profiles is None:
+                matching_profiles = tag_or_name_matches
+            else:
+                # Update matching_posts to only include profiles that also match previous tag(s)
+                matching_profiles = matching_profiles.intersection(
+                    tag_or_name_matches
+                )
+        serializer = ProfileSerializer(matching_profiles, many=True)
         return Response(serializer.data)
 
 
@@ -103,13 +133,15 @@ class GetPost(APIView):
         post = self.get_object(pk)
         serializer = PostSerializer(post, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.save()
+            if request.user == post.user:
+                serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
         post = self.get_object(pk)
-        post.delete()
+        if request.user == post.user:
+            post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -186,7 +218,8 @@ class GetComment(APIView):
         try:
             post = Post.objects.get(pk=pk)
             comment = post.comments.get(pk=comment_id)
-            comment.delete()
+            if request.user == comment.user:
+                comment.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Post.DoesNotExist:
             return Response(
@@ -230,8 +263,122 @@ class GetAllComments(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class GetResource(APIView):
+class GetResourceList(APIView):
     def get(self, request, format=None):
         resources = Resource.objects.all()
         serializer = ResourceSerializer(resources, many=True)
         return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = ResourceSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetResource(APIView):
+    def get_object(self, pk):
+        try:
+            return Resource.objects.get(pk=pk)
+        except Resource.DoesNotExist as e:
+            raise Http404(f"Post with id {pk} does not exist.") from e
+
+    def get(self, request, pk, format=None):
+        try:
+            resource = Resource.objects.get(pk=pk)
+            serializer = ResourceSerializer(resource)
+            return Response(serializer.data)
+        except Resource.DoesNotExist:
+            return Response(
+                {"error": "Resource not found."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+    def put(self, request, pk, format=None):
+        try:
+            resource = self.get_object(pk=pk)
+        except Resource.DoesNotExist:
+            return Response(
+                {"error": "Resource not found."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = ResourceSerializer(
+            resource, data=request.data, partial=True
+        )
+        if serializer.is_valid():
+            if request.user == resource.user:
+                serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        resource = self.get_object(pk)
+        if request.user == resource.user:
+            resource.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class SearchResources(APIView):
+    def get(self, request):
+        tag_names_list = request.GET.getlist("tags")
+        matching_resources = None
+        for tag_name in tag_names_list:
+            tag_resources = Resource.objects.filter(tags__tag_name=tag_name)
+            if matching_resources is None:
+                matching_resources = tag_resources
+            else:
+                # Update matching_posts to only include posts that also match previous tag(s)
+                matching_resources = matching_resources.intersection(
+                    tag_resources
+                )
+        serializer = PostSerializer(matching_resources, many=True)
+        return Response(serializer.data)
+
+
+class MyProfileView(APIView):
+    def get(self, request):
+        profile = Profile.objects.get(user=request.user)
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data)
+
+
+class SlackPost(APIView):
+    authentication_classes = [TokenAuthentication]
+
+    def get_object(self, ts, post_type):
+        try:
+            return Post.objects.get(ts=ts, post_type=post_type)
+        except Post.DoesNotExist:
+            return None
+
+    def post(self, request):
+        serializer = PostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        ts = request.data.get("ts")
+        post_type = request.data.get("post_type")
+        post = self.get_object(ts, post_type)
+        if not post:
+            return Response(
+                {"error": "Post not found."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        serializer = PostSerializer(post, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        ts = request.data.get("ts")
+        post_type = request.data.get("post_type")
+        post = self.get_object(ts, post_type)
+        if post:
+            post.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

@@ -1,65 +1,94 @@
-"""
-URL configuration for connect project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-
-from ccserver import views
-from django.urls import path
+from allauth.socialaccount.providers.slack.views import oauth2_login
+from authentication import views as auth_views
+from ccserver import views as cc_views
+from django.contrib import admin
+from django.http import HttpResponse
+from django.urls import include, path
 from rest_framework.urlpatterns import format_suffix_patterns
 
 
 urlpatterns = [
+    # Admin and authentication
+    path("admin/", admin.site.urls),
+    path("auth/login/slack/", oauth2_login, name="slack_login"),
+    path("accounts/", include("allauth.urls")),
+    path(
+        "fetch-slack/", auth_views.fetch_slack_data, name="fetch_slack"
+    ),  # added for getting old msgs and replies!
+    path("", lambda request: HttpResponse("You're logged in via Slack!")),
+    # added temporarily so we know this worked
+    # ccserver API endpoints
     path(
         "ccserver/profile/<str:username>/",
-        views.GetProfile.as_view(),
+        cc_views.GetProfile.as_view(),
         name="get_profile",
-    ),  # Supports delete method
+    ),
     path(
         "ccserver/profile/<str:username>/update/",
-        views.GetProfile.as_view(),
+        cc_views.GetProfile.as_view(),
         name="update_profile",
     ),
     path(
         "ccserver/profiles/",
-        views.GetProfileList.as_view(),
+        cc_views.GetProfileList.as_view(),
         name="get_profile_list",
     ),
     path(
-        "ccserver/posts/<int:pk>/", views.GetPost.as_view(), name="post_detail"
+        "ccserver/posts/<int:pk>/",
+        cc_views.GetPost.as_view(),
+        name="post_detail",
     ),
-    path("ccserver/posts/", views.GetPostList.as_view(), name="all_posts"),
+    path(
+        "ccserver/profiles/search/",
+        cc_views.SearchProfiles.as_view(),
+        name="search_profiles",
+    ),
+    path("ccserver/posts/", cc_views.GetPostList.as_view(), name="all_posts"),
     path(
         "ccserver/posts/<int:pk>/comments/",
-        views.GetAllComments.as_view(),
+        cc_views.GetAllComments.as_view(),
         name="get_post_comments",
     ),
     path(
         "ccserver/posts/<int:pk>/comments/<int:comment_id>/",
-        views.GetComment.as_view(),
+        cc_views.GetComment.as_view(),
         name="delete_comment",
     ),
     path(
-        "ccserver/resources/", views.GetResource.as_view(), name="get_resources"
+        "ccserver/resources/",
+        cc_views.GetResourceList.as_view(),
+        name="all_resources",
+    ),
+    path(
+        "ccserver/resources/<int:pk>/",
+        cc_views.GetResource.as_view(),
+        name="resource_detail",
     ),
     path(
         "ccserver/posts/search/",
-        views.SearchPosts.as_view(),
+        cc_views.SearchPosts.as_view(),
         name="search_posts",
     ),
-    path("ccserver/tags/", views.GetTagsList.as_view(), name="get_tags"),
-    path("ccserver/names/", views.GetNamesList.as_view(), name="get_names"),
+    path(
+        "ccserver/tags/", cc_views.SearchOthersList.as_view(), name="tags_list"
+    ),
+    path(
+        "ccserver/directory/",
+        cc_views.SearchDirectoryList.as_view(),
+        name="directory_list",
+    ),
+    path(
+        "ccserver/resources/",
+        cc_views.GetResource.as_view(),
+        name="get_resources",
+    ),
+    path(
+        "ccserver/resources/search/",
+        cc_views.SearchResources.as_view(),
+        name="search_resources",
+    ),
+    path("ccserver/auth/", cc_views.MyProfileView.as_view(), name="my_profile"),
+    path("slack-sync/", cc_views.SlackPost.as_view(), name="slack_sync"),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

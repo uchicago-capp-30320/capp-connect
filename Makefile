@@ -32,12 +32,21 @@ backend:
 # uv run python -m capp-connect
 	cd capp-connect/backend && uv run python manage.py runserver 8080
 
-.PHONY: frontend
-frontend:
+.PHONY: frontend-dev
+frontend-dev:
 	cd capp-connect/frontend && npx expo start --tunnel
 
-.PHONY: run-all
-run-all: backend frontend
+.PHONY: frontend-build
+frontend-build:
+# compile static files, empty out current static folder in backend, then move compiled static files to backend
+	cd capp-connect/frontend && \
+		npx expo export --platform web --output-dir static && \
+		rm -r ../backend/ccserver/static/ && \
+		mv static ../backend/ccserver/
+
+.PHONY: run
+run:
+	make frontend-build && backend
 
 .PHONY: install
 install:
