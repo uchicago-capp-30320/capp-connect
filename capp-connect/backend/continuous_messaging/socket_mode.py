@@ -4,6 +4,31 @@ import os
 from openai import OpenAI
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
+import requests
+from requests import RequestException
+
+API_SLACK_SYNC_URL = os.environ["API_SLACK_SYNC_URL"]
+API_AUTH_TOKEN = os.environ["API_AUTH_TOKEN"]
+
+HEADERS = {
+    "Authorization": f"Token {API_AUTH_TOKEN}",
+    "Content-Type": "application/json"
+}
+
+def sync_with_api(method, data): #from Paula! 
+    """Helper function to sync with Django API"""
+    try:
+        response = requests.request(
+            method,
+            API_SLACK_SYNC_URL,
+            json=data,
+            headers=HEADERS
+        )
+        response.raise_for_status()
+        return True
+    except RequestException as e:
+        print(f"API {method} error: {str(e)}")
+        return False
 
 
 # documentation so i don't forget: https://api.slack.com/tutorials/tracks/hello-world-bolt
@@ -217,18 +242,26 @@ def get_msg(message, say):
         post_type = "Job"
     elif channel == 'C08S5MWNW3T':
         post_type = "Event"
-    message_for_db = {
-        # "type": message["type"],
-        "post_type": post_type,
-        "user_id": message["user"], #in theirs it is slack_user_id
-        "client_msg_id": message["client_msg_id"],
-        "description": message["text"],
-        "tags": message_tag,
-        "ts": message["ts"], #they are going to replace with when it came into DB 
-        # "event_ts": message["event_ts"],
-        "edited": message.get("edited"),
-    }
-    print(message_for_db)
+    
+    try: 
+        message_for_db = {
+            # "type": message["type"],
+            "post_type": post_type,
+            "user_id": message["user"], #in theirs it is slack_user_id
+            "client_msg_id": message["client_msg_id"],
+            "description": message["text"],
+            "tags": message_tag,
+            "ts": message["ts"], #they are going to replace with when it came into DB 
+            # "event_ts": message["event_ts"],
+            "edited": message.get("edited"),
+        }
+        print(message_for_db)
+        if not sync_with_api('POST', message_for_db):
+            print(f"Failed to create post for message {message['ts']}")
+    
+    except KeyError as e:
+        print(f"Missing key in message: {str(e)}")
+    
 
 
 @app.event("message")  # https://api.slack.com/events/message/message_changed
@@ -260,36 +293,46 @@ def record_changed_messages(body, logger):
         post_type = "Job"
     elif channel == 'C08S5MWNW3T':
         post_type = "Event"
-
     
+
     message_data = event.get("message", {})
     message_tag = create_tag(
         message_data.get("text", "")
     )  # gpt plug in is here for edited tags!
 
-    if event["subtype"] == "message_changed":
-        changed_message = {
-            "post_type": post_type,
-            # "hidden": event["hidden"],
-            # "ts": event["ts"],
-            "client_msg_id": message_data.get("client_msg_id"),
-            # "message": event.get("message", {}),
-            # "edited": message_data.get("edited", {}),
-            "description": message_data.get("text", ""),
-            "tags": message_tag,
-        }
-        print(changed_message)
+    try:
 
-    elif (
-        event["subtype"] == "message_deleted"
-    ):  # https://api.slack.com/events/message/message_deleted
-        deleted_message = {
-            "post_type": post_type,
-            # "ts": event["ts"],
-            "ts": event["deleted_ts"], #reminder this is the deleted ts which matches. 
-        }
-        print(deleted_message)
+        if event["subtype"] == "message_changed":
+            changed_message = {
+                "post_type": post_type,
+                # "hidden": event["hidden"],
+                # "ts": event["ts"],
+                "client_msg_id": message_data.get("client_msg_id"),
+                # "message": event.get("message", {}),
+                # "edited": message_data.get("edited", {}),
+                "description": message_data.get("text", ""),
+                "tags": message_tag,
+            }
+            print(changed_message)
 
+            if not sync_with_api('PUT', changed_message):
+                print(f"Failed to update post {event["ts"]} in {channel}")
+
+        elif (
+            event["subtype"] == "message_deleted"
+        ):  # https://api.slack.com/events/message/message_deleted
+            deleted_message = {
+                "post_type": post_type,
+                # "ts": event["ts"],
+                "ts": event["deleted_ts"], #reminder this is the deleted ts which matches. 
+            }
+            print(deleted_message)
+        
+            if not sync_with_api('DELETE', deleted_message):
+                print(f"Failed to delete post {event["deleted_ts"]} in {channel}")
+
+    except KeyError as e:
+        print(f"Missing key in event: {str(e)}")
 
 if __name__ == "__main__":
     print("Starting Slack Socket Mode listener...")
