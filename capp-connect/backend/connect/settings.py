@@ -38,7 +38,7 @@ ALLOWED_HOSTS = [
 ]
 
 # For development ONLY — allows all origins
-CORS_ALLOW_ALL_ORIGINS = True # delete for prod
+CORS_ALLOW_ALL_ORIGINS = True  # delete for prod
 
 
 # Application definition
@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.slack",
-    "corsheaders", # delete for prod
+    "corsheaders",  # delete for prod
     # Our apps
     "ccserver",
     "authentication",
@@ -75,7 +75,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
-    "corsheaders.middleware.CorsMiddleware", # delete for prod
+    "corsheaders.middleware.CorsMiddleware",  # delete for prod
 ]
 
 ROOT_URLCONF = "connect.urls"
