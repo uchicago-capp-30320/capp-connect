@@ -11,7 +11,7 @@ export default function ProfilePhoto({ style }: ProfilePhotoProps) {
 
     return (
         <SafeAreaView>
-            <Pressable onPress={() => router.navigate('/profile')}>
+            <Pressable onPress={() => router.navigate('/me')}>
                 <Image
                     source={profileImage}
                     style={[style, { resizeMode: 'cover' }]}

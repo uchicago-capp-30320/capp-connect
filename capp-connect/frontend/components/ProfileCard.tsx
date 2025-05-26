@@ -46,7 +46,7 @@ export default function ProfileCard(props: ProfileCardProps) {
 
   return (
     <TouchableHighlight
-      onPress={() => router.push(`/profile?id=${encodeURIComponent(props.user)}`)}
+      onPress={() => router.push(`/user?username=${props.user}`)}
       activeOpacity={0.6}
       underlayColor={Colors.background}
       style={[Containers.container, styles.compactContainer]} // change height

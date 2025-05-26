@@ -1,88 +1,63 @@
-import { View, Text, StyleSheet, ScrollView} from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useState, useEffect } from "react";
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import ProfilePhoto from '@/components/ProfilePhoto';
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import ProfilePhoto from "@/components/ProfilePhoto";
 import EditButton from "@/components/EditButton";
-import BoxSection from '@/components/BoxSections';
-import TagCarousel from '@/components/TagCarousel';
-import * as Device from 'expo-device';
+import BoxSection from "@/components/BoxSections";
+import TagCarousel from "@/components/TagCarousel";
+import * as Device from "expo-device";
 import { Colors, Containers } from "@/themes";
-import createTagColorMapper from "../utils/tagColorMapper";
+import createTagColorMapper from "@/utils/tagColorMapper";
+import fetchData from "@/utils/fetchdata";
+import { useLocalSearchParams } from "expo-router";
 
-// fake data
-// should be replaced by function that obtains data from the relevant endpoints
-let DATA = new Map([
-  // basic info
-  ["name", "Bob"],
-  // bio
-  ["bio", "Software engineer"],
-  ["tags", "Python"],
-  // info
-  ["city", "Chicago"],
-  ["state", "Illinois"],
-  ["country", "USA"],
-  ["employment_status", "Full-time"],
-  ["job_title", "Software Engineer"],
-  ["company", "Department of Education"],
-  //websites
-  ["linkedin_username", "bob-developer"],
-  ["github_username", "billybob"],
-  ["personal_site", "billybob.com"],
-  //contact
-  ["phone_number", "555-123-4567"],
-  ["slack_url", "@billybob"]
-])
-
-// map between data entries and designated labels
 const labelDataMap = {
-  // basic info
-  "name": "Name",
-  // bio
-  "bio": "",
-  "tags": "Tags",
-  // info
-  "city": "City",
-  "state": "State",
-  "country": "Country",
-  "employment_status": "Employment Status",
-  "job_title": "Job Title",
-  "company": "Company",
-  // websites
-  "linkedin_username": "LinkedIn",
-  "github_username": "GitHub",
-  "personal_site": "Website",
-  //contact
-  "phone_number": "Phone",
-  "slack_url": "Slack Message"
-}
+  name: "Name",
+  bio: "",
+  tags: "Tags",
+  city: "City",
+  state: "State",
+  country: "Country",
+  employment_status: "Employment Status",
+  job_title: "Job Title",
+  company: "Company",
+  linkedin_username: "LinkedIn",
+  github_username: "GitHub",
+  personal_site: "Website",
+  phone_number: "Phone",
+  slack_url: "Slack Message",
+};
 
-// grouping -- removed some
 const bioFields = ["bio"];
-const infoFields = ["city", "state", "country", "employment_status"]
-const websiteFields = ["linkedin_username", "github_username", "personal_site"]
-const contactFields = ["phone_number", "slack_url"]
+const infoFields = ["city", "state", "country", "employment_status"];
+const websiteFields = ["linkedin_username", "github_username", "personal_site"];
+const contactFields = ["phone_number", "slack_url"];
 
-export default function Profile() {
-  const [editMode, changeEditMode] = useState(false)
-  const [data, changeData] = useState(DATA)
+export default function UserProfile() {
+  const { username } = useLocalSearchParams();
+  const [editMode, changeEditMode] = useState(false);
+  const [data, changeData] = useState(new Map<string, string>());
 
-  // a listener to identify when the user presses the save button
-  // needs to be updated to send a POST request to the database
-  // TO BE UPDATED
   useEffect(() => {
-    if (!editMode && DATA != data) {
-      console.log(data)
-      DATA = data
+    async function fetchProfile() {
+      if (!username) return;
+      const profile = await fetchData(`http://127.0.0.1:8080/ccserver/profile/${username}/`, "GET");
+      const map = new Map<string, string>();
+      Object.entries(profile).forEach(([key, value]) => {
+        map.set(key, typeof value === "string" ? value : Array.isArray(value) ? value.join(", ") : "");
+      });
+      changeData(map);
     }
-  }, [editMode])
 
-  // tag carousel
+    fetchProfile();
+  }, [username]);
+
   const getColorForTag = createTagColorMapper();
   const tagsString = data.get("tags") || "";
   const tagsArray = tagsString.split(", ").filter(tag => tag.length > 0);
   const tagObjects = tagsArray.map(tag => ({
     name: tag,
-    color: getColorForTag(tag)
+    color: getColorForTag(tag),
   }));
 
   return (
@@ -91,25 +66,43 @@ export default function Profile() {
         {/* Profile */}
         <View style={styles.headerSection}>
           <View style={styles.profileHeader}>
-            <ProfilePhoto style={styles.profilePhoto}/>
-
+            <ProfilePhoto style={styles.profilePhoto} />
             <View style={styles.headerInfo}>
               <Text style={styles.nameText}>{data.get("name")}</Text>
               <Text style={styles.positionText}>
                 {data.get("job_title")} | {data.get("company")}
               </Text>
             </View>
-
-            <EditButton editMode={editMode} changeEditMode={changeEditMode}/>
+            <EditButton editMode={editMode} changeEditMode={changeEditMode} />
           </View>
 
-          {/* Tags Carousel */}
           <View style={styles.tagsContainer}>
             <TagCarousel tags={tagObjects} />
           </View>
         </View>
 
-        {/* Bio section */}
+        {/* Save Button */}
+        {editMode && (
+          <View style={{ marginBottom: 20 }}>
+            <Text
+              onPress={async () => {
+                const updatedProfile = Object.fromEntries(data.entries());
+                try {
+                  await fetchData(`http://127.0.0.1:8080/ccserver/profile/${username}/`, "PUT", updatedProfile);
+                  changeEditMode(false);
+                  console.log("Profile updated!");
+                } catch (err) {
+                  console.error("Error updating profile:", err);
+                }
+              }}
+              style={styles.saveButton}
+            >
+              Save
+            </Text>
+          </View>
+        )}
+
+        {/* Sections */}
         <BoxSection
           title="Biography"
           fields={bioFields}
@@ -120,9 +113,8 @@ export default function Profile() {
           style={styles.fullBox}
         />
 
-        {/* Other info */}
-        <View style={{flex: 1, flexDirection: "row"}}>
-          <BoxSection
+        <View style={{ flex: 1, flexDirection: "row" }}>
+            <BoxSection
               title="Info"
               fields={infoFields}
               labelDataMap={labelDataMap}
@@ -131,10 +123,10 @@ export default function Profile() {
               updateData={changeData}
               style={styles.halfBox}
             />
-
-            <View style={{ flex: 1 }} />
-
-            <BoxSection
+          
+          <View style={{ flex: 1 }} />
+          
+          <BoxSection
               title="Contact"
               fields={contactFields}
               labelDataMap={labelDataMap}
@@ -142,13 +134,12 @@ export default function Profile() {
               editMode={editMode}
               updateData={changeData}
               style={styles.halfBox}
-            />
+          />
+        </View>
 
-          </View>
+        <View style={{ height: 10 }} />
 
-          <View style={{ height: 10 }} />
-
-          <BoxSection
+        <BoxSection
             title="Websites"
             fields={websiteFields}
             labelDataMap={labelDataMap}
@@ -156,13 +147,11 @@ export default function Profile() {
             editMode={editMode}
             updateData={changeData}
             style={styles.fullBox}
-          />
-
-
-        </ScrollView>
-      </SafeAreaProvider>
-    );
-  }
+        />
+      </ScrollView>
+    </SafeAreaProvider>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -221,9 +210,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 22,
   },
-  infoSections: {
-    flex: 1,
-  },
   boxRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -237,5 +223,15 @@ const styles = StyleSheet.create({
     width: "100%",
     marginBottom: 15,
     ...Containers.cards,
+  },
+  saveButton: {
+    backgroundColor: Colors.primary,
+    color: "white",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    textAlign: "center",
+    fontWeight: "bold",
+    alignSelf: "center",
   },
 });

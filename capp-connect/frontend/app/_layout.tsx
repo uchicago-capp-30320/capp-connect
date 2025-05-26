@@ -9,12 +9,20 @@ export default function RootLayout() {
     }}>
       <Stack.Screen name="(tabs)" options={{ title: "Back", headerShown: false}} />
 
-      <Stack.Screen name="profile"
+      <Stack.Screen name="me"
         options={{
-          title: "Profile",
+          title: "My Profile",
           headerStyle: {backgroundColor: Colors.header},
           headerTintColor: Colors.headerText
         }} />
+
+      <Stack.Screen name="user"
+        options={{
+          title: "User Profile",
+          headerStyle: {backgroundColor: Colors.header},
+          headerTintColor: Colors.headerText
+        }} />
+
       {/* <Stack.Screen name="settings"
         options={{
           title: "Settings",
