@@ -62,6 +62,10 @@ export default function Feed() {
 
   }, [data, feedType]);
 
+  // manage refreshing state
+  const [refreshing, setRefreshing] = useState(false)
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
+
   return (
     <>
       <SearchBar
@@ -91,16 +95,24 @@ export default function Feed() {
           estimatedItemSize={500}
 
           // use for loading more data
-          onEndReached={() => {
-            updateFeed()
-            setLoadNewData(true)
-          }}
+          onEndReached={
+            async () => {
+              // if there's no data to begin with, do nothing
+              if (isFetchingMore || filteredData.length === 0) return
+              setIsFetchingMore(true);
+              await updateFeed();
+              setLoadNewData(true);
+              setIsFetchingMore(false);
+            }
+          }
           onEndReachedThreshold={.5}
-          onRefresh={() => {
+          onRefresh={ () => {
+            setRefreshing(true);
             updateFeed()
+            setRefreshing(false);
             setLoadNewData(true)
           }}
-          refreshing={true}
+          refreshing={refreshing}
         />
      </View>
      </>
