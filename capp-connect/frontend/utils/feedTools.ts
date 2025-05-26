@@ -6,13 +6,13 @@ import * as Device from 'expo-device';
 export async function updateFeed() {
     let cachedData = await getCachedData("feed");
     if (cachedData && cachedData.fullResults) {
-        let currentData = cachedData.fullResults    
+        let currentData = cachedData.fullResults
 
         if (Device.deviceType === Device.DeviceType.DESKTOP) {
             if (currentData.nextPage === 1) {
-                
+
                 const resp = await fetchData(
-                    "http://127.0.0.1:8080/ccserver/posts/", 
+                    "http://127.0.0.1:8080/ccserver/posts/",
                     "GET",
                     {format: "json"}
                 )
@@ -29,16 +29,16 @@ export async function updateFeed() {
 
                 setCachedData("feed", cachedData)
                 return cachedData
-            
+
             } else if (currentData.nextPage > 1) {
                 const resp = await fetchData(
-                    "http://127.0.0.1:8080/ccserver/posts/", 
-                    "GET", 
+                    "http://127.0.0.1:8080/ccserver/posts/",
+                    "GET",
                     {page: currentData.nextPage}
                 )
                 // nextPage.current = resp.next_page === null ? 0 : resp.next_page
                 currentData.nextPage = resp.next_page === null ? 0 : resp.next_page
-                
+
                 const posts = resp.posts
                 ;(["General", "Event", "Job", "Project"]).forEach((element: string) => {
                     currentData[element] = [...currentData[element], ...posts[element]];
