@@ -1,11 +1,13 @@
 import { View } from "react-native";
 import FeedCard from "@/components/FeedCard";
 import { FlashList } from "@shopify/flash-list";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SearchBar from '../../components/SearchBar';
 import fetchData from '../../utils/fetchdata';
 import * as Device from 'expo-device'
 import FeedTypeButton from '../../components/FeedTypeButton'
+import {updateFeed} from "@/utils/feedTools"
+import { getCachedData } from "@/utils/caching";
 
 // const BODY = "The gentle hum of the city faded as the sun dipped below the skyline, casting long shadows across the quiet park. Leaves rustled in the evening breeze, swirling in small, playful circles around the old wooden bench. Somewhere nearby, laughter echoed-brief and bright-before dissolving into the soft chorus of distant traffic. In that moment, time seemed to slow, and the world paused to breathe, wrapped in the golden glow of twilight."
 
@@ -17,67 +19,49 @@ type Post = {
   tags: Array<string>;
 };
 
-// will update for production
-async function updateFeed(): Promise<Post[]> {
-  return await fetchData("http://127.0.0.1:8080/ccserver/posts", "GET", {})
-}
-
-// const TYPES = ["All", "General", "Events", "Jobs", "Projects"]
-
-
-// function filterData(raw_data: Array<{ [key: string]: any }>, data_setter: Function) {
-
-//   let data_type_mapper: Record<string, any> = {
-//     "All": raw_data
-//   }
-
-//   // skip "All"
-//   // filter data for type
-//   TYPES.slice(1).forEach((type) => {
-//     let arr = new Array
-//     for (let i = 0; i < raw_data.length; i++) {
-//       if (raw_data[i][type] || raw_data[i][type.toLocaleLowerCase()]) {
-//         arr.push(raw_data[i])
-//         console.log(type, raw_data[i])
-//       }
-//     }
-//     data_type_mapper[type] = arr
-//   })
-
-//   return function(filter_term: string) {
-//     data_setter(data_type_mapper[filter_term])
-//   }
-// }
-
-
 export default function Feed() {
   // set data
-  const [data, setData] = useState<Post[]>([]);
+  // const [data, setData] = useState<Post[]>([]);
+  const [data, setData] = useState<Record<string, Post[]>>({
+    All: [],
+    General: [],
+    Event: [],
+    Job: [],
+    Project: []
+  });
 
+  // create flag for when to load new data for the feed
+  const [ loadNewData, setLoadNewData ] = useState(true)
+
+  // whenever new data should be loaded in, pull from cache
   useEffect(() => {
     async function fetchFeed() {
-      if (Device.deviceType === Device.DeviceType.DESKTOP) {
-        const posts = await updateFeed();
-        setData(posts);
-      } else {
-        setData(posts);
+      if (loadNewData) {
+        const fetchedData = await getCachedData("feed")
+        if (fetchedData && fetchedData.fullResults) {
+          const fullData = fetchedData.fullResults
+
+          // set full data to the types listed in the cache, ignoring the "nextPage" key
+          setData(Object.fromEntries(
+            Object.entries(fullData).filter(([key]) => !["nextPage"].includes(key))
+          ) as Record<string, Post[]>)
+        }
       }
     }
     fetchFeed();
-  }, []);
+    setLoadNewData(false)
+
+  }, [loadNewData]);
 
   // set button (feed type)
-  const [feedType, setFeedType] = useState("all")
+  const [feedType, setFeedType] = useState("All")
   // keep record of the parsed data
   const [filteredData, setFilteredData] = useState<Post[]>([]);
 
   useEffect(() => {
     // Filter data whenever data or feedType changes
-    let filtered = data;
-    if (feedType !== "all") {
-      filtered = data.filter(item => (item.post_type.toLowerCase() === feedType.toLowerCase()));
-    }
-    setFilteredData(filtered);
+    setFilteredData(data[feedType])
+
   }, [data, feedType]);
 
   return (
@@ -93,11 +77,11 @@ export default function Feed() {
           color="gray"
         />
     <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
-      <FeedTypeButton label="All" name="all" feedButtonPressed={feedType} setButton={setFeedType}/>
-      <FeedTypeButton label="General" name="general" feedButtonPressed={feedType} setButton={setFeedType}/>
-      <FeedTypeButton label="Events" name="event" feedButtonPressed={feedType} setButton={setFeedType}  />
-      <FeedTypeButton label="Jobs" name="job" feedButtonPressed={feedType} setButton={setFeedType}/>
-      <FeedTypeButton label="Projects" name="project" feedButtonPressed={feedType} setButton={setFeedType} />
+      <FeedTypeButton label="All" name="All" feedButtonPressed={feedType} setButton={setFeedType}/>
+      <FeedTypeButton label="General" name="General" feedButtonPressed={feedType} setButton={setFeedType}/>
+      <FeedTypeButton label="Events" name="Event" feedButtonPressed={feedType} setButton={setFeedType}  />
+      <FeedTypeButton label="Jobs" name="Job" feedButtonPressed={feedType} setButton={setFeedType}/>
+      <FeedTypeButton label="Projects" name="Project" feedButtonPressed={feedType} setButton={setFeedType} />
     </View>
     <View style={{flex: 1, width:"100%"}}>
         <FlashList
@@ -108,10 +92,17 @@ export default function Feed() {
           data={filteredData}
           estimatedItemSize={500}
 
-          // will use for loading more data
-          // onEndReached={() => {updateFeed()}}
-          // onEndReachedThreshold={.3}
-
+          // use for loading more data
+          onEndReached={() => {
+            updateFeed()
+            setLoadNewData(true)
+          }}
+          onEndReachedThreshold={.5}
+          onRefresh={() => {
+            updateFeed()
+            setLoadNewData(true)
+          }}
+          refreshing={true}
         />
      </View>
      </>
