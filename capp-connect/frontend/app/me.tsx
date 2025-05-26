@@ -38,7 +38,11 @@ export default function Me() {
 
   useEffect(() => {
     async function fetchProfile() {
-      const profile = await fetchData("http://127.0.0.1:8080/ccserver/auth/", "GET");
+        const profile = await fetchData(
+            "http://127.0.0.1:8080/ccserver/auth/",
+            "GET",
+            { format: "json" }
+          );                             
       const map = new Map<string, string>();
       Object.entries(profile).forEach(([key, value]) => {
         map.set(key, typeof value === "string" ? value : Array.isArray(value) ? value.join(", ") : "");
@@ -85,7 +89,7 @@ export default function Me() {
               onPress={async () => {
                 const updatedProfile = Object.fromEntries(data.entries());
                 try {
-                  await fetchData("http://127.0.0.1:8080/ccserver/auth/", "PUT", updatedProfile);
+                  await fetchData("https://127.0.0.1:8080/ccserver/auth/", "PUT", updatedProfile);
                   changeEditMode(false);
                   console.log("Profile updated!");
                 } catch (err) {

@@ -41,7 +41,11 @@ export default function UserProfile() {
   useEffect(() => {
     async function fetchProfile() {
       if (!username) return;
-      const profile = await fetchData(`http://127.0.0.1:8080/ccserver/profile/${username}/`, "GET");
+      const profile = await fetchData(
+        `http://127.0.0.1:8080/ccserver/profile/${username}/`,
+        "GET",
+        { format: "json" }
+      );      
       const map = new Map<string, string>();
       Object.entries(profile).forEach(([key, value]) => {
         map.set(key, typeof value === "string" ? value : Array.isArray(value) ? value.join(", ") : "");
