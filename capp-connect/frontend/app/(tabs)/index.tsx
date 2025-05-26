@@ -9,11 +9,51 @@ import * as Device from 'expo-device';
 import TypeTab from "@/components/TypeTab";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { TextStyles } from "@/themes";
+import { setCachedData, getCachedData } from "@/utils/caching";
+import { updateFeed } from "@/utils/feedTools";
+// import {updateFeed} from "@/utils/feedTools"
 
 const TAG_LIMIT = 5
 
 export default function Index() {
   const tabNames = ["Directory", "Resources", "Feed"]
+
+  // initialize app
+
+  // init feed cache
+  useEffect(() => {
+    setCachedData("feed", {
+      fullResults: {
+        nextPage: 1,
+        All: [],
+        General: [],
+        Event: [],
+        Job: [],
+        Project: []
+      },
+      searchResults: {
+        All: [],
+        General: [],
+        Event: [],
+        Job: [],
+        Project: []
+      }
+    });
+
+    const fetchData = async () => {
+      await updateFeed()
+      const data = await getCachedData("feed");
+      console.log(data)
+    };
+    fetchData();
+  }, []);
+
+
+
+  
+  // getCachedData
+  // updateFeed()
+
 
 
   // list of tags
