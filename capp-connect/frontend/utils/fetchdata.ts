@@ -1,6 +1,6 @@
 async function _GET(url: string, headers: Headers, params: object) {
     const resp = await fetch(
-        `${url}${new URLSearchParams(params as Record<string, string>).toString()}`,
+        `${url}?${new URLSearchParams(params as Record<string, string>).toString()}`,
         {headers: headers}
     )
 
