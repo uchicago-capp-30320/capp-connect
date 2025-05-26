@@ -103,7 +103,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
         many=True, slug_field="tag_name", queryset=Tag.objects.all()
     )
     start_time = serializers.DateTimeField(required=False, allow_null=True)
-    title = serializers.DateTimeField(required=False, allow_null=True)
+    title = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = Post
