@@ -1,6 +1,7 @@
 from django.core.paginator import EmptyPage, Paginator
 from django.http import Http404
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication  # For Slack Posts
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -341,3 +342,43 @@ class MyProfileView(APIView):
         profile = Profile.objects.get(user=request.user)
         serializer = ProfileSerializer(profile)
         return Response(serializer.data)
+
+
+class SlackPost(APIView):
+    authentication_classes = [TokenAuthentication]
+
+    def get_object(self, ts, post_type):
+        try:
+            return Post.objects.get(ts=ts, post_type=post_type)
+        except Post.DoesNotExist:
+            return None
+
+    def post(self, request):
+        serializer = PostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        ts = request.data.get("ts")
+        post_type = request.data.get("post_type")
+        post = self.get_object(ts, post_type)
+        if not post:
+            return Response(
+                {"error": "Post not found."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        serializer = PostSerializer(post, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        ts = request.data.get("ts")
+        post_type = request.data.get("post_type")
+        post = self.get_object(ts, post_type)
+        if post:
+            post.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
