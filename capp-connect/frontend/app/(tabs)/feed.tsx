@@ -101,17 +101,16 @@ export default function Feed() {
 
     <View style={{flex: 1, width:"100%", minHeight: 200 }}>
         <FlashList
-          renderItem={({item}) => {
-            return <FeedCard postID={item.post_id} userID={item.user} title={item.title} body={item.description} tags={item.tags} />
-          }}
           data={filteredData}
           renderItem={({ item }) => {
-  if (!item || typeof item.title !== "string" || typeof item.description !== "string" || !Array.isArray(item.tags)) {
-    return null;
-  }
+            if (!item || typeof item.title !== "string" || typeof item.description !== "string" || !Array.isArray(item.tags)) {
+              return null;
+            }
 
   return (
     <FeedCard
+      postID={item.post_id}
+      userID={item.user}
       title={item.title}
       body={item.description}
       tags={item.tags}

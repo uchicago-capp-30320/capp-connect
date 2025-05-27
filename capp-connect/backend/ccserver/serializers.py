@@ -119,7 +119,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             "links",
             "start_time",
             "location",
-            "slack_ts"
+            "slack_ts",
         ]
         unique_together = ("post_id", "tag")
 
