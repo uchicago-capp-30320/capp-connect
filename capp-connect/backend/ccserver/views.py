@@ -338,7 +338,7 @@ class SearchResources(APIView):
                 matching_resources = matching_resources.intersection(
                     tag_resources
                 )
-        serializer = PostSerializer(matching_resources, many=True)
+        serializer = ResourceSerializer(matching_resources, many=True)
         return Response(serializer.data)
 
 
