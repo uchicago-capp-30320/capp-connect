@@ -103,14 +103,7 @@ export default function Feed() {
         <FlashList
           data={filteredData}
           renderItem={({ item }) => {
-            if (
-              !item ||
-              typeof item.post_id !== "string" ||
-              typeof item.user !== "string" ||
-              typeof item.title !== "string" ||
-              typeof item.description !== "string" ||
-              !Array.isArray(item.tags)
-            ) {
+            if (!item || typeof item.title !== "string" || typeof item.description !== "string" || !Array.isArray(item.tags)) {
               return null;
             }
 
@@ -124,7 +117,6 @@ export default function Feed() {
     />
   );
 }}
-
 
           estimatedItemSize={500}
 
@@ -140,11 +132,11 @@ export default function Feed() {
             }
           }
           onEndReachedThreshold={.5}
-          onRefresh={async () => {
+          onRefresh={ () => {
             setRefreshing(true);
-            await updateFeed();
+            updateFeed()
             setRefreshing(false);
-            setLoadNewData(true);
+            setLoadNewData(true)
           }}
           refreshing={refreshing}
         />
