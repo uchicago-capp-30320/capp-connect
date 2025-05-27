@@ -15,7 +15,7 @@ import ProfilePhoto from "@/components/ProfilePhoto";
 
 
 type Comment = {
-  user: string 
+  user: string
   comment_text: string
 }
 
@@ -35,10 +35,10 @@ function wrapHTML(html: string) {
     <html>
       <head>
         <style>
-          body { 
-            margin: 0; 
-            padding: 0; 
-            word-break: break-word; 
+          body {
+            margin: 0;
+            padding: 0;
+            word-break: break-word;
             white-space: pre-wrap;
             font-size: 16px;
           }
@@ -47,7 +47,7 @@ function wrapHTML(html: string) {
       <body>${html}</body>
     </html>
   `;
-} 
+}
 
 export default function Post() {
   const params = useLocalSearchParams();
@@ -69,7 +69,7 @@ export default function Post() {
     }, []);
 
   let richBody: string;
-  
+
   // if title is general, project, event, or job "from slack", convert it to html
   if (
     !params.title ||
@@ -92,12 +92,12 @@ export default function Post() {
                     "POST",
                     {comment_text: newComment}
                 )
-    
+
     setComments([resp, ...comments])
     // force remount to clear editor after save
     setEditorKey(editorKey + 1)
   }
-  
+
   return (
     <SafeAreaProvider>
       <SafeAreaView
@@ -113,11 +113,11 @@ export default function Post() {
               <Text style={{fontSize: 30}}>{params.title}</Text>
             </View>
 
-          
+
               <View style={{ paddingTop: 10, minHeight: "10%", width: "95%"}}>
                 <WebView source={{ html: wrapHTML(richBody) }} style={{ flex: 1 }} />
               </View>
-              
+
               <View style={{
                 flexDirection:"row",
                 flexWrap: 'wrap',
@@ -164,9 +164,9 @@ export default function Post() {
                   data={comments}
                   estimatedItemSize={200} />
             </View>
-            
-        </View>     
-      </ScrollView> 
+
+        </View>
+      </ScrollView>
     </SafeAreaView>
   </SafeAreaProvider>
   );
@@ -198,12 +198,11 @@ const styles = StyleSheet.create({
 });
 
 function CommentCard({user, body}: {user: string, body: string}) {
-
   return (
     <View style={[Containers.cards, {flex: 1, minHeight: 50, maxHeight: 200, flexDirection: "row", margin: 5}]}>
       {/* create profile photo for poster */}
       <View style={{paddingBottom: 5}}>
-          <ProfilePhoto style={styles.image}/>
+          <ProfilePhoto user={user} style={styles.image}/>
       </View>
       <View style={{flex: 1, marginLeft: 50, justifyContent: "center", flexGrow: 2}}>
         <WebView source={{ html: wrapHTML(toHTML(body)) }} style={{ flex: 1 }} />
