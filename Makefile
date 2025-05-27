@@ -36,14 +36,17 @@ backend:
 frontend-dev:
 	cd capp-connect/frontend && npx expo start --tunnel
 
-
 .PHONY: frontend-build
 frontend-build:
-	cd capp-connect/frontend && npx expo export --platform web --output-dir static
+# compile static files, empty out current static folder in backend, then move compiled static files to backend
+	cd capp-connect/frontend && \
+		npx expo export --platform web --output-dir static && \
+		rm -r ../backend/ccserver/static/ && \
+		mv static ../backend/ccserver/
 
-# .PHONY: run-all
-# run-all:
-# 	make backend & make frontend
+.PHONY: run
+run:
+	make frontend-build && backend
 
 .PHONY: install
 install:
