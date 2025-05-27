@@ -11,6 +11,8 @@ import CreateNewPost from "@/components/CreateNewPost";
 // const BODY = "The gentle hum of the city faded as the sun dipped below the skyline, casting long shadows across the quiet park. Leaves rustled in the evening breeze, swirling in small, playful circles around the old wooden bench. Somewhere nearby, laughter echoed-brief and bright-before dissolving into the soft chorus of distant traffic. In that moment, time seemed to slow, and the world paused to breathe, wrapped in the golden glow of twilight."
 
 type Post = {
+  post_id: string
+  user: string
   title: string;
   description: string;
   poster_name: string;
@@ -92,7 +94,7 @@ export default function Feed() {
     <View style={{flex: 1, width:"100%"}}>
         <FlashList
           renderItem={({item}) => {
-            return <FeedCard title={item.title} body={item.description} tags={item.tags} />
+            return <FeedCard postID={item.post_id} userID={item.user} title={item.title} body={item.description} tags={item.tags} />
           }}
 
           data={filteredData}
