@@ -251,15 +251,10 @@ export default function TagSearch({search, handleLayout, styles, searchType, lim
                     />
                 ))}
                 {/* limit how many tags users can add. raise a warning once the user has input up to the limit number of tags */}
-                {tagsForType.length < limit ? (() => {
-                    if (raiseWarning) raiseWarning("")
-                    return <TagAutoComplete usedTags={tagsForType} setTags={setTagsForType} placeholder={placeholder ? placeholder: "Search..."} />
-                })() : (
-                    (() => {
-                        if (raiseWarning) raiseWarning(`You can search for a maximum of ${limit} tags`)
-                        return null
-                })()
-                )}
+                {tagsForType.length < limit ? (
+                    <TagAutoComplete usedTags={tagsForType} setTags={setTagsForType} placeholder={placeholder ? placeholder: "Search..."} />
+                ) : null}
+
             </View>
             { search ?
                 <SearchButton

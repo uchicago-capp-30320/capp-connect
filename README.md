@@ -12,7 +12,7 @@ The below is credited to @michplunkett, 2024 CAPP TA
 1. Download uv: [link](https://docs.astral.sh/uv/).
 2. Download Node.js and npm: [link](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 3. Go into the base directory of the repository and type `make env` into the terminal.
-4. Use the `make run-all` command.
+4. Use the `make run` command.
 
 ### Connecting to the server to test auth:
 1. Connect to the server using the command: `ssh -p 2222 capp-connect@turing.unnamed.computer`
@@ -35,5 +35,5 @@ The below is credited to @michplunkett, 2024 CAPP TA
 - `make lint`: Runs `pre-commit`.
 - `make frontend-dev`: Runs a Node development server to serve the frontend React Native project with Expo Go.
 - `make frontend-build`: Compiles the React code into static files currently located in frontend/static/.
-- To update: `make run-all`: Runs the `main` function in the `project` folder in parallel with starting the node.js development server for the frontend app.
+- `make run`: Compiles React Native frontend app into static files and then runs the Django backend server, serving those static files and exposing endpoints.
 - `make test`: Runs test cases in the `tests` directory.

@@ -36,23 +36,31 @@ export default function Feed() {
 
   // whenever new data should be loaded in, pull from cache
   useEffect(() => {
-    async function fetchFeed() {
-      if (loadNewData) {
-        const fetchedData = await getCachedData("feed")
-        if (fetchedData && fetchedData.fullResults) {
-          const fullData = fetchedData.fullResults
+  async function fetchFeed() {
+    try {
+      if (!loadNewData) return;
 
-          // set full data to the types listed in the cache, ignoring the "nextPage" key
-          setData(Object.fromEntries(
-            Object.entries(fullData).filter(([key]) => !["nextPage"].includes(key))
-          ) as Record<string, Post[]>)
-        }
+      // First, update cache with latest posts
+      await updateFeed();
+
+      // Then, pull from cache
+      const fetchedData = await getCachedData("feed");
+
+      if (fetchedData?.fullResults) {
+        const entries = Object.entries(fetchedData.fullResults)
+          .filter(([key]) => key !== "nextPage");
+
+        setData(Object.fromEntries(entries) as Record<string, Post[]>);
       }
+    } catch (error) {
+      console.error("Error loading feed:", error);
+    } finally {
+      setLoadNewData(false);
     }
-    fetchFeed();
-    setLoadNewData(false)
+  }
 
-  }, [loadNewData]);
+  fetchFeed();
+}, [loadNewData]);
 
   // set button (feed type)
   const [feedType, setFeedType] = useState("All")
@@ -61,7 +69,7 @@ export default function Feed() {
 
   useEffect(() => {
     // Filter data whenever data or feedType changes
-    setFilteredData(data[feedType])
+    setFilteredData(data[feedType] ?? [])
 
   }, [data, feedType]);
 
@@ -70,7 +78,7 @@ export default function Feed() {
   const [isFetchingMore, setIsFetchingMore] = useState(false);
 
   return (
-    <>
+    <View style={{ flex: 1, height: "100%" }}>
       <SearchBar
           placeholder="Search..."
           style={
@@ -91,13 +99,25 @@ export default function Feed() {
 
     <CreateNewPost />
 
-    <View style={{flex: 1, width:"100%"}}>
+    <View style={{flex: 1, width:"100%", minHeight: 200 }}>
         <FlashList
-          renderItem={({item}) => {
-            return <FeedCard postID={item.post_id} userID={item.user} title={item.title} body={item.description} tags={item.tags} />
-          }}
-
           data={filteredData}
+          renderItem={({ item }) => {
+            if (!item || typeof item.title !== "string" || typeof item.description !== "string" || !Array.isArray(item.tags)) {
+              return null;
+            }
+
+  return (
+    <FeedCard
+      postID={item.post_id}
+      userID={item.user}
+      title={item.title}
+      body={item.description}
+      tags={item.tags}
+    />
+  );
+}}
+
           estimatedItemSize={500}
 
           // use for loading more data
@@ -121,6 +141,6 @@ export default function Feed() {
           refreshing={refreshing}
         />
      </View>
-     </>
+     </View>
   );
 }

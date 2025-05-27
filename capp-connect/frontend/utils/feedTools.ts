@@ -1,5 +1,6 @@
 import { setCachedData, getCachedData } from "@/utils/caching";
 import fetchData from "@/utils/fetchdata"
+import { API_BASE_URL } from "@/utils/constants";
 import * as Device from 'expo-device';
 
 
@@ -12,7 +13,7 @@ export async function updateFeed() {
             if (currentData.nextPage === 1) {
 
                 const resp = await fetchData(
-                    "http://127.0.0.1:8080/ccserver/posts/",
+                    `${API_BASE_URL}/posts/`,
                     "GET",
                     {format: "json"}
                 )
@@ -32,7 +33,7 @@ export async function updateFeed() {
 
             } else if (currentData.nextPage > 1) {
                 const resp = await fetchData(
-                    "http://127.0.0.1:8080/ccserver/posts/",
+                    `${API_BASE_URL}/posts/`,
                     "GET",
                     {page: currentData.nextPage}
                 )
