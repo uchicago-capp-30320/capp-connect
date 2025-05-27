@@ -207,10 +207,11 @@ def create_tag(text):
         content = response.choices[0].message.content.strip()
         tag_list = json.loads(content)
         if isinstance(tag_list, list):
+            real_tag_list = []
             for tag in tag_list:
-                if tag not in full_tag_list:
-                    tag_list.remove(tag) #adding this manual check because chat WONT stop hallucinating even though temp = 0. 
-            return tag_list 
+                if tag in full_tag_list:
+                    real_tag_list.append(tag) #adding this manual check because chat WONT stop hallucinating even though temp = 0. 
+            return real_tag_list 
         else:
             return []  
   
@@ -261,14 +262,14 @@ def get_msg(message, say):
             "client_msg_id": message["client_msg_id"],
             "description": message["text"],
             "tags": message_tag,
-            "ts": message["ts"], #they are going to replace with when it came into DB 
+            "slack_ts": message["ts"], #they are going to replace with when it came into DB 
             # "event_ts": message["event_ts"],
             "edited": message.get("edited")
         }
         # print(message_for_db)
         print("Prepared message for DB:", message_for_db) 
         if not sync_with_api('POST', message_for_db):
-            print(f"Failed to create post for message {message['ts']}")
+            print(f"Failed to create post for message {message['slack_ts']}")
             
     
     except KeyError as e:
@@ -315,7 +316,7 @@ def record_changed_messages(body, logger):
     try:
 
         if event["subtype"] == "message_changed":
-            ts = message_data["ts"]
+            slack_ts = message_data["ts"]
             changed_message = {
                 "post_type": post_type,
                 # "hidden": event["hidden"],
@@ -325,12 +326,12 @@ def record_changed_messages(body, logger):
                 # "edited": message_data.get("edited", {}),
                 "description": message_data.get("text", ""),
                 "tags": message_tag,
-                "slack_ts": ts,
+                "slack_ts": slack_ts,
             }
-            print(changed_message)
+            print("Edited message:",changed_message)
 
             if not sync_with_api('PUT', changed_message):
-                print(f"Failed to update post {ts} in {channel}")
+                print(f"Failed to update post {slack_ts} in {channel}")
 
         elif (
             event["subtype"] == "message_deleted"
@@ -338,9 +339,9 @@ def record_changed_messages(body, logger):
             deleted_message = {
                 "post_type": post_type,
                 # "ts": event["ts"],
-                "ts": event["deleted_ts"], #reminder this is the deleted ts which matches. 
+                "slack_ts": event["deleted_ts"], #reminder this is the deleted ts which matches. 
             }
-            print(deleted_message)
+            print("Deleted:",deleted_message)
         
             if not sync_with_api('DELETE', deleted_message):
                 print(f"Failed to delete post {event["deleted_ts"]} in {channel}")
