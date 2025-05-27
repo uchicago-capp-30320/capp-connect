@@ -4,6 +4,7 @@ import { FlashList } from "@shopify/flash-list";
 import { useEffect, useState } from "react";
 import SearchBar from '../../components/SearchBar';
 import fetchData from '../../utils/fetchdata';
+import { API_BASE_URL } from "@/utils/constants";
 
 type UserProfile = {
   user: string;
@@ -24,7 +25,7 @@ export default function Directory() {
     async function fetchProfiles() {
       try {
         const profiles = await fetchData(
-          "https://capp-connect.unnamed.computer/ccserver/profiles/",
+          `${API_BASE_URL}/profiles/`, 
           "GET",
           { format: "json" }
         );
