@@ -37,10 +37,10 @@ export default function Feed() {
     try {
       if (!loadNewData) return;
 
-      // 💾 First, update cache with latest posts from backend
+      // First, update cache with latest posts
       await updateFeed();
 
-      // 📥 Then pull from cache
+      // Then, pull from cache
       const fetchedData = await getCachedData("feed");
 
       if (fetchedData?.fullResults) {
@@ -50,7 +50,7 @@ export default function Feed() {
         setData(Object.fromEntries(entries) as Record<string, Post[]>);
       }
     } catch (error) {
-      console.error("❌ Error loading feed:", error);
+      console.error("Error loading feed:", error);
     } finally {
       setLoadNewData(false);
     }
