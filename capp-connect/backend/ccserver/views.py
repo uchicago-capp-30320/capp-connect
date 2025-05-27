@@ -312,15 +312,13 @@ class GetResource(APIView):
             resource, data=request.data, partial=True
         )
         if serializer.is_valid():
-            if request.user == resource.user:
-                serializer.save()
+            serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
         resource = self.get_object(pk)
-        if request.user == resource.user:
-            resource.delete()
+        resource.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -351,9 +349,9 @@ class MyProfileView(APIView):
 class SlackPost(APIView):
     authentication_classes = [TokenAuthentication]
 
-    def get_object(self, ts, post_type):
+    def get_object(self, slack_ts, post_type):
         try:
-            return Post.objects.get(ts=ts, post_type=post_type)
+            return Post.objects.get(slack_ts=slack_ts, post_type=post_type)
         except Post.DoesNotExist:
             return None
 
@@ -365,9 +363,9 @@ class SlackPost(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
-        ts = request.data.get("ts")
+        slack_ts = request.data.get("slack_ts")
         post_type = request.data.get("post_type")
-        post = self.get_object(ts, post_type)
+        post = self.get_object(slack_ts, post_type)
         if not post:
             return Response(
                 {"error": "Post not found."},
@@ -380,9 +378,9 @@ class SlackPost(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
-        ts = request.data.get("ts")
+        slack_ts = request.data.get("slack_ts")
         post_type = request.data.get("post_type")
-        post = self.get_object(ts, post_type)
+        post = self.get_object(slack_ts, post_type)
         if post:
             post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
