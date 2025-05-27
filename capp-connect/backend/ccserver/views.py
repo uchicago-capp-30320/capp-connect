@@ -149,7 +149,11 @@ class GetPostList(APIView):
     POSTS_PER_TYPE = 25
 
     def get(self, request, format=None):
-        page_number = request.GET.get("page", 1)
+        try:
+            page_number = int(request.GET.get("page", 1))
+        except ValueError:
+            page_number = 1
+
         group_data = {}
         post_types = [choice[0] for choice in Post.PostType.choices]
 
@@ -235,7 +239,7 @@ class GetComment(APIView):
 class GetAllComments(APIView):
     def get(self, request, pk, format=None):
         try:
-            post = Post.objects.all(pk=pk)
+            post = Post.objects.get(pk=pk)
             comments = post.comments.all()
             serializer = CommentSerializer(comments, many=True)
             return Response(serializer.data)
