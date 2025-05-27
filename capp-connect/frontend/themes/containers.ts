@@ -35,7 +35,8 @@ const Containers = StyleSheet.create({
         // margin: 15,
         borderRadius: BORDER_RADIUS,
         alignItems: "center",
-        alignContent: "center"
+        alignContent: "center",
+        alignSelf: "center"
     },
     textFields: {
         backgroundColor: Colors.textFieldBackground
