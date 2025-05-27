@@ -32,7 +32,9 @@ function makeTab(fileName: string, label: string, icon: React.ComponentProps<typ
           headerStyle: {backgroundColor: Colors.header},
           sceneStyle: {backgroundColor: Colors.background},
           // set color for the header text
-          headerTintColor: Colors.headerText
+          headerTintColor: Colors.headerText,
+          headerTitleStyle: {fontWeight: "bold"},
+          headerTitleAlign: "center"
         }}
 
       />
@@ -59,7 +61,9 @@ function makeDrawerScreen(fileName: string, label: string) {
           headerStyle: {backgroundColor: Colors.header},
           sceneStyle: {backgroundColor: Colors.background},
           // set color for the header text
-          headerTintColor: Colors.headerText
+          headerTintColor: Colors.headerText,
+          headerTitleStyle: {fontWeight: "bold"},
+          headerTitleAlign: "center"
         }}
       />
   )
@@ -75,7 +79,8 @@ export default function Layout() {
             // add background color and active and inactive text color (tint)
             drawerStyle: { backgroundColor: Colors.menuBackground },
             drawerActiveTintColor: Colors.activeText,
-            drawerInactiveTintColor:  Colors.inactiveText
+            drawerInactiveTintColor:  Colors.inactiveText,
+            drawerLabelStyle: {fontWeight: "bold"}
           }}>
           {/* returns JSX drawer screen objects for all the pages */}
           {makeDrawerScreen("index", "Home")}
