@@ -1,5 +1,6 @@
 import { View, Text, TouchableHighlight, StyleSheet } from 'react-native';
 import React from 'react';
+import { Colors } from '@/themes';
 
 interface feedButtonProps {
     label: string;
@@ -16,6 +17,7 @@ const styles = StyleSheet.create({
         margin: 5,
         justifyContent: 'center',
         alignItems: 'center',
+        width: 100
     },
     tagText: {
         fontSize: 16,
@@ -26,11 +28,16 @@ const styles = StyleSheet.create({
 export default function feedButton({ label, name, feedButtonPressed, setButton }: feedButtonProps) {
     return (
         <TouchableHighlight
-            style={[styles.tag, { backgroundColor: "grey" }]}
+            style={
+                [styles.tag,
+                    (feedButtonPressed == name ?
+                        { backgroundColor: Colors.buttonPressed } :
+                        { backgroundColor: Colors.secondary })
+                ]}
             onPress={() => {
                 if (feedButtonPressed != name) {
-                    console.log("you're pressing me! ", label)
-                    console.log("current button pressed", feedButtonPressed)
+                    // console.log("you're pressing me! ", label)
+                    // console.log("current button pressed", feedButtonPressed)
                     setButton(name)
                 }
             }}
@@ -39,7 +46,13 @@ export default function feedButton({ label, name, feedButtonPressed, setButton }
             underlayColor="#DDDDDD"
         >
             <View>
-                <Text style={styles.tagText}>{label}</Text>
+                <Text style={
+                    [styles.tagText,
+                    (feedButtonPressed == name ?
+                        { color: "white" } :
+                        { color: "black" })
+                ]}
+                >{label}</Text>
             </View>
         </TouchableHighlight>
     );

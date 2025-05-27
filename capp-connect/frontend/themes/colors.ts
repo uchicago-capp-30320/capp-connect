@@ -13,7 +13,8 @@ const Colors = {
     iconInactive: "#ffffff",
     iconActive: "#ffa319",
 
-    buttonPressed: "#fab040",
+    buttonPressed: "#b17111",
+    buttonPressedSecondary: "#2b515e",
 
     cardBackground: "#ffffff",
 

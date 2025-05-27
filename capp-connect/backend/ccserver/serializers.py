@@ -102,6 +102,8 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
     tags = serializers.SlugRelatedField(
         many=True, slug_field="tag_name", queryset=Tag.objects.all()
     )
+    start_time = serializers.DateTimeField(required=False, allow_null=True)
+    title = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = Post
@@ -117,6 +119,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             "links",
             "start_time",
             "location",
+            "slack_ts"
         ]
         unique_together = ("post_id", "tag")
 

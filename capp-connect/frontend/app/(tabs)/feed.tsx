@@ -6,10 +6,13 @@ import SearchBar from '../../components/SearchBar';
 import FeedTypeButton from '../../components/FeedTypeButton'
 import {updateFeed} from "@/utils/feedTools"
 import { getCachedData } from "@/utils/caching";
+import CreateNewPost from "@/components/CreateNewPost";
 
 // const BODY = "The gentle hum of the city faded as the sun dipped below the skyline, casting long shadows across the quiet park. Leaves rustled in the evening breeze, swirling in small, playful circles around the old wooden bench. Somewhere nearby, laughter echoed-brief and bright-before dissolving into the soft chorus of distant traffic. In that moment, time seemed to slow, and the world paused to breathe, wrapped in the golden glow of twilight."
 
 type Post = {
+  post_id: string
+  user: string
   title: string;
   description: string;
   poster_name: string;
@@ -93,8 +96,14 @@ export default function Feed() {
       <FeedTypeButton label="Jobs" name="Job" feedButtonPressed={feedType} setButton={setFeedType}/>
       <FeedTypeButton label="Projects" name="Project" feedButtonPressed={feedType} setButton={setFeedType} />
     </View>
-    <View style={{ flex: 1, width: "100%", minHeight: 200 }}>
+
+    <CreateNewPost />
+
+    <View style={{flex: 1, width:"100%", minHeight: 200 }}>
         <FlashList
+          renderItem={({item}) => {
+            return <FeedCard postID={item.post_id} userID={item.user} title={item.title} body={item.description} tags={item.tags} />
+          }}
           data={filteredData}
           renderItem={({ item }) => {
   if (!item || typeof item.title !== "string" || typeof item.description !== "string" || !Array.isArray(item.tags)) {

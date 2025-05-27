@@ -171,13 +171,15 @@ interface TagSearchProps {
     handleLayout?: (event: LayoutChangeEvent) => void;
     styles?: ViewStyle;
     limit: number;
-    raiseWarning: (warning: string) => void;
-    raiseErr: (err: string) => void
+    raiseWarning?: (warning: string) => void;
+    raiseErr?: (err: string) => void
+    setTags?: (tags: Array<string>) => void;
+    placeholder?: string
 }
 
 
 // create a tag-based search bar
-export default function TagSearch({search, handleLayout, styles, searchType, limit, raiseWarning}: TagSearchProps) {
+export default function TagSearch({search, handleLayout, styles, searchType, limit, raiseWarning, placeholder}: TagSearchProps) {
     const colorMapper = createTagColorMapper();
     const [searchBarHeight, setSearchbarHeight] = useState(0);
 
@@ -251,21 +253,25 @@ export default function TagSearch({search, handleLayout, styles, searchType, lim
                 ))}
                 {/* limit how many tags users can add. raise a warning once the user has input up to the limit number of tags */}
                 {tagsForType.length < limit ? (
-                    <TagAutoComplete usedTags={tagsForType} setTags={setTagsForType} placeholder={search ? "Search...": ""} />
+                    <TagAutoComplete usedTags={tagsForType} setTags={setTagsForType} placeholder={placeholder ? placeholder: "Search..."} />
                 ) : null}
+
             </View>
-            <SearchButton
-                tags={tagsForType}
-                searchType={searchType}
-                styles={
-                    {
-                        height: Device.deviceType === Device.DeviceType.DESKTOP ? searchBarHeight : 50,
-                        width: Device.deviceType === Device.DeviceType.DESKTOP ? "auto" : "50%",
-                        margin: Device.deviceType === Device.DeviceType.DESKTOP ? 0 : 15,
-                        alignSelf: "center",
+            { search ?
+                <SearchButton
+                    tags={tagsForType}
+                    searchType={searchType}
+                    styles={
+                        {
+                            height: Device.deviceType === Device.DeviceType.DESKTOP ? searchBarHeight : 50,
+                            width: Device.deviceType === Device.DeviceType.DESKTOP ? "auto" : "50%",
+                            margin: Device.deviceType === Device.DeviceType.DESKTOP ? 0 : 15,
+                            alignSelf: "center",
+                        }
                     }
+                /> :
+                null
                 }
-            />
         </View>
 
 
