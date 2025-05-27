@@ -315,6 +315,7 @@ def record_changed_messages(body, logger):
     try:
 
         if event["subtype"] == "message_changed":
+            ts = message_data["ts"]
             changed_message = {
                 "post_type": post_type,
                 # "hidden": event["hidden"],
@@ -324,11 +325,12 @@ def record_changed_messages(body, logger):
                 # "edited": message_data.get("edited", {}),
                 "description": message_data.get("text", ""),
                 "tags": message_tag,
+                "slack_ts": ts,
             }
             print(changed_message)
 
             if not sync_with_api('PUT', changed_message):
-                print(f"Failed to update post {event["ts"]} in {channel}")
+                print(f"Failed to update post {ts} in {channel}")
 
         elif (
             event["subtype"] == "message_deleted"
