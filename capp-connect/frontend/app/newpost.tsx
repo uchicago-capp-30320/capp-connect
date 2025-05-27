@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useState } from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { View, ScrollView, Platform, KeyboardAvoidingView, Text, TouchableHighlight } from 'react-native';
+import { View, ScrollView, Text, TouchableHighlight } from 'react-native';
 // import MarkdownEditor from '@uiw/react-markdown-editor';
 import RichTextEditor from '@/components/RichTextEditor'
 import { Colors, Containers, TextStyles } from '@/themes';
 import TagSearch from '@/components/TagSearch';
 import fetchData from '@/utils/fetchdata';
 import FeedTypeButton from '../components/FeedTypeButton'
-import { router, Router } from 'expo-router';
+import { router } from 'expo-router';
 import { getCachedData } from '@/utils/caching';
 
 
@@ -82,7 +82,7 @@ export default function NewPost() {
                         <Text style={[TextStyles.subheading, {paddingBottom: 0, marginBottom: 0}]}>Body</Text>
                         <RichTextEditor editable={true} saveText={setBody} />
                     </View>
-                    
+
                     {/* add tagging for posts */}
                     <View style={{width: "95%", alignSelf: "center",  marginTop: 15, justifyContent: "center"}}>
                         <Text style={[TextStyles.subheading, {paddingBottom: 5, marginBottom: 0}]}>Add tags</Text>
@@ -97,7 +97,7 @@ export default function NewPost() {
                             onPressIn={() => setButtonPressed(true)}
                             onPressOut={() => setButtonPressed(false)}
                         >
-                            
+
                             <View style={{flex: 1, padding: 15, alignItems: "center", width: "100%"}} >
                                 <Text style={
                                     (

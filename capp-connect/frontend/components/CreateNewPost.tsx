@@ -6,7 +6,7 @@ export default function CreateNewPost() {
 
     return (
         <>
-        <TouchableHighlight 
+        <TouchableHighlight
             onPress={(() => {
                 const router = useRouter();
                 router.navigate("/newpost")
@@ -14,10 +14,9 @@ export default function CreateNewPost() {
             underlayColor={Colors.buttonPressedSecondary}
             style={[Containers.buttons, {backgroundColor: Colors.tertiary, width: "50%"}]}>
             <Text style={TextStyles.buttonText}>New</Text>
-            
+
         </TouchableHighlight>
         <View style={{paddingTop: 7, borderBottomWidth: 1}}></View>
         </>
     )
 }
-

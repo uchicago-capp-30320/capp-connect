@@ -267,7 +267,7 @@ export default function TagSearch({search, handleLayout, styles, searchType, lim
                         }
                     }
                 /> :
-                null 
+                null
                 }
         </View>
 

@@ -1,9 +1,8 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { View, Text, KeyboardAvoidingView, ViewStyle, TouchableHighlight } from 'react-native';
+import { useEffect } from 'react';
+import { View, ViewStyle } from 'react-native';
 // import MarkdownEditor from '@uiw/react-markdown-editor';
 import { RichText, Toolbar, useEditorBridge, useEditorContent } from '@10play/tentap-editor';
-import { Colors, Containers } from '@/themes';
 
 export default function RichTextEditor({style, editable, saveText}: {style?: ViewStyle, editable: boolean, saveText: (text: string) => void}) {
 const editor = useEditorBridge({
@@ -16,7 +15,7 @@ const editor = useEditorBridge({
   const content = useEditorContent(editor, {type: "html"})
   useEffect(() => {
     // Will render each time content is updated and call onSave
-    content && saveText(content);
+    if (content) {saveText(content)};
     }, [content]);
 
   const addBorder = editable ? {borderWidth: 2, marginTop: 15} : null

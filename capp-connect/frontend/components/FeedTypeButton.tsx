@@ -29,9 +29,9 @@ export default function feedButton({ label, name, feedButtonPressed, setButton }
     return (
         <TouchableHighlight
             style={
-                [styles.tag, 
-                    (feedButtonPressed == name ? 
-                        { backgroundColor: Colors.buttonPressed } : 
+                [styles.tag,
+                    (feedButtonPressed == name ?
+                        { backgroundColor: Colors.buttonPressed } :
                         { backgroundColor: Colors.secondary })
                 ]}
             onPress={() => {
@@ -48,8 +48,8 @@ export default function feedButton({ label, name, feedButtonPressed, setButton }
             <View>
                 <Text style={
                     [styles.tagText,
-                    (feedButtonPressed == name ? 
-                        { color: "white" } : 
+                    (feedButtonPressed == name ?
+                        { color: "white" } :
                         { color: "black" })
                 ]}
                 >{label}</Text>
