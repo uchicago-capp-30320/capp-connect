@@ -179,7 +179,7 @@ interface TagSearchProps {
 
 
 // create a tag-based search bar
-export default function TagSearch({search, handleLayout, styles, searchType, limit, raiseWarning, placeholder}: TagSearchProps) {
+export default function TagSearch({search, handleLayout, styles, searchType, limit, setTags, raiseWarning, placeholder}: TagSearchProps) {
     const colorMapper = createTagColorMapper();
     const [searchBarHeight, setSearchbarHeight] = useState(0);
 
@@ -195,6 +195,7 @@ export default function TagSearch({search, handleLayout, styles, searchType, lim
 
     const prevSearchType = useRef("Directory");
 
+    // switch between types for rendering
     useEffect(() => {
         if (prevSearchType.current !== searchType) {
             setTagsByType(prev => ({
@@ -205,6 +206,12 @@ export default function TagSearch({search, handleLayout, styles, searchType, lim
         prevSearchType.current = searchType
         setTagsForType(tagsByType[searchType])
     }, [searchType])
+
+    // listener to also update an external state when the tags are updated
+    // tags state is managed internal to this component, but sometimes parents may want to know what is in it
+    useEffect(() => {
+        if (setTags) {setTags(tagsForType)}
+    }, [tagsForType])
 
     return (
 
