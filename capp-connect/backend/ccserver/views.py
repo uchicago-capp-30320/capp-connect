@@ -1,5 +1,8 @@
 from django.core.paginator import EmptyPage, Paginator
 from django.http import Http404
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+from django.views.generic import TemplateView
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication  # For Slack Posts
 from rest_framework.response import Response
@@ -312,15 +315,13 @@ class GetResource(APIView):
             resource, data=request.data, partial=True
         )
         if serializer.is_valid():
-            if request.user == resource.user:
-                serializer.save()
+            serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
         resource = self.get_object(pk)
-        if request.user == resource.user:
-            resource.delete()
+        resource.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -337,7 +338,7 @@ class SearchResources(APIView):
                 matching_resources = matching_resources.intersection(
                     tag_resources
                 )
-        serializer = PostSerializer(matching_resources, many=True)
+        serializer = ResourceSerializer(matching_resources, many=True)
         return Response(serializer.data)
 
 
@@ -351,9 +352,9 @@ class MyProfileView(APIView):
 class SlackPost(APIView):
     authentication_classes = [TokenAuthentication]
 
-    def get_object(self, ts, post_type):
+    def get_object(self, slack_ts, post_type):
         try:
-            return Post.objects.get(ts=ts, post_type=post_type)
+            return Post.objects.get(slack_ts=slack_ts, post_type=post_type)
         except Post.DoesNotExist:
             return None
 
@@ -365,9 +366,9 @@ class SlackPost(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
-        ts = request.data.get("ts")
+        slack_ts = request.data.get("slack_ts")
         post_type = request.data.get("post_type")
-        post = self.get_object(ts, post_type)
+        post = self.get_object(slack_ts, post_type)
         if not post:
             return Response(
                 {"error": "Post not found."},
@@ -380,9 +381,15 @@ class SlackPost(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
-        ts = request.data.get("ts")
+        slack_ts = request.data.get("slack_ts")
         post_type = request.data.get("post_type")
-        post = self.get_object(ts, post_type)
+        post = self.get_object(slack_ts, post_type)
         if post:
             post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@method_decorator(never_cache, name="dispatch")
+# We want this to always refresh for dev
+class FrontendAppView(TemplateView):
+    template_name = "index.html"

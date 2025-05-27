@@ -10,11 +10,12 @@ import TypeTab from "@/components/TypeTab";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { TextStyles } from "@/themes";
 
+// import {updateFeed} from "@/utils/feedTools"
+
 const TAG_LIMIT = 5
 
 export default function Index() {
   const tabNames = ["Directory", "Resources", "Feed"]
-
 
   // list of tags
   // const [ tags, setTags ] = useState<string[]>([]);

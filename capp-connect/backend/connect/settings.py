@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 from config import DB_PASSWORD, DJANGO_SECRET_KEY
@@ -37,6 +38,9 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
 ]
 
+# For development ONLY — allows all origins
+CORS_ALLOW_ALL_ORIGINS = True  # delete for prod
+
 
 # Application definition
 
@@ -56,6 +60,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.slack",
+    "corsheaders",  # delete for prod
     # Our apps
     "ccserver",
     "authentication",
@@ -71,6 +76,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    "corsheaders.middleware.CorsMiddleware",  # delete for prod
 ]
 
 ROOT_URLCONF = "connect.urls"
@@ -142,7 +148,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "ccserver/static"),
+]
+
+TEMPLATES[0]["DIRS"] = [
+    os.path.join(BASE_DIR, "ccserver/static"),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

@@ -1,11 +1,17 @@
+import os
+from pathlib import Path
+
 from allauth.socialaccount.providers.slack.views import oauth2_login
 from authentication import views as auth_views
 from ccserver import views as cc_views
+from ccserver.views import FrontendAppView
 from django.contrib import admin
-from django.http import HttpResponse
-from django.urls import include, path
+from django.urls import include, path, re_path
+from django.views.static import serve as static_serve
 from rest_framework.urlpatterns import format_suffix_patterns
 
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 urlpatterns = [
     # Admin and authentication
@@ -15,7 +21,7 @@ urlpatterns = [
     path(
         "fetch-slack/", auth_views.fetch_slack_data, name="fetch_slack"
     ),  # added for getting old msgs and replies!
-    path("", lambda request: HttpResponse("You're logged in via Slack!")),
+    path("", FrontendAppView.as_view(), name="frontend"),
     # added temporarily so we know this worked
     # ccserver API endpoints
     path(
@@ -55,11 +61,6 @@ urlpatterns = [
         name="delete_comment",
     ),
     path(
-        "ccserver/resources/",
-        cc_views.GetResourceList.as_view(),
-        name="all_resources",
-    ),
-    path(
         "ccserver/resources/<int:pk>/",
         cc_views.GetResource.as_view(),
         name="resource_detail",
@@ -87,3 +88,33 @@ urlpatterns = [
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
+
+urlpatterns += [
+    re_path(
+        r"^_expo/(?P<path>.*)$",
+        static_serve,
+        {
+            "document_root": os.path.join(BASE_DIR, "ccserver/static/_expo"),
+        },
+    ),
+    re_path(
+        r"^favicon\.ico$",
+        static_serve,
+        {
+            "document_root": os.path.join(BASE_DIR, "ccserver/static"),
+            "path": "favicon.ico",
+        },
+    ),
+    re_path(
+        r"^assets/(?P<path>.*)$",
+        static_serve,
+        {
+            "document_root": os.path.join(BASE_DIR, "ccserver/static/assets"),
+        },
+    ),
+    re_path(
+        r"^(?!ccserver/).*$",
+        FrontendAppView.as_view(),
+        name="frontend-catchall",
+    ),
+]

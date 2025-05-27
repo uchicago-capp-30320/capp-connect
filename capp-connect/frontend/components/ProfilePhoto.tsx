@@ -3,18 +3,20 @@ import { router } from 'expo-router';
 
 interface ProfilePhotoProps {
     style: StyleProp<ImageStyle>;
+    user: string
 }
 
-export default function ProfilePhoto({ style }: ProfilePhotoProps) {
+export default function ProfilePhoto({ style, user }: ProfilePhotoProps) {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const profileImage = require('../assets/images/fakeprofile.png');
 
     return (
         <SafeAreaView>
-            <Pressable onPress={() => router.navigate('/me')}>
+            <Pressable onPress={() => {console.log(user); router.navigate('/me')}}>
                 <Image
                     source={profileImage}
-                    style={[style, { resizeMode: 'cover' }]}
+                    resizeMode="cover"
+                    style={style}
                 />
             </Pressable>
         </SafeAreaView>

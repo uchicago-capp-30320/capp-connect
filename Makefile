@@ -41,7 +41,7 @@ frontend-build:
 # compile static files, empty out current static folder in backend, then move compiled static files to backend
 	cd capp-connect/frontend && \
 		npx expo export --platform web --output-dir static && \
-		rm -r ../backend/ccserver/static/ && \
+		if [ -d ../backend/ccserver/static ]; then rm -r ../backend/ccserver/static; fi && \
 		mv static ../backend/ccserver/
 
 .PHONY: run
