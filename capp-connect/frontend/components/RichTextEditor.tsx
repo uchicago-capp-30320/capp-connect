@@ -4,7 +4,7 @@ import { View, ViewStyle } from 'react-native';
 // import MarkdownEditor from '@uiw/react-markdown-editor';
 import { RichText, Toolbar, useEditorBridge, useEditorContent } from '@10play/tentap-editor';
 
-export default function RichTextEditor({style, editable, saveText, noRich}: {style?: ViewStyle, editable: boolean, saveText: (text: string) => void, noRich: boolean}) {
+export default function RichTextEditor({style, editable, saveText, noRich}: {style?: ViewStyle, editable: boolean, saveText: (text: string) => void, noRich?: boolean}) {
 const editor = useEditorBridge({
     autofocus: true,
     avoidIosKeyboard: true,
