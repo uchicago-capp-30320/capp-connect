@@ -65,9 +65,6 @@ export default function Feed() {
   const [filteredData, setFilteredData] = useState<Post[]>([]);
 
   useEffect(() => {
-    console.log("💡 data keys:", Object.keys(data));
-    console.log("💡 feedType:", feedType);
-    console.log("💡 data[feedType]:", data[feedType]);
     // Filter data whenever data or feedType changes
     setFilteredData(data[feedType] ?? [])
 
@@ -78,7 +75,7 @@ export default function Feed() {
   const [isFetchingMore, setIsFetchingMore] = useState(false);
 
   return (
-    <>
+    <View style={{ flex: 1, height: "100%" }}>
       <SearchBar
           placeholder="Search..."
           style={
@@ -101,7 +98,6 @@ export default function Feed() {
           data={filteredData}
           renderItem={({ item }) => {
   if (!item || typeof item.title !== "string" || typeof item.description !== "string" || !Array.isArray(item.tags)) {
-    console.warn("⚠️ Skipping bad item due to bad shape:", JSON.stringify(item));
     return null;
   }
 
@@ -137,6 +133,6 @@ export default function Feed() {
           refreshing={refreshing}
         />
      </View>
-     </>
+     </View>
   );
 }
