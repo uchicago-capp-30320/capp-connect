@@ -24,7 +24,7 @@ export default function Directory() {
     async function fetchProfiles() {
       try {
         const profiles = await fetchData(
-          "http://127.0.0.1:8080/ccserver/profiles/",
+          "https://capp-connect.unnamed.computer/ccserver/profiles/",
           "GET",
           { format: "json" }
         );
