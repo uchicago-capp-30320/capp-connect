@@ -93,6 +93,7 @@ Resources uploaded for reference.
 | created_at | timestamp    | When the resource was created       |
 | updated_at | timestamp    | When the resource was last updated               |
 | links      | text         | Any associated link |
+| tags      | ManyToMany(Tag)         | Tags associated with the resource |
 
 **ResourceTag**
 Join table for tags associated with a resource.
