@@ -153,7 +153,7 @@ class GetPostList(APIView):
             page_number = int(request.GET.get("page", 1))
         except ValueError:
             page_number = 1
-        
+
         group_data = {}
         post_types = [choice[0] for choice in Post.PostType.choices]
 
