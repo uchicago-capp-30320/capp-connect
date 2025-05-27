@@ -55,20 +55,26 @@ export default function RootLayout() {
       <Stack.Screen name="profile"
         options={{
           title: "Profile",
+          headerTitleAlign: "center",
           headerStyle: {backgroundColor: Colors.header},
-          headerTintColor: Colors.headerText
+          headerTintColor: Colors.headerText,
+          headerTitleStyle: {fontWeight: "bold"}
         }} />
-      {/* <Stack.Screen name="settings"
-        options={{
-          title: "Settings",
-          headerStyle: {backgroundColor: Colors.header},
-          headerTintColor: Colors.headerText
-        }} /> */}
       <Stack.Screen name="post"
         options={{
           title: "Feed",
+          headerTitleAlign: "center",
           headerStyle: {backgroundColor: Colors.header},
-          headerTintColor: Colors.headerText
+          headerTintColor: Colors.headerText,
+          headerTitleStyle: {fontWeight: "bold"}
+        }} />
+      <Stack.Screen name="newpost"
+        options={{
+          title: "Feed",
+          headerTitleAlign: "center",
+          headerStyle: {backgroundColor: Colors.header},
+          headerTintColor: Colors.headerText,
+          headerTitleStyle: {fontWeight: "bold"}
         }} />
     </Stack>
   );
