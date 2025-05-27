@@ -235,7 +235,7 @@ class GetComment(APIView):
 class GetAllComments(APIView):
     def get(self, request, pk, format=None):
         try:
-            post = Post.objects.all(pk=pk)
+            post = Post.objects.get(pk=pk)
             comments = post.comments.all()
             serializer = CommentSerializer(comments, many=True)
             return Response(serializer.data)
