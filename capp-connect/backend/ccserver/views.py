@@ -1,5 +1,8 @@
 from django.core.paginator import EmptyPage, Paginator
 from django.http import Http404
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+from django.views.generic import TemplateView
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication  # For Slack Posts
 from rest_framework.response import Response
@@ -384,3 +387,9 @@ class SlackPost(APIView):
         if post:
             post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@method_decorator(never_cache, name="dispatch")
+# We want this to always refresh for dev
+class FrontendAppView(TemplateView):
+    template_name = "index.html"
