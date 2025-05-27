@@ -41,10 +41,10 @@ function wrapHTML(html: string) {
     <html>
       <head>
         <style>
-          body { 
-            margin: 0; 
-            padding: 0; 
-            word-break: break-word; 
+          body {
+            margin: 0;
+            padding: 0;
+            word-break: break-word;
             white-space: pre-wrap;
             font-size: 16px;
           }
@@ -53,7 +53,7 @@ function wrapHTML(html: string) {
       <body>${html}</body>
     </html>
   `;
-} 
+}
 
 
 // The text box should take a key/label for the text box, as well as a current value
@@ -99,7 +99,7 @@ export default function FeedCard({postID, userID, title, body, tags}: FeedCardPr
             <View style={[Containers.cards, styles.cardBackground]} >
                 {/* create profile photo for poster */}
                 <View style={{paddingBottom: 5}}>
-                    <ProfilePhoto style={styles.image}/>
+                    <ProfilePhoto user={userID} style={styles.image}/>
                 </View>
                 {/* create title */}
                 <View style={[styles.textTitleContainer, {paddingTop: 15}]}>
