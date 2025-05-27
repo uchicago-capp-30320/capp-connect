@@ -73,7 +73,9 @@ class Post(models.Model):
         PROJECT = "Project", "project"
 
     post_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True
+    )
     slack_user_id = models.CharField(max_length=50, blank=True, null=True)
     client_msg_id = models.CharField(max_length=50, blank=True, null=True)
     title = models.CharField(max_length=100, blank=True, null=True)

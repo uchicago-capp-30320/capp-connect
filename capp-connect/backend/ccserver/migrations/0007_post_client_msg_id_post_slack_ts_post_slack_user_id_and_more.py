@@ -5,46 +5,65 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ccserver', '0006_update_tag_table_and_list'),
+        ("ccserver", "0006_update_tag_table_and_list"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='post',
-            name='client_msg_id',
+            model_name="post",
+            name="client_msg_id",
             field=models.CharField(blank=True, max_length=50, null=True),
         ),
         migrations.AddField(
-            model_name='post',
-            name='slack_ts',
+            model_name="post",
+            name="slack_ts",
             field=models.CharField(blank=True, max_length=50, null=True),
         ),
         migrations.AddField(
-            model_name='post',
-            name='slack_user_id',
+            model_name="post",
+            name="slack_user_id",
             field=models.CharField(blank=True, max_length=50, null=True),
         ),
         migrations.AddField(
-            model_name='profile',
-            name='slack_user_id',
+            model_name="profile",
+            name="slack_user_id",
             field=models.CharField(blank=True, max_length=50, null=True),
         ),
         migrations.AlterField(
-            model_name='post',
-            name='start_time',
+            model_name="post",
+            name="start_time",
             field=models.DateTimeField(blank=True, null=True),
         ),
         migrations.CreateModel(
-            name='ResourceTag',
+            name="ResourceTag",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('resource', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ccserver.resource')),
-                ('tag', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ccserver.tag')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "resource",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="ccserver.resource",
+                    ),
+                ),
+                (
+                    "tag",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="ccserver.tag",
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('resource', 'tag')},
+                "unique_together": {("resource", "tag")},
             },
         ),
     ]

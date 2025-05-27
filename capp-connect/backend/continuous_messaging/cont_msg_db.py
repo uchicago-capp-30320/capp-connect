@@ -1,5 +1,6 @@
 import psycopg2
 
+
 conn = psycopg2.connect(
     dbname="capp_connect",
     user  ="capp_connect",
@@ -11,5 +12,3 @@ cursor = conn.cursor()
 
 
 def insert_cont_messages_into_db():
-    
-

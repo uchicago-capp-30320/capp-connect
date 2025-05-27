@@ -4,21 +4,26 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ccserver', '0009_alter_post_user'),
+        ("ccserver", "0009_alter_post_user"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='resource',
-            name='tags',
-            field=models.ManyToManyField(related_name='resource_tags', through='ccserver.ResourceTag', to='ccserver.tag'),
+            model_name="resource",
+            name="tags",
+            field=models.ManyToManyField(
+                related_name="resource_tags",
+                through="ccserver.ResourceTag",
+                to="ccserver.tag",
+            ),
         ),
         migrations.AlterField(
-            model_name='comment',
-            name='comment_text',
-            field=models.TextField(default='test comment default', max_length=1000),
+            model_name="comment",
+            name="comment_text",
+            field=models.TextField(
+                default="test comment default", max_length=1000
+            ),
             preserve_default=False,
         ),
     ]

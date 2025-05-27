@@ -4,15 +4,17 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ccserver', '0007_post_client_msg_id_post_slack_ts_post_slack_user_id_and_more'),
+        (
+            "ccserver",
+            "0007_post_client_msg_id_post_slack_ts_post_slack_user_id_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='post',
-            name='title',
+            model_name="post",
+            name="title",
             field=models.CharField(blank=True, max_length=100, null=True),
         ),
     ]
