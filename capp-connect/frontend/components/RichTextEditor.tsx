@@ -4,7 +4,7 @@ import { View, ViewStyle } from 'react-native';
 // import MarkdownEditor from '@uiw/react-markdown-editor';
 import { RichText, Toolbar, useEditorBridge, useEditorContent } from '@10play/tentap-editor';
 
-export default function RichTextEditor({style, editable, saveText}: {style?: ViewStyle, editable: boolean, saveText: (text: string) => void}) {
+export default function RichTextEditor({style, editable, saveText, noRich}: {style?: ViewStyle, editable: boolean, saveText: (text: string) => void, noRich: boolean}) {
 const editor = useEditorBridge({
     autofocus: true,
     avoidIosKeyboard: true,
@@ -12,7 +12,7 @@ const editor = useEditorBridge({
     dynamicHeight: true
   });
 
-  const content = useEditorContent(editor, {type: "html"})
+  const content = useEditorContent(editor, !noRich ? {type: "html"}:{type: "text"})
   useEffect(() => {
     // Will render each time content is updated and call onSave
     if (content) {saveText(content)};

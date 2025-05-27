@@ -5,11 +5,13 @@ import TagIcon from "./TagIcon";
 import createTagColorMapper from "../utils/tagColorMapper"
 import { useRouter } from "expo-router";
 import { Colors, Containers} from "@/themes";
+import { toHTML } from "slack-markdown";
+import { WebView } from 'react-native-webview';
 
 
 // create conditional styling for desktop vs mobile
 const PROFILE_PHOTO_SIZE = Device.deviceType === Device.DeviceType.DESKTOP ? 90: 60
-const NUM_TEXT_LINES = Device.deviceType === Device.DeviceType.DESKTOP ? 10: 4
+// const NUM_TEXT_LINES = Device.deviceType === Device.DeviceType.DESKTOP ? 10: 4
 
 const styles = StyleSheet.create({
     cardBackground: {
@@ -48,6 +50,14 @@ const getColorForTag = createTagColorMapper();
 // create basic card for feed
 // should update to remove tags that would surpass the screen width
 export default function FeedCard({title, body, tags}: FeedCardProps) {
+    let richBody: string;
+
+    // if title is general, project, event, or job "from slack", convert it to html
+    if (!title || (["general", "project", "event", "job"]).some(type => title.toLocaleLowerCase().includes(`${type} from slack`)) ) {
+        richBody = toHTML(body);
+    } else {
+        richBody = body;
+    }
     return (
         <TouchableHighlight
         // on press route to the post page with this post's content
@@ -74,10 +84,7 @@ export default function FeedCard({title, body, tags}: FeedCardProps) {
                 </View>
                 {/* create text body */}
                 <View style={styles.textBodyContainer}>
-                    <Text
-                        numberOfLines={NUM_TEXT_LINES}
-                        style={styles.text}
-                    >{body}</Text>
+                    <WebView  source={{ html: richBody }} />
                 </View>
                 <View style={{
                     // flex:1,
@@ -88,7 +95,7 @@ export default function FeedCard({title, body, tags}: FeedCardProps) {
                     }}
                 >
                     {tags.map((tag, index) => (
-                        <TagIcon key={index} tag={tag} color={getColorForTag(tag)} style={{}}/>
+                        <TagIcon key={index} tag={tag} color={getColorForTag(tag)} style={{}} deletable={false}/>
                     ))}
                 </View>
             </View>
