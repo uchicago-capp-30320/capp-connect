@@ -14,11 +14,27 @@ from .models import (
 
 
 class TagSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for Tag model.
+    
+    Converts tag instances to simple string representations.
+    Only includes the `tag_name` field in serialized output.
+    
+    Methods:
+        to_representation: Returns just the tag name string
+    """
     class Meta:
         model = Tag
         fields = ["tag_name"]
 
     def to_representation(self, instance):
+        """Flatten tag representation to string.
+        
+        Args:
+            instance (Tag): Tag instance being serialized
+            
+        Returns:
+            str: The tag's name
+        """
         return instance.tag_name
 
 
