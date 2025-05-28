@@ -336,7 +336,16 @@ class GetPostList(APIView):
 
 
 class SearchPosts(APIView):
+    """API endpoint for searching posts by tags (intersection of all tags)."""
     def get(self, request):
+        """Search posts by tags (intersection of all provided tags).
+        
+        Args:
+            request: HTTP request object with 'tags' query parameter(s)
+
+        Returns:
+            Response: List of posts matching all provided tags
+        """
         tag_names_list = request.GET.getlist("tags")
         matching_posts = None
         for tag_name in tag_names_list:
