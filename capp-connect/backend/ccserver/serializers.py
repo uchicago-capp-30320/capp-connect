@@ -176,6 +176,16 @@ class ProfileTagSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for Post model with full CRUD operations.
+    
+    Handles post-tag relationships and custom field requirements.
+    Supports optional fields like `start_time` and `title`.
+    
+    Methods:
+        create: Handles tag relationships during post creation
+        update: Manages tag relationships during updates
+        delete: Standard post deletion
+    """
     user = serializers.StringRelatedField()
     tags = serializers.SlugRelatedField(
         many=True, slug_field="tag_name", queryset=Tag.objects.all()
@@ -204,6 +214,14 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
         unique_together = ("post_id", "tag")
 
     def create(self, validated_data):
+        """Create post with associated tags.
+        
+        Args:
+            validated_data (dict): Validated post data
+            
+        Returns:
+            Post: Newly created post instance
+        """
         tags_data = validated_data.pop("tags", [])
         post = Post.objects.create(**validated_data)
         for tag_name in tags_data:
@@ -212,6 +230,15 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
         return post
 
     def update(self, instance, validated_data):
+        """Update post instance with tag relationship handling.
+        
+        Args:
+            instance (Post): Existing post instance
+            validated_data (dict): Validated update data
+            
+        Returns:
+            Post: Updated post instance
+        """
         tags_data = validated_data.pop("tags", None)
         instance = super().update(instance, validated_data)
 
@@ -224,6 +251,14 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
         return instance
 
     def delete(self, instance):
+        """Delete post instance.
+        
+        Args:
+            instance (Post): Post to delete
+            
+        Returns:
+            Post: Deleted instance (before deletion)
+        """
         instance.delete()
         return instance
 
