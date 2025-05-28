@@ -131,7 +131,9 @@ class PostTests(BaseTestCase):
 
 
 class CommentTests(BaseTestCase):
+    """Test suite for comment-related API endpoints."""
     def test_create_comment(self):
+        """Test authenticated user can create a comment on a post."""
         url = reverse("get_post_comments", kwargs={"pk": self.post.pk})
         data = {"comment_text": "New comment"}
         response = self.client.post(url, data)
@@ -139,6 +141,7 @@ class CommentTests(BaseTestCase):
         self.assertEqual(self.post.comments.count(), 2)
 
     def test_delete_comment(self):
+        """Test comment author can delete their comment."""
         url = reverse(
             "delete_comment",
             kwargs={"pk": self.post.pk, "comment_id": self.comment.pk},
@@ -149,13 +152,16 @@ class CommentTests(BaseTestCase):
 
 
 class ResourceTests(BaseTestCase):
+    """Test suite for resource-related API endpoints."""
     def test_get_resource(self):
+        """Test retrieving a resource by ID returns correct data."""
         url = reverse("resource_detail", kwargs={"pk": self.resource.pk})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["title"], "Test Resource")
 
     def test_search_resources(self):
+        """Test searching resources by tag returns correct results."""
         self.resource.tags.add(self.tag1)
         url = reverse("search_resources") + "?tags=Python"
         response = self.client.get(url)
@@ -165,13 +171,16 @@ class ResourceTests(BaseTestCase):
 
 
 class SearchTests(BaseTestCase):
+    """Test suite for search functionality."""
     def test_tag_list(self):
+        """Test retrieving all tags returns expected tags."""
         url = reverse("tags_list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("Python", response.data)
 
     def test_directory_search(self):
+        """Test directory search returns users and allowed tags."""
         url = reverse("directory_list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
