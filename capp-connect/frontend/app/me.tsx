@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Linkin
 import { useState, useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import ProfilePhoto from "@/components/ProfilePhoto";
-import EditButton from "@/components/EditButton";
+// import EditButton from "@/components/EditButton"; // Commented out
 import TagCarousel from "@/components/TagCarousel";
 import * as Device from "expo-device";
 import { Colors, Containers } from "@/themes";
@@ -29,9 +29,9 @@ type UserProfile = {
 };
 
 export default function Me() {
-  const [editMode, changeEditMode] = useState(false);
+  {/* const [editMode, changeEditMode] = useState(false); */}
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [formData, setFormData] = useState<Map<string, string>>(new Map());
+  {/* const [formData, setFormData] = useState<Map<string, string>>(new Map()); */}
 
   useEffect(() => {
     async function fetchProfile() {
@@ -39,6 +39,7 @@ export default function Me() {
         const data: UserProfile = await fetchData(`${API_BASE_URL}/auth/`, "GET", {});
         setProfile(data);
 
+        {/*
         const initData = new Map<string, string>();
         Object.entries(data).forEach(([key, value]) => {
           if (typeof value === "string" || value === null) {
@@ -46,6 +47,7 @@ export default function Me() {
           }
         });
         setFormData(initData);
+        */}
       } catch (err) {
         console.error("Failed to fetch current user profile:", err);
       }
@@ -56,6 +58,7 @@ export default function Me() {
 
   const display = (value: string | null) => value?.trim() || "N/A";
 
+  {/*
   const handleChange = (key: string, value: string) => {
     const newForm = new Map(formData);
     newForm.set(key, value);
@@ -76,6 +79,7 @@ export default function Me() {
       console.error("Failed to update profile:", err);
     }
   };
+  */}
 
   const getColorForTag = createTagColorMapper();
   const tagObjects = profile?.tags.map(tag => ({
@@ -92,17 +96,17 @@ export default function Me() {
               <View style={styles.profileHeader}>
                 <ProfilePhoto style={styles.profilePhoto} user={profile.user} />
                 <View style={styles.headerInfo}>
-                  {editMode ? (
+                  {/* {editMode ? (
                     <TextInput
                       style={styles.nameText}
                       value={formData.get("slack_username") || ""}
                       onChangeText={(text) => handleChange("slack_username", text)}
                     />
-                  ) : (
+                  ) : ( */}
                     <Text style={styles.nameText}>{display(profile.slack_username)}</Text>
-                  )}
+                  {/* )} */}
                   <Text style={styles.positionText}>
-                    {editMode ? (
+                    {/* {editMode ? (
                       <>
                         <TextInput
                           style={styles.input}
@@ -118,12 +122,12 @@ export default function Me() {
                           placeholder="Company"
                         />
                       </>
-                    ) : (
+                    ) : ( */}
                       `${display(profile.job_title)} | ${display(profile.company)}`
-                    )}
+                    {/* )} */}
                   </Text>
                 </View>
-                <EditButton editMode={editMode} changeEditMode={changeEditMode} />
+                {/* <EditButton editMode={editMode} changeEditMode={changeEditMode} /> */}
               </View>
 
               <View style={styles.tagsContainer}>
@@ -138,16 +142,16 @@ export default function Me() {
             {/* Bio Section */}
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Bio</Text>
-              {editMode ? (
+              {/* {editMode ? (
                 <TextInput
                   style={styles.input}
                   value={formData.get("bio") || ""}
                   onChangeText={(text) => handleChange("bio", text)}
                   multiline
                 />
-              ) : (
+              ) : ( */}
                 <Text>{display(profile.bio)}</Text>
-              )}
+              {/* )} */}
             </View>
 
             {/* Location Section */}
@@ -156,15 +160,15 @@ export default function Me() {
               {["city", "state", "country"].map((key) => (
                 <Text key={key}>
                   {key[0].toUpperCase() + key.slice(1)}:{" "}
-                  {editMode ? (
+                  {/* {editMode ? (
                     <TextInput
                       style={styles.input}
                       value={formData.get(key) || ""}
                       onChangeText={(text) => handleChange(key, text)}
                     />
-                  ) : (
+                  ) : ( */}
                     display(profile[key as keyof UserProfile] as string | null)
-                  )}
+                  {/* )} */}
                 </Text>
               ))}
             </View>
@@ -174,15 +178,15 @@ export default function Me() {
               <Text style={styles.sectionTitle}>Employment</Text>
               <Text>
                 Status:{" "}
-                {editMode ? (
+                {/* {editMode ? (
                   <TextInput
                     style={styles.input}
                     value={formData.get("employment_status") || ""}
                     onChangeText={(text) => handleChange("employment_status", text)}
                   />
-                ) : (
+                ) : ( */}
                   display(profile.employment_status)
-                )}
+                {/* )} */}
               </Text>
               <Text>Job Title: {display(profile.job_title)}</Text>
               <Text>Company: {display(profile.company)}</Text>
@@ -194,15 +198,15 @@ export default function Me() {
               {["phone_number", "slack_username"].map((key) => (
                 <Text key={key}>
                   {key === "phone_number" ? "Phone" : "Slack"}:{" "}
-                  {editMode ? (
+                  {/* {editMode ? (
                     <TextInput
                       style={styles.input}
                       value={formData.get(key) || ""}
                       onChangeText={(text) => handleChange(key, text)}
                     />
-                  ) : (
+                  ) : ( */}
                     display(profile[key as keyof UserProfile] as string | null)
-                  )}
+                  {/* )} */}
                 </Text>
               ))}
             </View>
@@ -212,29 +216,33 @@ export default function Me() {
               <Text style={styles.sectionTitle}>Websites</Text>
               {["linkedin_url", "github_url", "personal_site"].map((key) => (
                 <View key={key}>
-                  {editMode ? (
+                  {/* {editMode ? (
                     <TextInput
                       style={styles.input}
                       value={formData.get(key) || ""}
                       onChangeText={(text) => handleChange(key, text)}
                       placeholder={key}
                     />
-                  ) : profile[key as keyof UserProfile] ? (
-                    <TouchableOpacity onPress={() => Linking.openURL(profile[key as keyof UserProfile] as string)}>
-                      <Text style={styles.link}>{profile[key as keyof UserProfile]}</Text>
-                    </TouchableOpacity>
-                  ) : (
-                    <Text>{`${key.replace("_url", "").replace("_", " ")}: N/A`}</Text>
-                  )}
+                  ) : ( */}
+                    {profile[key as keyof UserProfile] ? (
+                      <TouchableOpacity onPress={() => Linking.openURL(profile[key as keyof UserProfile] as string)}>
+                        <Text style={styles.link}>{profile[key as keyof UserProfile]}</Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <Text>{`${key.replace("_url", "").replace("_", " ")}: N/A`}</Text>
+                    )}
+                  {/* )} */}
                 </View>
               ))}
             </View>
 
+            {/*
             {editMode && (
               <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
                 <Text style={styles.saveButtonText}>Save</Text>
               </TouchableOpacity>
             )}
+            */}
           </>
         )}
       </ScrollView>
