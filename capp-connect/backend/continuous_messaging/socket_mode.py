@@ -17,19 +17,23 @@ HEADERS = {
 }
 
 
-def sync_with_api(method, data):  # from Paula!
-    """Helper function to sync with Django API"""
+def sync_with_api(method, data):
+    print(f"Calling API at: {API_SLACK_SYNC_URL}")
+    print(f"Using method: {method}")
+    print(f"Payload: {data}")
     try:
         response = requests.request(
             method, API_SLACK_SYNC_URL, json=data, headers=HEADERS
         )
+        print(f"Status code: {response.status_code}")
+        print(f"Response content: {response.text}")
         response.raise_for_status()
         return True
     except RequestException as e:
         print(f"API {method} error: {str(e)}")
         if e.response is not None:
-            print("Status code:", e.response.status_code)
-            print("Response content:", e.response.text)
+            print("Error status code:", e.response.status_code)
+            print("Error response content:", e.response.text)
             print("Payload that caused error:", data)
         return False
 
