@@ -148,7 +148,7 @@ class SearchDirectoryList(APIView):
 class SearchOthersList(APIView):
     """API endpoint for retrieving all available tags."""
     def get(self, request, format=None):
-        """Retrieve all tags.
+        """Retrieve all tags. For searching feed posts and resources.
         
         Args:
             request: HTTP request object
