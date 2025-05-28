@@ -507,13 +507,37 @@ class GetResourceList(APIView):
 
 
 class GetResource(APIView):
+    """API endpoint for retrieving, updating, or deleting a specific 
+    resource.
+    """
     def get_object(self, pk):
+        """Helper method to retrieve a resource by primary key.
+        
+        Args:
+            pk: Resource primary key
+            
+        Returns:
+            Resource: Retrieved resource object
+            
+        Raises:
+            Http404: If resource does not exist
+        """
         try:
             return Resource.objects.get(pk=pk)
         except Resource.DoesNotExist as e:
             raise Http404(f"Post with id {pk} does not exist.") from e
 
     def get(self, request, pk, format=None):
+        """Retrieve a resource by ID.
+        
+        Args:
+            request: HTTP request object
+            pk: Resource primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: Serialized resource data or 404 error
+        """
         try:
             resource = Resource.objects.get(pk=pk)
             serializer = ResourceSerializer(resource)
@@ -525,6 +549,17 @@ class GetResource(APIView):
             )
 
     def put(self, request, pk, format=None):
+        """Update a resource by ID (partial updates allowed).
+        
+        Args:
+            request: HTTP request object with updated resource data
+            pk: Resource primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: Updated resource data, 404 if not found, 
+                      or 400 for invalid data
+        """
         try:
             resource = self.get_object(pk=pk)
         except Resource.DoesNotExist:
@@ -542,6 +577,16 @@ class GetResource(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
+        """Delete a resource by ID.
+        
+        Args:
+            request: HTTP request object
+            pk: Resource primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: 204 on success
+        """
         resource = self.get_object(pk)
         resource.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
