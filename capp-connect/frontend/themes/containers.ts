@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import * as Device from 'expo-device';
 
 // create conditional styling for desktop vs mobile
-const CARD_HEIGHT = Device.deviceType === Device.DeviceType.DESKTOP ? 500: 350
+const CARD_HEIGHT = Device.deviceType === Device.DeviceType.DESKTOP ? 400: 350
 const PADDING = Device.deviceType === Device.DeviceType.DESKTOP ? 5: 5
 const BORDER_RADIUS = 5
 

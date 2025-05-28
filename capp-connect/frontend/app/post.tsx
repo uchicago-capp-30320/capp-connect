@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, TouchableHighlight,ScrollView } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView, SafeAreaProvider} from "react-native-safe-area-context";
-import TagIcon from "@/components/TagIcon";
 import createTagColorMapper from "../utils/tagColorMapper"
 import { useEffect, useState } from "react";
 import fetchData from "@/utils/fetchdata";
@@ -12,6 +11,7 @@ import { Colors, Containers } from "@/themes";
 import { toHTML } from "slack-markdown";
 import { WebView } from 'react-native-webview';
 import ProfilePhoto from "@/components/ProfilePhoto";
+import TagCarousel from "@/components/TagCarousel";
 
 
 type Comment = {
@@ -108,26 +108,44 @@ export default function Post() {
             }}
           >
             <ScrollView style={{width: "100%"}}>
-          <View style={{flex: 1, flexDirection: "column", alignItems: "center", width: "95%"}}>
+          <View style={{flex: 1, flexDirection: "column", alignItems: "center", width: "95%", alignSelf: "center"}}>
             <View style={{alignItems:"center", padding: 10, width: "90%"}}>
               <Text style={{fontSize: 30}}>{params.title}</Text>
             </View>
 
 
               <View style={{ paddingTop: 10, minHeight: "10%", width: "95%"}}>
-                <WebView source={{ html: wrapHTML(richBody) }} style={{ flex: 1 }} />
+                <WebView source={{ html: wrapHTML(richBody) }} style={{ flex: 1, minHeight: 250 }} />
               </View>
 
               <View style={{
-                flexDirection:"row",
-                flexWrap: 'wrap',
-                paddingTop: 30
-                }}
-              >
+                marginTop: 20,
+                // flex: 1,
+                // alignContent: "center",
+                justifyContent: "center",
+                width: "100%"}}>
+
                 {params.tags ?
-                  (typeof params.tags === "string" ? params.tags.split(",") : params.tags).map((tag, index) => (
-                      <TagIcon key={index} tag={tag} color={getColorForTag(tag)} style={{}} deletable={false}/>
-                  ))
+                  <TagCarousel
+                    searchType={
+                      ["Directory", "Resources", "Feed"].includes(String(params.searchType))
+                        ? String(params.searchType) as "Directory" | "Resources" | "Feed" // Replace 'any' with 'SearchType' if imported
+                        : "Directory" // or another default valid SearchType value
+                    }
+                    style={{flex: 1, alignSelf: "center", flexShrink: 1, width: "100%"}}
+                    tags={
+                      (typeof params.tags === "string"
+                        ? params.tags.split(",").map(tag => ({
+                            name: tag.trim(),
+                            color: getColorForTag(tag.trim())
+                          }))
+                        : params.tags.map(tag => ({
+                            name: tag.trim(),
+                            color: getColorForTag(tag.trim())
+                          }))
+                      )
+                    }
+                  />
                   :
                   null
                 }

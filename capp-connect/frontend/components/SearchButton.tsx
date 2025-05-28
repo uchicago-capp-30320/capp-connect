@@ -2,11 +2,11 @@ import { View, Text, TouchableHighlight, ViewStyle } from "react-native";
 import { useEffect } from "react";
 import { Colors, Containers} from "@/themes"
 import fetchData from '../utils/fetchdata';
-
+import Search from "@/utils/search";
 
 interface SearchButtonProps {
   tags: string[];
-  searchType: string;
+  searchType: "Directory"|"Resources"|"Feed";
   styles?: ViewStyle;
 }
 
@@ -33,7 +33,9 @@ export default function SearchButton({tags, searchType, styles}: SearchButtonPro
 
     return (
         <TouchableHighlight
-            onPress={() => {}}
+            onPress={() => {
+              Search(tags, searchType)
+            }}
             style={[Containers.buttons, styles]}
             underlayColor={Colors.buttonPressed}
         >

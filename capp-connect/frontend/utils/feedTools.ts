@@ -15,7 +15,7 @@ export async function updateFeed() {
                 const resp = await fetchData(
                     `${API_BASE_URL}/posts/`,
                     "GET",
-                    {format: "json"}
+                    {}
                 )
                 currentData.nextPage = resp.next_page === null ? 0 : resp.next_page
 
