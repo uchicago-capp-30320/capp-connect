@@ -217,7 +217,7 @@ export default function Feed() {
 
             return (
               <FeedCard
-                key={index}
+                key={`${index}-${item.title}-${item.tags}`}
                 postID={item.post_id}
                 userID={item.user}
                 title={item.title}

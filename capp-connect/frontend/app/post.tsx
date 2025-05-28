@@ -118,7 +118,12 @@ export default function Post() {
                 <WebView source={{ html: wrapHTML(richBody) }} style={{ flex: 1, minHeight: 250 }} />
               </View>
 
-              <View style={{width: "100%"}}>
+              <View style={{
+                marginTop: 20,
+                // flex: 1,
+                // alignContent: "center",
+                justifyContent: "center",
+                width: "100%"}}>
 
                 {params.tags ?
                   <TagCarousel
@@ -127,7 +132,7 @@ export default function Post() {
                         ? String(params.searchType) as "Directory" | "Resources" | "Feed" // Replace 'any' with 'SearchType' if imported
                         : "Directory" // or another default valid SearchType value
                     }
-                    style={{alignSelf: "center", width: "auto", minWidth: 100}}
+                    style={{flex: 1, alignSelf: "center", flexShrink: 1, width: "100%"}}
                     tags={
                       (typeof params.tags === "string"
                         ? params.tags.split(",").map(tag => ({
