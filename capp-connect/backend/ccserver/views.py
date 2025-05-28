@@ -360,7 +360,19 @@ class SearchPosts(APIView):
 
 
 class GetComment(APIView):
+    """API endpoint for retrieving or deleting a specific comment."""
     def get(self, request, pk, comment_id, format=None):
+        """Retrieve a comment by post ID and comment ID.
+        
+        Args:
+            request: HTTP request object
+            pk: Post primary key
+            comment_id: Comment primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: Serialized comment data or 404 error
+        """
         try:
             post = Post.objects.get(pk=pk)
             comment = post.comments.get(pk=comment_id)
@@ -377,6 +389,17 @@ class GetComment(APIView):
             )
 
     def delete(self, request, pk, comment_id, format=None):
+        """Delete a comment by post ID and comment ID.
+        
+        Args:
+            request: HTTP request object
+            pk: Post primary key
+            comment_id: Comment primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: 204 on success or 404 if not found
+        """
         try:
             post = Post.objects.get(pk=pk)
             comment = post.comments.get(pk=comment_id)
