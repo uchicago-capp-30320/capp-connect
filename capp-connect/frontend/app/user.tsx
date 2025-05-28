@@ -66,7 +66,7 @@ export default function UserProfilePage() {
         <>
           <View style={styles.headerSection}>
             <View style={styles.profileHeader}>
-              <ProfilePhoto style={styles.profilePhoto} user={profile.user} />
+              <ProfilePhoto imageUrl={profile.photo_url ?? ""} style={styles.profilePhoto} user={profile.user} />
               <View style={styles.headerInfo}>
                 <Text style={styles.nameText}>{display(profile.slack_username)}</Text>
                 <Text style={styles.positionText}>
@@ -77,7 +77,7 @@ export default function UserProfilePage() {
 
             <View style={styles.tagsContainer}>
               {tagObjects.length > 0 ? (
-                <TagCarousel tags={tagObjects} />
+                <TagCarousel searchType="Directory" tags={tagObjects} />
               ) : (
                 <Text style={{ color: "#888" }}>No tags listed</Text>
               )}
