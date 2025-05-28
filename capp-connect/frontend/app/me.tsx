@@ -38,20 +38,37 @@ export default function Me() {
 
   useEffect(() => {
     async function fetchProfile() {
+      try {
         const profile = await fetchData(
-            `${API_BASE_URL}/auth/`,
-            "GET",
-            { format: "json" }
-          );                             
-      const map = new Map<string, string>();
-      Object.entries(profile).forEach(([key, value]) => {
-        map.set(key, typeof value === "string" ? value : Array.isArray(value) ? value.join(", ") : "");
-      });
-      changeData(map);
+          `${API_BASE_URL}/auth/`,
+          "GET",
+          { format: "json" }
+        );
+  
+        console.log("Fetched current user profile raw:", profile); 
+  
+        const map = new Map<string, string>();
+        Object.entries(profile).forEach(([key, value]) => {
+          map.set(
+            key,
+            typeof value === "string"
+              ? value
+              : Array.isArray(value)
+              ? value.join(", ")
+              : ""
+          );
+        });
+  
+        console.log("Mapped current user profile entries:", Array.from(map.entries())); 
+        changeData(map);
+      } catch (err) {
+        console.error("Failed to fetch current user profile:", err);
+      }
     }
-
+  
     fetchProfile();
   }, []);
+  
 
   const getColorForTag = createTagColorMapper();
   const tagsString = data.get("tags") || "";

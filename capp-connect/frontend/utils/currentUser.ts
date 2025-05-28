@@ -29,19 +29,17 @@ export async function
   }
 }
 
-export async function 
-    getPhotoUrlUser(username: string): Promise<string | null> {
-  try {
-    const profiles = 
-        await fetchData(
-            `${API_BASE_URL}/profiles/`, 
-            "GET", 
-            { format: "json" });
-
-    const match = profiles.find((p: any) => p.user === username);
-    return match?.photo_url || null;
-  } catch (err) {
-    console.error("Failed to fetch photo_url:", err);
-    return null;
+export async function getPhotoUrlUser(username: string): Promise<string | null> {
+    try {
+      const profile = await fetchData(
+        `${API_BASE_URL}/profile/${username}/`,
+        "GET",
+        { format: "json" }
+      );
+      return profile?.photo_url || null;
+    } catch (err) {
+      console.error("[getPhotoUrlUser] Failed to fetch:", err);
+      return null;
+    }
   }
-}
+  
