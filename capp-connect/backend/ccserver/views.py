@@ -473,12 +473,32 @@ class GetAllComments(APIView):
 
 
 class GetResourceList(APIView):
+    """API endpoint for listing all resources or creating new resources."""
     def get(self, request, format=None):
+        """Retrieve all resources.
+        
+        Args:
+            request: HTTP request object
+            format: Optional format suffix
+
+        Returns:
+            Response: List of serialized resources
+        """
         resources = Resource.objects.all()
         serializer = ResourceSerializer(resources, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
+        """Create a new resource.
+        
+        Args:
+            request: HTTP request object with resource data
+            format: Optional format suffix
+
+        Returns:
+            Response: Serialized resource data on success (201), 
+                      or validation errors (400)
+        """
         serializer = ResourceSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
