@@ -54,47 +54,66 @@ export default function UserProfilePage() {
   })) ?? [];
 
   return (
-    <SafeAreaProvider style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {profile && (
-          <>
-            <View style={styles.headerSection}>
-              <View style={styles.profileHeader}>
-                <ProfilePhoto style={styles.profilePhoto} user={profile.user} />
-                <View style={styles.headerInfo}>
-                  <Text style={styles.nameText}>{profile.slack_username}</Text>
-                  <Text style={styles.positionText}>
-                    {profile.job_title ?? "No job title"} | {profile.company ?? "No company"}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.tagsContainer}>
-                <TagCarousel tags={tagObjects} />
+  <SafeAreaProvider style={styles.container}>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      {profile && (
+        <>
+          <View style={styles.headerSection}>
+            <View style={styles.profileHeader}>
+              <ProfilePhoto style={styles.profilePhoto} user={profile.user} />
+              <View style={styles.headerInfo}>
+                <Text style={styles.nameText}>{profile.slack_username}</Text>
+                <Text style={styles.positionText}>
+                  {profile.job_title ?? "No job title"} | {profile.company ?? "No company"}
+                </Text>
               </View>
             </View>
 
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Bio</Text>
-              <Text>{profile.bio ?? "No bio available."}</Text>
+            <View style={styles.tagsContainer}>
+              <TagCarousel tags={tagObjects} />
             </View>
+          </View>
 
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Contact</Text>
-              <Text>Phone: {profile.phone_number ?? "N/A"}</Text>
-              <Text>Slack: {profile.slack_username ?? "N/A"}</Text>
-            </View>
+          {/* Bio Section */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Bio</Text>
+            <Text>{profile.bio ?? "No bio available."}</Text>
+          </View>
 
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Websites</Text>
-              <Text>LinkedIn: {profile.linkedin_url ?? "N/A"}</Text>
-              <Text>GitHub: {profile.github_url ?? "N/A"}</Text>
-              <Text>Website: {profile.personal_site ?? "N/A"}</Text>
-            </View>
-          </>
-        )}
-      </ScrollView>
-    </SafeAreaProvider>
+          {/* Location Section */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Location</Text>
+            <Text>City: {profile.city ?? "N/A"}</Text>
+            <Text>State: {profile.state ?? "N/A"}</Text>
+            <Text>Country: {profile.country ?? "N/A"}</Text>
+          </View>
+
+          {/* Employment Section */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Employment</Text>
+            <Text>Status: {profile.employment_status ?? "N/A"}</Text>
+            <Text>Job Title: {profile.job_title ?? "N/A"}</Text>
+            <Text>Company: {profile.company ?? "N/A"}</Text>
+          </View>
+
+          {/* Contact Section */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Contact</Text>
+            <Text>Phone: {profile.phone_number ?? "N/A"}</Text>
+            <Text>Slack: {profile.slack_username ?? "N/A"}</Text>
+          </View>
+
+          {/* Websites Section */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Websites</Text>
+            <Text>LinkedIn: {profile.linkedin_url ?? "N/A"}</Text>
+            <Text>GitHub: {profile.github_url ?? "N/A"}</Text>
+            <Text>Website: {profile.personal_site ?? "N/A"}</Text>
+          </View>
+        </>
+      )}
+    </ScrollView>
+  </SafeAreaProvider>
   );
 }
 
