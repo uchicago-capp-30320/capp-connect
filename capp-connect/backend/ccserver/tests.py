@@ -207,7 +207,7 @@ class SlackPostTests(BaseTestCase):
         # Sample Slack post data
         self.slack_post_data = {
             "title": "Slack Test Post",
-            "description": "Created from Slack",
+            "description": "General from Slack",
             "post_type": "General",
             "tags": ["Python"],
             "slack_ts": "1234567890.123456",
@@ -223,7 +223,7 @@ class SlackPostTests(BaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Post.objects.count(), 2)
         post = Post.objects.get(slack_ts="1234567890.123456")
-        self.assertEqual(post.description, "Created from Slack")
+        self.assertEqual(post.description, "General from Slack")
         self.assertEqual(post.source, Post.Source.SLACK)
 
     def test_update_post_via_slack(self):

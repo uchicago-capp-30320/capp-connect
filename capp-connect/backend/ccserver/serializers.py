@@ -211,6 +211,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             "updated_at",
             "tags",
             "links",
+            "source",
             "start_time",
             "location",
             "slack_ts",
