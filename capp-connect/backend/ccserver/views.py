@@ -106,7 +106,17 @@ class GetProfile(APIView):
 
 
 class GetProfileList(APIView):
+    """API endpoint for listing all user profiles with compact information."""
     def get(self, request, format=None):
+        """Retrieve all profiles.
+        
+        Args:
+            request: HTTP request object
+            format: Optional format suffix
+
+        Returns:
+            Response: List of serialized profile summaries
+        """
         users = Profile.objects.all()
         serializer = ProfileListSerializer(users, many=True)
         return Response(serializer.data)
