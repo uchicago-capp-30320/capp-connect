@@ -37,16 +37,6 @@ export default function Resources() {
 
   return (
     <>
-      <SearchBar
-        placeholder="Search..."
-        style={{
-          marginVertical: 10,
-          width: "90%",
-          alignSelf: "center"
-        }}
-        color="gray"
-      />
-
       <View style={{flex: 1, width:"100%"}}>
         <FlashList
           data={data}
