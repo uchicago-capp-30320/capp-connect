@@ -63,6 +63,18 @@ class NameSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
+    """Comprehensive serializer for Profile model.
+    
+    Includes all profile fields and handles tag relationships.
+    Supports full update functionality for profile tags.
+    
+    Relationships:
+        tags: M2M relationship with Tag via slug field
+        
+    Methods:
+        update: Handles tag relationships during updates
+        delete: Standard instance deletion
+    """
     user = serializers.StringRelatedField()
     tags = serializers.SlugRelatedField(
         many=True,
@@ -93,6 +105,17 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         unique_together = ("profile", "tag")
 
     def update(self, instance, validated_data):
+        """Update profile instance with nested tag handling.
+        
+        Clears existing tags and replaces with new set from input.
+        
+        Args:
+            instance (Profile): Existing profile instance
+            validated_data (dict): Validated input data
+            
+        Returns:
+            Profile: Updated profile instance
+        """
         tags_data = validated_data.pop("tags", None)
         instance = super().update(instance, validated_data)
         if tags_data is not None:
@@ -103,6 +126,14 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         return instance
 
     def delete(self, instance):
+        """Delete profile instance.
+        
+        Args:
+            instance (Profile): Profile to delete
+            
+        Returns:
+            Profile: Deleted instance (before deletion)
+        """
         instance.delete()
         return instance
 
