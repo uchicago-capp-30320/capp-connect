@@ -264,6 +264,11 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for Comment model.
+    
+    Includes user and post references as read-only strings.
+    Supports comment creation and deletion.
+    """
     user = serializers.StringRelatedField()
     post = serializers.StringRelatedField()
 
@@ -272,12 +277,28 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
         fields = ["comment_id", "user", "post", "comment_text", "created_at"]
 
     def create(self, validated_data):
+        """Create new comment.
+        
+        Args:
+            validated_data (dict): Validated comment data
+            
+        Returns:
+            Comment: Newly created comment
+        """
         user = validated_data.pop("user")
         post = validated_data.pop("post")
         comment = Comment.objects.create(user=user, post=post, **validated_data)
         return comment
 
     def delete(self, instance):
+        """Delete comment instance.
+        
+        Args:
+            instance (Comment): Comment to delete
+            
+        Returns:
+            Comment: Deleted instance (before deletion)
+        """
         instance.delete()
         return instance
 
