@@ -23,18 +23,13 @@ export default function Directory() {
 
   useEffect(() => {
     async function fetchProfiles() {
-      try {
         const profiles = await fetchData(
-          `${API_BASE_URL}/profiles/`, 
+          `${API_BASE_URL}/profiles/`,
           "GET",
           { format: "json" }
         );
         console.log("Fetched profiles:", profiles);
         setData(profiles);
-
-      } catch (error) {
-        console.error("Failed to load profiles:", error);
-      }
     }
 
     fetchProfiles();
@@ -58,7 +53,6 @@ export default function Directory() {
             estimatedItemSize={100}
             keyExtractor={(item) => item.user}
             renderItem={({ item }) => {
-              try {
                 return (
                   <ProfileCard
                     name={item.user}
@@ -71,10 +65,6 @@ export default function Directory() {
                     user={item.user}
                   />
                 );
-              } catch (err) {
-                console.error("Error rendering profile:", err);
-                return <Text>Error rendering card</Text>;
-              }
             }}
           />
         </View>
