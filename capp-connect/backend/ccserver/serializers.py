@@ -2,7 +2,15 @@ import re
 
 from rest_framework import serializers
 
-from .models import Comment, Post, Profile, ProfileTag, Resource, Tag, ResourceTag
+from .models import (
+    Comment,
+    Post,
+    Profile,
+    ProfileTag,
+    Resource,
+    ResourceTag,
+    Tag,
+)
 
 
 class TagSerializer(serializers.HyperlinkedModelSerializer):
@@ -122,11 +130,12 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             "location",
             "slack_ts",
             "client_msg_id",
-            "slack_user_id"
+            "slack_user_id",
         ]
         unique_together = ("post_id", "tag")
 
     def create(self, validated_data):
+        print("Validated data received in serializer.create():", validated_data)
         tags_data = validated_data.pop("tags", [])
         post = Post.objects.create(**validated_data)
         for tag_name in tags_data:
@@ -174,7 +183,7 @@ class ResourceSerializer(serializers.ModelSerializer):
     tags = serializers.SlugRelatedField(
         many=True, slug_field="tag_name", queryset=Tag.objects.all()
     )
-    
+
     class Meta:
         model = Resource
         fields = [
@@ -184,8 +193,9 @@ class ResourceSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "links",
-            "tags"
+            "tags",
         ]
+
 
 class ResourceTagSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
