@@ -50,7 +50,7 @@ export default function TagIcon({ tag, color, style, deletable, listSetter, list
     };
 
     return (
-        <TouchableHighlight 
+        <TouchableHighlight
             onPress={() => {
                 if (searchType) {
                     pulse();
@@ -58,8 +58,8 @@ export default function TagIcon({ tag, color, style, deletable, listSetter, list
                 }
             }}
             underlayColor={"grey"}
-            
-            
+
+
             style={[styles.tag, { backgroundColor: color }, style]}>
                 <Animated.View style={{ transform: [{ scale }]  }}>
             <SafeAreaView style={{flexDirection: "row", alignItems: "center"}}>
@@ -75,9 +75,9 @@ export default function TagIcon({ tag, color, style, deletable, listSetter, list
                             }
                         }}
                     >
-                        
+
                             <FontAwesomeIcon size={10} icon={faX} color={"black"} style={{ paddingLeft: 5 }} />
-                        
+
                     </Pressable>
                 : null}
             </SafeAreaView>

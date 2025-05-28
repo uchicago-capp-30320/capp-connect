@@ -154,7 +154,7 @@ export default function FeedCard({postID, userID, title, body, tags, searchType}
                     >
                         <View style={{ flex: 1 }} />
                     </TouchableHighlight>
-                    
+
                 </View>
                 <View style={{
                     // flex:1,

@@ -34,7 +34,7 @@ import { getCachedData } from "@/utils/caching"
 function useFilteredData(query: string, type: string, tags: Record<string, string[]>) {
     const tagOptions = tags[type.toLocaleLowerCase()]
     const [data, setData] = useState(tagOptions)
-    
+
     useEffect(() => {
         let isMounted = true;
         let intervalId: ReturnType<typeof setInterval> | null = null;
@@ -74,7 +74,7 @@ function useFilteredData(query: string, type: string, tags: Record<string, strin
         };
     }, [query, tagOptions, type]);
 
-    
+
 
     return data
 }
@@ -221,7 +221,7 @@ interface TagSearchProps {
 
 
 // create a tag-based search bar
-export default function TagSearch({search, handleLayout, styles, searchType, limit, setTags, raiseWarning, placeholder}: TagSearchProps) {
+export default function TagSearch({search, handleLayout, styles, searchType, limit, setTags, placeholder}: TagSearchProps) {
     const colorMapper = createTagColorMapper();
     const [searchBarHeight, setSearchbarHeight] = useState(0);
 

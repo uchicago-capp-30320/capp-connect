@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, TouchableHighlight,ScrollView } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView, SafeAreaProvider} from "react-native-safe-area-context";
-import TagIcon from "@/components/TagIcon";
 import createTagColorMapper from "../utils/tagColorMapper"
 import { useEffect, useState } from "react";
 import fetchData from "@/utils/fetchdata";
@@ -120,12 +119,12 @@ export default function Post() {
               </View>
 
               <View style={{width: "100%"}}>
-                
+
                 {params.tags ?
                   <TagCarousel
                     searchType={
                       ["Directory", "Resources", "Feed"].includes(String(params.searchType))
-                        ? String(params.searchType) as any // Replace 'any' with 'SearchType' if imported
+                        ? String(params.searchType) as "Directory" | "Resources" | "Feed" // Replace 'any' with 'SearchType' if imported
                         : "Directory" // or another default valid SearchType value
                     }
                     style={{alignSelf: "center", width: "auto", minWidth: 100}}

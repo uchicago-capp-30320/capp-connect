@@ -50,7 +50,7 @@ export default function RootLayout() {
         setCachedData("tags", {
             directory: [],
             resources: [],
-            feed: [] 
+            feed: []
           }
         )
         async function getTags() {

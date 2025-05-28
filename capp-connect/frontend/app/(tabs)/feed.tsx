@@ -9,7 +9,6 @@ import CreateNewPost from "@/components/CreateNewPost";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import TagSearch from "@/components/TagSearch";
 import TagIcon from "@/components/TagIcon";
-import { Colors } from "@/themes";
 
 // const BODY = "The gentle hum of the city faded as the sun dipped below the skyline, casting long shadows across the quiet park. Leaves rustled in the evening breeze, swirling in small, playful circles around the old wooden bench. Somewhere nearby, laughter echoed-brief and bright-before dissolving into the soft chorus of distant traffic. In that moment, time seemed to slow, and the world paused to breathe, wrapped in the golden glow of twilight."
 const TAG_LIMIT = 5
@@ -65,7 +64,7 @@ export default function Feed() {
         const entries = Object.entries(fetchedData.fullResults)
           .filter(([key]) => key !== "nextPage");
         setData(Object.fromEntries(entries) as Record<string, Post[]>);
-        
+
         const router = useRouter()
         router.navigate("/(tabs)/feed")
       }
@@ -114,7 +113,7 @@ export default function Feed() {
     }
   }, [loadNewData]);
 
-  
+
 
   useEffect(() => {
     if (!searched) {
@@ -128,8 +127,8 @@ export default function Feed() {
             ? searchResults
             : searchResults.filter((post: Post) => post.post_type === feedType);
         setFilteredData(filtered);
-      } 
-      
+      }
+
     }
 
   }, [data, feedType, searched, searchResults]);
@@ -153,7 +152,7 @@ export default function Feed() {
           const entries = Object.entries(fetchedData.fullResults)
             .filter(([key]) => key !== "nextPage");
           // If data is found, update state and stop polling
-          if (entries.length > 0 && entries.some(([_, arr]) => (arr as Post[]).length > 0)) {
+          if (entries.length > 0 && entries.some(([, arr]) => (arr as Post[]).length > 0)) {
             setData(Object.fromEntries(entries) as Record<string, Post[]>);
             if (pollerRef.current) {
               clearInterval(pollerRef.current);
@@ -203,7 +202,7 @@ export default function Feed() {
               />
             ) : null}
             <TagSearch searchType={"Feed"} search  limit={TAG_LIMIT} />
-      
+
         </View>
         <CreateNewPost />
       </View>
