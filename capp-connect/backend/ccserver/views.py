@@ -635,15 +635,37 @@ class MyProfileView(APIView):
 
 
 class SlackPost(APIView):
+    """API endpoint for Slack integration to create/update/delete posts.
+    
+    Uses token authentication for Slack requests.
+    """
     authentication_classes = [TokenAuthentication]
 
     def get_object(self, slack_ts, post_type):
+        """Helper method to retrieve a post by Slack timestamp and type.
+        
+        Args:
+            slack_ts: Slack message timestamp identifier
+            post_type: Type of post ('help_request', 'event', etc.)
+            
+        Returns:
+            Post: Retrieved post or None if not found
+        """
         try:
             return Post.objects.get(slack_ts=slack_ts, post_type=post_type)
         except Post.DoesNotExist:
             return None
 
     def post(self, request):
+        """Create a new post from Slack data.
+        
+        Args:
+            request: HTTP request with Slack post data
+
+        Returns:
+            Response: Serialized post data on success (201), 
+                      or validation errors (400)
+        """
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -651,6 +673,15 @@ class SlackPost(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
+        """Update a post by Slack timestamp and type.
+        
+        Args:
+            request: HTTP request with updated Slack post data
+
+        Returns:
+            Response: Updated post data, 404 if not found, 
+                      or 400 for invalid data
+        """
         slack_ts = request.data.get("slack_ts")
         post_type = request.data.get("post_type")
         post = self.get_object(slack_ts, post_type)
@@ -666,6 +697,14 @@ class SlackPost(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
+        """Delete a post by Slack timestamp and type (Slack channel).
+        
+        Args:
+            request: HTTP request containing Slack timestamp and post type
+
+        Returns:
+            Response: 204 on success (even if post doesn't exist)
+        """
         slack_ts = request.data.get("slack_ts")
         post_type = request.data.get("post_type")
         post = self.get_object(slack_ts, post_type)
@@ -677,4 +716,8 @@ class SlackPost(APIView):
 @method_decorator(never_cache, name="dispatch")
 # We want this to always refresh for dev
 class FrontendAppView(TemplateView):
+    """Serves the frontend React application.
+    
+    Never cached to ensure latest version during development.
+    """
     template_name = "index.html"
