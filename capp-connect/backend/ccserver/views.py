@@ -163,7 +163,16 @@ class SearchOthersList(APIView):
 
 
 class SearchProfiles(APIView):
+    """API endpoint for searching profiles by tags or usernames."""
     def get(self, request):
+        """Search profiles by tags (intersection of all provided tags).
+        
+        Args:
+            request: HTTP request object with 'tags' query parameter(s)
+
+        Returns:
+            Response: List of profiles matching all provided tags
+        """
         tag_names_list = request.GET.getlist("tags")
         matching_profiles = None
 
