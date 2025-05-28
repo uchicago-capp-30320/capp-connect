@@ -593,7 +593,16 @@ class GetResource(APIView):
 
 
 class SearchResources(APIView):
+    """API endpoint for searching resources by tags (intersection of all tags)."""
     def get(self, request):
+        """Search resources by tags (intersection of all provided tags).
+        
+        Args:
+            request: HTTP request object with 'tags' query parameter(s)
+
+        Returns:
+            Response: List of resources matching all provided tags
+        """
         tag_names_list = request.GET.getlist("tags")
         matching_resources = None
         for tag_name in tag_names_list:
