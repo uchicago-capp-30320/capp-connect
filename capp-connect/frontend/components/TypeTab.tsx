@@ -2,9 +2,9 @@ import { View, Text, TouchableHighlight, StyleSheet} from "react-native";
 
 interface TypeTabProps {
     // label: string;
-    name: string;
-    activeTab: string;
-    setActiveTab: (tab: string) => void;
+    name: "Directory" | "Resources" | "Feed";
+    activeTab: "Directory" | "Resources" | "Feed";
+    setActiveTab: (tab: "Directory" | "Resources" | "Feed") => void;
     idx: number;
 }
 
