@@ -120,6 +120,8 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             "start_time",
             "location",
             "slack_ts",
+            "client_msg_id",
+            "slack_user_id"
         ]
         unique_together = ("post_id", "tag")
 
