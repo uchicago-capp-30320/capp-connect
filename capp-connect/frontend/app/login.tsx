@@ -14,12 +14,13 @@ export default function SignIn() {
 
  return (
    <SafeAreaView style={styles.container}>
-      {/* // not working - will ask in morning about images
+      {
       <Image
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         source={require("../assets/images/capp_connect_splash_icon.png")}
         style={styles.logo}
       />
-      */}
+      }
 
      <Text style={styles.description}>
         Connect with Students and Alumni of the University of Chicago&apos;s CAPP Program
