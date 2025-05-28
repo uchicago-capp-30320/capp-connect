@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Linking, TouchableOpacity } from "react-native";
 import { useState, useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import ProfilePhoto from "@/components/ProfilePhoto";
@@ -37,7 +37,11 @@ export default function UserProfilePage() {
       if (!username) return;
 
       try {
-        const data: UserProfile = await fetchData(`${API_BASE_URL}/profile/${username}/`, "GET", {});
+        const data: UserProfile = await 
+        fetchData(
+          `${API_BASE_URL}/profile/${username}/`, 
+          "GET", 
+          {});
         setProfile(data);
       } catch (err) {
         console.error("Failed to fetch user profile:", err);
@@ -46,6 +50,8 @@ export default function UserProfilePage() {
 
     fetchProfile();
   }, [username]);
+
+  const display = (value: string | null) => value?.trim() || "N/A";
 
   const getColorForTag = createTagColorMapper();
   const tagObjects = profile?.tags.map(tag => ({
@@ -62,53 +68,75 @@ export default function UserProfilePage() {
             <View style={styles.profileHeader}>
               <ProfilePhoto style={styles.profilePhoto} user={profile.user} />
               <View style={styles.headerInfo}>
-                <Text style={styles.nameText}>{profile.slack_username}</Text>
+                <Text style={styles.nameText}>{display(profile.slack_username)}</Text>
                 <Text style={styles.positionText}>
-                  {profile.job_title ?? "No job title"} | {profile.company ?? "No company"}
+                  {display(profile.job_title)} | {display(profile.company)}
                 </Text>
               </View>
             </View>
 
             <View style={styles.tagsContainer}>
-              <TagCarousel tags={tagObjects} />
+              {tagObjects.length > 0 ? (
+                <TagCarousel tags={tagObjects} />
+              ) : (
+                <Text style={{ color: "#888" }}>No tags listed</Text>
+              )}
             </View>
           </View>
 
           {/* Bio Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Bio</Text>
-            <Text>{profile.bio ?? "No bio available."}</Text>
+            <Text>{display(profile.bio)}</Text>
           </View>
 
           {/* Location Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Location</Text>
-            <Text>City: {profile.city ?? "N/A"}</Text>
-            <Text>State: {profile.state ?? "N/A"}</Text>
-            <Text>Country: {profile.country ?? "N/A"}</Text>
+            <Text>City: {display(profile.city)}</Text>
+            <Text>State: {display(profile.state)}</Text>
+            <Text>Country: {display(profile.country)}</Text>
           </View>
 
           {/* Employment Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Employment</Text>
-            <Text>Status: {profile.employment_status ?? "N/A"}</Text>
-            <Text>Job Title: {profile.job_title ?? "N/A"}</Text>
-            <Text>Company: {profile.company ?? "N/A"}</Text>
+            <Text>Status: {display(profile.employment_status)}</Text>
+            <Text>Job Title: {display(profile.job_title)}</Text>
+            <Text>Company: {display(profile.company)}</Text>
           </View>
 
           {/* Contact Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Contact</Text>
-            <Text>Phone: {profile.phone_number ?? "N/A"}</Text>
-            <Text>Slack: {profile.slack_username ?? "N/A"}</Text>
+            <Text>Phone: {display(profile.phone_number)}</Text>
+            <Text>Slack: {display(profile.slack_username)}</Text>
           </View>
 
           {/* Websites Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Websites</Text>
-            <Text>LinkedIn: {profile.linkedin_url ?? "N/A"}</Text>
-            <Text>GitHub: {profile.github_url ?? "N/A"}</Text>
-            <Text>Website: {profile.personal_site ?? "N/A"}</Text>
+            {profile.linkedin_url ? (
+              <TouchableOpacity onPress={() => Linking.openURL(profile.linkedin_url!)}>
+                <Text style={styles.link}>{profile.linkedin_url}</Text>
+              </TouchableOpacity>
+            ) : (
+              <Text>LinkedIn: N/A</Text>
+            )}
+            {profile.github_url ? (
+              <TouchableOpacity onPress={() => Linking.openURL(profile.github_url!)}>
+                <Text style={styles.link}>{profile.github_url}</Text>
+              </TouchableOpacity>
+            ) : (
+              <Text>GitHub: N/A</Text>
+            )}
+            {profile.personal_site ? (
+              <TouchableOpacity onPress={() => Linking.openURL(profile.personal_site!)}>
+                <Text style={styles.link}>{profile.personal_site}</Text>
+              </TouchableOpacity>
+            ) : (
+              <Text>Website: N/A</Text>
+            )}
           </View>
         </>
       )}
@@ -170,5 +198,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: Colors.primary,
     marginBottom: 5,
+  },
+  link: {
+    color: Colors.primary,
+    textDecorationLine: "underline",
+    marginBottom: 4,
   },
 });

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity } from "react-native";
 import { useState, useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import ProfilePhoto from "@/components/ProfilePhoto";
@@ -31,12 +31,22 @@ type UserProfile = {
 export default function Me() {
   const [editMode, changeEditMode] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [formData, setFormData] = useState<Map<string, string>>(new Map());
 
   useEffect(() => {
     async function fetchProfile() {
       try {
         const data: UserProfile = await fetchData(`${API_BASE_URL}/auth/`, "GET", {});
         setProfile(data);
+
+        // Initialize form state
+        const initData = new Map<string, string>();
+        Object.entries(data).forEach(([key, value]) => {
+          if (typeof value === "string" || value === null) {
+            initData.set(key, value ?? "");
+          }
+        });
+        setFormData(initData);
       } catch (err) {
         console.error("Failed to fetch current user profile:", err);
       }
@@ -51,6 +61,27 @@ export default function Me() {
     color: getColorForTag(tag),
   })) ?? [];
 
+  const handleChange = (key: string, value: string) => {
+    const newForm = new Map(formData);
+    newForm.set(key, value);
+    setFormData(newForm);
+  };
+
+  const handleSave = async () => {
+    const dataObj: Record<string, string> = {};
+    formData.forEach((value, key) => {
+      dataObj[key] = value;
+    });
+
+    try {
+      const updated = await fetchData(`${API_BASE_URL}/auth/`, "PUT", dataObj);
+      setProfile(updated);
+      changeEditMode(false);
+    } catch (err) {
+      console.error("Failed to update profile:", err);
+    }
+  };
+
   return (
     <SafeAreaProvider style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -60,9 +91,35 @@ export default function Me() {
               <View style={styles.profileHeader}>
                 <ProfilePhoto style={styles.profilePhoto} user={profile.user} />
                 <View style={styles.headerInfo}>
-                  <Text style={styles.nameText}>{profile.slack_username}</Text>
+                  {editMode ? (
+                    <TextInput
+                      style={styles.nameText}
+                      value={formData.get("slack_username") || ""}
+                      onChangeText={(text) => handleChange("slack_username", text)}
+                    />
+                  ) : (
+                    <Text style={styles.nameText}>{profile.slack_username}</Text>
+                  )}
                   <Text style={styles.positionText}>
-                    {profile.job_title ?? "No job title"} | {profile.company ?? "No company"}
+                    {editMode ? (
+                      <>
+                        <TextInput
+                          style={styles.input}
+                          value={formData.get("job_title") || ""}
+                          onChangeText={(text) => handleChange("job_title", text)}
+                          placeholder="Job Title"
+                        />
+                        <Text> | </Text>
+                        <TextInput
+                          style={styles.input}
+                          value={formData.get("company") || ""}
+                          onChangeText={(text) => handleChange("company", text)}
+                          placeholder="Company"
+                        />
+                      </>
+                    ) : (
+                      `${profile.job_title ?? "No job title"} | ${profile.company ?? "No company"}`
+                    )}
                   </Text>
                 </View>
                 <EditButton editMode={editMode} changeEditMode={changeEditMode} />
@@ -75,21 +132,59 @@ export default function Me() {
 
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Bio</Text>
-              <Text>{profile.bio ?? "No bio available."}</Text>
+              {editMode ? (
+                <TextInput
+                  style={styles.input}
+                  value={formData.get("bio") || ""}
+                  onChangeText={(text) => handleChange("bio", text)}
+                  multiline
+                />
+              ) : (
+                <Text>{profile.bio ?? "No bio available."}</Text>
+              )}
             </View>
 
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Contact</Text>
-              <Text>Phone: {profile.phone_number ?? "N/A"}</Text>
-              <Text>Slack: {profile.slack_username ?? "N/A"}</Text>
+              {["phone_number", "slack_username"].map((key) => (
+                <Text key={key}>
+                  {key === "phone_number" ? "Phone" : "Slack"}:{" "}
+                  {editMode ? (
+                    <TextInput
+                      style={styles.input}
+                      value={formData.get(key) || ""}
+                      onChangeText={(text) => handleChange(key, text)}
+                    />
+                  ) : (
+                    formData.get(key) || "N/A"
+                  )}
+                </Text>
+              ))}
             </View>
 
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Websites</Text>
-              <Text>LinkedIn: {profile.linkedin_url ?? "N/A"}</Text>
-              <Text>GitHub: {profile.github_url ?? "N/A"}</Text>
-              <Text>Website: {profile.personal_site ?? "N/A"}</Text>
+              {["linkedin_url", "github_url", "personal_site"].map((key) => (
+                <Text key={key}>
+                  {key.includes("linkedin") ? "LinkedIn" : key.includes("github") ? "GitHub" : "Website"}:{" "}
+                  {editMode ? (
+                    <TextInput
+                      style={styles.input}
+                      value={formData.get(key) || ""}
+                      onChangeText={(text) => handleChange(key, text)}
+                    />
+                  ) : (
+                    formData.get(key) || "N/A"
+                  )}
+                </Text>
+              ))}
             </View>
+
+            {editMode && (
+              <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+                <Text style={styles.saveButtonText}>Save</Text>
+              </TouchableOpacity>
+            )}
           </>
         )}
       </ScrollView>
@@ -135,6 +230,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
     marginTop: 4,
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   tagsContainer: {
     marginTop: 12,
@@ -150,5 +247,23 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: Colors.primary,
     marginBottom: 5,
+  },
+  input: {
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
+    paddingVertical: 4,
+    marginBottom: 6,
+    fontSize: 16,
+  },
+  saveButton: {
+    backgroundColor: Colors.primary,
+    padding: 10,
+    borderRadius: 10,
+    alignItems: "center",
+    marginTop: 10,
+  },
+  saveButtonText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });
