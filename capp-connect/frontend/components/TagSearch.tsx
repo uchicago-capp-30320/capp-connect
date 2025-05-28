@@ -7,56 +7,98 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import createTagColorMapper from "@/utils/tagColorMapper";
 import SearchButton from "./SearchButton"
 import * as Device from 'expo-device';
+import { getCachedData } from "@/utils/caching"
 
-
-const DATA = [
-    "Greg",
-    "Bob",
-    "Julia",
-    "Michelle",
-    "Jim",
-    "Freddy",
-    "Billy",
-    "Shantel",
-    "Julius",
-    "Jae",
-    "Fanta",
-    "Amber",
-    "James",
-    "Lee-Or",
-    "Alison",
-    "Paula",
-    "Kiran"
-]
+// const DATA = [
+//     "Greg",
+//     "Bob",
+//     "Julia",
+//     "Michelle",
+//     "Jim",
+//     "Freddy",
+//     "Billy",
+//     "Shantel",
+//     "Julius",
+//     "Jae",
+//     "Fanta",
+//     "Amber",
+//     "James",
+//     "Lee-Or",
+//     "Alison",
+//     "Paula",
+//     "Kiran"
+// ]
 
 // filter the tags based on the query
 // should be updated to call from cache
-function useFilteredData(query: string) {
-    const [data, setData] = useState(DATA)
+function useFilteredData(query: string, type: string, tags: Record<string, string[]>) {
+    const tagOptions = tags[type.toLocaleLowerCase()]
+    const [data, setData] = useState(tagOptions)
 
     useEffect(() => {
-        if (query) {
-            setData(DATA.filter(
-                (item) => item.toLowerCase().trim().includes(query.toLowerCase().trim())
-            ))
-        } else {
-            setData(DATA)
+        let isMounted = true;
+        let intervalId: ReturnType<typeof setInterval> | null = null;
+
+        async function pollCache() {
+            let cached = tagOptions;
+            // If tagOptions is empty or undefined, poll the cache
+            if (!cached || !Array.isArray(cached) || cached.length === 0) {
+                intervalId = setInterval(async () => {
+                    const resp = await getCachedData("tags");
+                    const options = resp ? resp[type.toLowerCase()] : [];
+                    if (options && Array.isArray(options) && options.length > 0 && isMounted) {
+                        clearInterval(intervalId!);
+                        updateData(options);
+                    }
+                }, 150); // poll every 150ms
+            } else {
+                updateData(cached);
+            }
         }
-    }, [query])
+
+        function updateData(options: string[]) {
+            if (query) {
+                setData(options.filter(
+                    (item) => item.toLowerCase().trim().includes(query.toLowerCase().trim())
+                ));
+            } else {
+                setData(options);
+            }
+        }
+
+        pollCache();
+
+        return () => {
+            isMounted = false;
+            if (intervalId) clearInterval(intervalId);
+        };
+    }, [query, tagOptions, type]);
+
+
 
     return data
 }
 
 
 // create basic autocompleting tag that when submitted creates a tag in the search bar
-function TagAutoComplete({usedTags, setTags, placeholder}: {usedTags: Array<string>, setTags: (tags: string[]) => void, placeholder: string}) {
+function TagAutoComplete({usedTags, setTags, placeholder, type}: {usedTags: Array<string>, setTags: (tags: string[]) => void, placeholder: string, type: string}) {
     const [ query, setQuery ] = useState('');
     const [ hideRec, setHideRec ] = useState(true);
     const [inputKey, setInputKey] = useState(0);
     const [highlightedIndex, setHighlightedIndex] = useState(-1);
     const [isOpen, setIsOpen] = useState(false);
+    const [tagOptions, setTagOptions] = useState({})
 
-    const data = useFilteredData(query).filter(tag => !usedTags.includes(tag)).slice(0, 5);
+    useEffect(() => {
+        async function getTags() {
+            const resp = await getCachedData("tags")
+            console.log(resp)
+            setTagOptions(resp)
+        }
+        getTags()
+    }, [])
+
+    const data = (useFilteredData(query, type, tagOptions) || [""]).filter(tag => !usedTags.includes(tag)).slice(0, 5);
 
     //submit top choice
     const handleSubmit = () => {
@@ -166,7 +208,7 @@ function TagAutoComplete({usedTags, setTags, placeholder}: {usedTags: Array<stri
 interface TagSearchProps {
     // tags: string[];
     // setTags: (tags: string[]) => void;
-    searchType: string;
+    searchType: "Directory"|"Resources"|"Feed";
     search?: boolean;
     handleLayout?: (event: LayoutChangeEvent) => void;
     styles?: ViewStyle;
@@ -179,7 +221,7 @@ interface TagSearchProps {
 
 
 // create a tag-based search bar
-export default function TagSearch({search, handleLayout, styles, searchType, limit, raiseWarning, placeholder}: TagSearchProps) {
+export default function TagSearch({search, handleLayout, styles, searchType, limit, setTags, placeholder}: TagSearchProps) {
     const colorMapper = createTagColorMapper();
     const [searchBarHeight, setSearchbarHeight] = useState(0);
 
@@ -195,6 +237,7 @@ export default function TagSearch({search, handleLayout, styles, searchType, lim
 
     const prevSearchType = useRef("Directory");
 
+    // switch between types for rendering
     useEffect(() => {
         if (prevSearchType.current !== searchType) {
             setTagsByType(prev => ({
@@ -206,13 +249,11 @@ export default function TagSearch({search, handleLayout, styles, searchType, lim
         setTagsForType(tagsByType[searchType])
     }, [searchType])
 
+    // listener to also update an external state when the tags are updated
+    // tags state is managed internal to this component, but sometimes parents may want to know what is in it
     useEffect(() => {
-        if (tagsForType.length < limit) {
-            raiseWarning("");
-        } else {
-            raiseWarning(`You can search for a maximum of ${limit} tags`);
-        }
-        }, [tagsForType]);
+        if (setTags) {setTags(tagsForType)}
+    }, [tagsForType])
 
     return (
 
@@ -253,7 +294,7 @@ export default function TagSearch({search, handleLayout, styles, searchType, lim
                 ))}
                 {/* limit how many tags users can add. raise a warning once the user has input up to the limit number of tags */}
                 {tagsForType.length < limit ? (
-                    <TagAutoComplete usedTags={tagsForType} setTags={setTagsForType} placeholder={placeholder ? placeholder: "Search..."} />
+                    <TagAutoComplete usedTags={tagsForType} setTags={setTagsForType} placeholder={placeholder ? placeholder: "Search..."} type={searchType} />
                 ) : null}
 
             </View>
