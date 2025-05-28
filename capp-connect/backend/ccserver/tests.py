@@ -8,7 +8,7 @@ from .models import Comment, EmploymentStatus, Post, Profile, Resource, Tag
 
 class BaseTestCase(APITestCase):
     """Base test case with common setup for all test classes.
-    
+
     Creates:
     - Two test users
     - Profile for first user
@@ -18,6 +18,7 @@ class BaseTestCase(APITestCase):
     - Sample comment
     - Authenticates the first user by default
     """
+
     def setUp(self):
         """Initialize test data and authenticate user1."""
         # Create test users
@@ -69,6 +70,7 @@ class BaseTestCase(APITestCase):
 
 class ProfileTests(BaseTestCase):
     """Test suite for profile-related API endpoints."""
+
     def test_get_profile(self):
         """Test retrieving a profile by username returns correct data."""
         url = reverse("get_profile", kwargs={"username": "user1"})
@@ -102,6 +104,7 @@ class ProfileTests(BaseTestCase):
 
 class PostTests(BaseTestCase):
     """Test suite for post-related API endpoints."""
+
     def test_create_post(self):
         """Test authenticated user can create a new post with tags."""
         url = reverse("all_posts")
@@ -132,6 +135,7 @@ class PostTests(BaseTestCase):
 
 class CommentTests(BaseTestCase):
     """Test suite for comment-related API endpoints."""
+
     def test_create_comment(self):
         """Test authenticated user can create a comment on a post."""
         url = reverse("get_post_comments", kwargs={"pk": self.post.pk})
@@ -153,6 +157,7 @@ class CommentTests(BaseTestCase):
 
 class ResourceTests(BaseTestCase):
     """Test suite for resource-related API endpoints."""
+
     def test_get_resource(self):
         """Test retrieving a resource by ID returns correct data."""
         url = reverse("resource_detail", kwargs={"pk": self.resource.pk})
@@ -172,6 +177,7 @@ class ResourceTests(BaseTestCase):
 
 class SearchTests(BaseTestCase):
     """Test suite for search functionality."""
+
     def test_tag_list(self):
         """Test retrieving all tags returns expected tags."""
         url = reverse("tags_list")

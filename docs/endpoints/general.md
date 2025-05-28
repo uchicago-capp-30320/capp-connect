@@ -15,11 +15,11 @@
 ## Profile Endpoints
 
 ### 1. Retrieve Current User's Profile
-**URL**: `/api/my-profile/`  
-**Method**: `GET`  
-**Authentication**: Token Authentication  
-**Description**: Get the authenticated user's profile  
-**Response**:  
+**URL**: `/api/my-profile/`
+**Method**: `GET`
+**Authentication**: Token Authentication
+**Description**: Get the authenticated user's profile
+**Response**:
 ```json
 {
   "user": "string",
@@ -41,21 +41,21 @@
 ```
 
 ### 2. Retrieve Specific Profile
-**URL**: `/api/profiles/<str:username>/`  
-**Method**: `GET`  
-**Description**: Get a user's profile by username  
-**URL Parameters**:  
-- `username`: User's username  
-**Response**: Same as current user profile  
+**URL**: `/api/profiles/<str:username>/`
+**Method**: `GET`
+**Description**: Get a user's profile by username
+**URL Parameters**:
+- `username`: User's username
+**Response**: Same as current user profile
 
 ### 3. Update Profile
-**URL**: `/api/profiles/<str:username>/`  
-**Method**: `PUT`  
-**Authentication**: Token Authentication  
-**Permissions**: Profile owner only  
-**URL Parameters**:  
-- `username`: User's username  
-**Request Body**:  
+**URL**: `/api/profiles/<str:username>/`
+**Method**: `PUT`
+**Authentication**: Token Authentication
+**Permissions**: Profile owner only
+**URL Parameters**:
+- `username`: User's username
+**Request Body**:
 ```json
 {
   "bio": "string",
@@ -64,27 +64,27 @@
   ... // Other profile fields
 }
 ```
-**Response**: Updated profile (200 OK)  
-**Errors**:  
-- 403 Forbidden (if not owner)  
-- 400 Bad Request (invalid data)  
+**Response**: Updated profile (200 OK)
+**Errors**:
+- 403 Forbidden (if not owner)
+- 400 Bad Request (invalid data)
 
 ### 4. Delete Profile
-**URL**: `/api/profiles/<str:username>/`  
-**Method**: `DELETE`  
-**Authentication**: Token Authentication  
-**Permissions**: Profile owner only  
-**URL Parameters**:  
-- `username`: User's username  
-**Response**: 204 No Content  
-**Errors**:  
-- 403 Forbidden (if not owner)  
+**URL**: `/api/profiles/<str:username>/`
+**Method**: `DELETE`
+**Authentication**: Token Authentication
+**Permissions**: Profile owner only
+**URL Parameters**:
+- `username`: User's username
+**Response**: 204 No Content
+**Errors**:
+- 403 Forbidden (if not owner)
 
 ### 5. List All Profiles
-**URL**: `/api/profiles/`  
-**Method**: `GET`  
-**Description**: Get compact list of all profiles  
-**Response**:  
+**URL**: `/api/profiles/`
+**Method**: `GET`
+**Description**: Get compact list of all profiles
+**Response**:
 ```json
 [
   {
@@ -106,10 +106,10 @@
 ## Post Endpoints
 
 ### 1. Create Post
-**URL**: `/api/posts/`  
-**Method**: `POST`  
-**Authentication**: Token Authentication  
-**Request Body**:  
+**URL**: `/api/posts/`
+**Method**: `POST`
+**Authentication**: Token Authentication
+**Request Body**:
 ```json
 {
   "title": "string",
@@ -121,15 +121,15 @@
   "location": "string"
 }
 ```
-**Response**: Created post (201 Created)  
-**Errors**: 400 Bad Request (invalid data)  
+**Response**: Created post (201 Created)
+**Errors**: 400 Bad Request (invalid data)
 
 ### 2. List Posts (Paginated)
-**URL**: `/api/posts/`  
-**Method**: `GET`  
-**Query Parameters**:  
-- `page`: Page number (default: 1)  
-**Response**:  
+**URL**: `/api/posts/`
+**Method**: `GET`
+**Query Parameters**:
+- `page`: Page number (default: 1)
+**Response**:
 ```json
 {
   "next_page": 2,
@@ -145,11 +145,11 @@
 ```
 
 ### 3. Retrieve Post
-**URL**: `/api/posts/<int:pk>/`  
-**Method**: `GET`  
-**URL Parameters**:  
-- `pk`: Post ID  
-**Response**:  
+**URL**: `/api/posts/<int:pk>/`
+**Method**: `GET`
+**URL Parameters**:
+- `pk`: Post ID
+**Response**:
 ```json
 {
   "post_id": "int",
@@ -170,45 +170,45 @@
 ```
 
 ### 4. Update Post
-**URL**: `/api/posts/<int:pk>/`  
-**Method**: `PUT`  
-**Authentication**: Token Authentication  
-**Permissions**: Post owner only  
-**URL Parameters**:  
-- `pk`: Post ID  
-**Request Body**: Partial post data  
-**Response**: Updated post (200 OK)  
-**Errors**:  
-- 403 Forbidden (if not owner)  
-- 400 Bad Request (invalid data)  
+**URL**: `/api/posts/<int:pk>/`
+**Method**: `PUT`
+**Authentication**: Token Authentication
+**Permissions**: Post owner only
+**URL Parameters**:
+- `pk`: Post ID
+**Request Body**: Partial post data
+**Response**: Updated post (200 OK)
+**Errors**:
+- 403 Forbidden (if not owner)
+- 400 Bad Request (invalid data)
 
 ### 5. Delete Post
-**URL**: `/api/posts/<int:pk>/`  
-**Method**: `DELETE`  
-**Authentication**: Token Authentication  
-**Permissions**: Post owner only  
-**URL Parameters**:  
-- `pk`: Post ID  
-**Response**: 204 No Content  
-**Errors**: 403 Forbidden (if not owner)  
+**URL**: `/api/posts/<int:pk>/`
+**Method**: `DELETE`
+**Authentication**: Token Authentication
+**Permissions**: Post owner only
+**URL Parameters**:
+- `pk`: Post ID
+**Response**: 204 No Content
+**Errors**: 403 Forbidden (if not owner)
 
 ---
 
 ## Comment Endpoints
 
 ### 1. Create Comment
-**URL**: `/api/posts/<int:pk>/comments/`  
-**Method**: `POST`  
-**Authentication**: Token Authentication  
-**URL Parameters**:  
-- `pk`: Post ID  
-**Request Body**:  
+**URL**: `/api/posts/<int:pk>/comments/`
+**Method**: `POST`
+**Authentication**: Token Authentication
+**URL Parameters**:
+- `pk`: Post ID
+**Request Body**:
 ```json
 {
   "comment_text": "string"
 }
 ```
-**Response**: Created comment (201 Created)  
+**Response**: Created comment (201 Created)
 ```json
 {
   "comment_id": "int",
@@ -220,11 +220,11 @@
 ```
 
 ### 2. List Comments
-**URL**: `/api/posts/<int:pk>/comments/`  
-**Method**: `GET`  
-**URL Parameters**:  
-- `pk`: Post ID  
-**Response**: List of comments  
+**URL**: `/api/posts/<int:pk>/comments/`
+**Method**: `GET`
+**URL Parameters**:
+- `pk`: Post ID
+**Response**: List of comments
 ```json
 [
   {
@@ -238,26 +238,26 @@
 ```
 
 ### 3. Delete Comment
-**URL**: `/api/posts/<int:pk>/comments/<int:comment_id>/`  
-**Method**: `DELETE`  
-**Authentication**: Token Authentication  
-**Permissions**: Comment owner only  
-**URL Parameters**:  
-- `pk`: Post ID  
-- `comment_id`: Comment ID  
-**Response**: 204 No Content  
-**Errors**:  
-- 404 Not Found (post/comment not found)  
-- 403 Forbidden (if not owner)  
+**URL**: `/api/posts/<int:pk>/comments/<int:comment_id>/`
+**Method**: `DELETE`
+**Authentication**: Token Authentication
+**Permissions**: Comment owner only
+**URL Parameters**:
+- `pk`: Post ID
+- `comment_id`: Comment ID
+**Response**: 204 No Content
+**Errors**:
+- 404 Not Found (post/comment not found)
+- 403 Forbidden (if not owner)
 
 ---
 
 ## Resource Endpoints
 
 ### 1. Create Resource
-**URL**: `/api/resources/`  
-**Method**: `POST`  
-**Request Body**:  
+**URL**: `/api/resources/`
+**Method**: `POST`
+**Request Body**:
 ```json
 {
   "title": "string",
@@ -266,7 +266,7 @@
   "tags": ["string"]
 }
 ```
-**Response**: Created resource (201 Created)  
+**Response**: Created resource (201 Created)
 ```json
 {
   "resource_id": "int",
@@ -280,30 +280,30 @@
 ```
 
 ### 2. List Resources
-**URL**: `/api/resources/`  
-**Method**: `GET`  
+**URL**: `/api/resources/`
+**Method**: `GET`
 **Response**: List of resources (same structure as above)
 
 ### 3. Retrieve Resource
-**URL**: `/api/resources/<int:pk>/`  
-**Method**: `GET`  
-**URL Parameters**:  
-- `pk`: Resource ID  
+**URL**: `/api/resources/<int:pk>/`
+**Method**: `GET`
+**URL Parameters**:
+- `pk`: Resource ID
 **Response**: Resource details (same structure as above)
 
 ### 4. Update Resource
-**URL**: `/api/resources/<int:pk>/`  
-**Method**: `PUT`  
-**URL Parameters**:  
-- `pk`: Resource ID  
-**Request Body**: Partial resource data  
+**URL**: `/api/resources/<int:pk>/`
+**Method**: `PUT`
+**URL Parameters**:
+- `pk`: Resource ID
+**Request Body**: Partial resource data
 **Response**: Updated resource (200 OK)
 
 ### 5. Delete Resource
-**URL**: `/api/resources/<int:pk>/`  
-**Method**: `DELETE`  
-**URL Parameters**:  
-- `pk`: Resource ID  
+**URL**: `/api/resources/<int:pk>/`
+**Method**: `DELETE`
+**URL Parameters**:
+- `pk`: Resource ID
 **Response**: 204 No Content
 
 ---
@@ -311,10 +311,10 @@
 ## Search Endpoints
 
 ### 1. Directory Search Data
-**URL**: `/api/directory/`  
-**Method**: `GET`  
-**Description**: Get searchable directory data (usernames and allowed tags)  
-**Response**:  
+**URL**: `/api/directory/`
+**Method**: `GET`
+**Description**: Get searchable directory data (usernames and allowed tags)
+**Response**:
 ```json
 {
   "users": ["cleaned_usernames"],
@@ -323,49 +323,49 @@
 ```
 
 ### 2. All Tags
-**URL**: `/api/tags/`  
-**Method**: `GET`  
-**Response**: List of all tags  
+**URL**: `/api/tags/`
+**Method**: `GET`
+**Response**: List of all tags
 ```json
 ["tag_name1", "tag_name2"]
 ```
 
 ### 3. Search Profiles
-**URL**: `/api/search/profiles/`  
-**Method**: `GET`  
-**Query Parameters**:  
-- `tags`: Comma-separated list of tags  
-**Description**: Search profiles by tags (intersection of all tags)  
-**Response**: List of matching profiles  
+**URL**: `/api/search/profiles/`
+**Method**: `GET`
+**Query Parameters**:
+- `tags`: Comma-separated list of tags
+**Description**: Search profiles by tags (intersection of all tags)
+**Response**: List of matching profiles
 
 ### 4. Search Posts
-**URL**: `/api/search/posts/`  
-**Method**: `GET`  
-**Query Parameters**:  
-- `tags`: Comma-separated list of tags  
-**Description**: Search posts by tags (intersection of all tags)  
-**Response**: List of matching posts  
+**URL**: `/api/search/posts/`
+**Method**: `GET`
+**Query Parameters**:
+- `tags`: Comma-separated list of tags
+**Description**: Search posts by tags (intersection of all tags)
+**Response**: List of matching posts
 
 ### 5. Search Resources
-**URL**: `/api/search/resources/`  
-**Method**: `GET`  
-**Query Parameters**:  
-- `tags`: Comma-separated list of tags  
-**Description**: Search resources by tags (intersection of all tags)  
-**Response**: List of matching resources  
+**URL**: `/api/search/resources/`
+**Method**: `GET`
+**Query Parameters**:
+- `tags`: Comma-separated list of tags
+**Description**: Search resources by tags (intersection of all tags)
+**Response**: List of matching resources
 
 ---
 
 ## Authentication Endpoints
 
 ### Slack Integration
-**URL**: `/api/slack/post/`  
-**Authentication**: Token Authentication  
-**Methods**:  
-- **POST**: Create post from Slack data  
-- **PUT**: Update post by Slack timestamp and type  
-- **DELETE**: Delete post by Slack timestamp and type  
-**Request Body**:  
+**URL**: `/api/slack/post/`
+**Authentication**: Token Authentication
+**Methods**:
+- **POST**: Create post from Slack data
+- **PUT**: Update post by Slack timestamp and type
+- **DELETE**: Delete post by Slack timestamp and type
+**Request Body**:
 ```json
 {
   "slack_ts": "string",
@@ -379,10 +379,10 @@
 ## Frontend Endpoint
 
 ### Serve Frontend Application
-**URL**: `/`  
-**Method**: `GET`  
-**Description**: Serves the React frontend application  
-**Caching**: Never cached (development setting)  
+**URL**: `/`
+**Method**: `GET`
+**Description**: Serves the React frontend application
+**Caching**: Never cached (development setting)
 **Response**: HTML page (`index.html`)
 
 ---
