@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import ProfilePhoto from "@/components/ProfilePhoto";
 import EditButton from "@/components/EditButton";
-import BoxSection from "@/components/BoxSections";
 import TagCarousel from "@/components/TagCarousel";
 import * as Device from "expo-device";
 import { Colors, Containers } from "@/themes";
@@ -11,162 +10,88 @@ import createTagColorMapper from "@/utils/tagColorMapper";
 import fetchData from "@/utils/fetchdata";
 import { API_BASE_URL } from "@/utils/constants";
 
-const labelDataMap = {
-  name: "Name",
-  bio: "",
-  tags: "Tags",
-  city: "City",
-  state: "State",
-  country: "Country",
-  employment_status: "Employment Status",
-  job_title: "Job Title",
-  company: "Company",
-  linkedin_url: "LinkedIn",
-  github_url: "GitHub",
-  personal_site: "Website",
-  phone_number: "Phone",
-  slack_username: "Slack Message",
+type UserProfile = {
+  user: string;
+  slack_username: string | null;
+  linkedin_url: string | null;
+  github_url: string | null;
+  personal_site: string | null;
+  country: string | null;
+  state: string | null;
+  city: string | null;
+  phone_number: string | null;
+  photo_url: string | null;
+  employment_status: string | null;
+  job_title: string | null;
+  company: string | null;
+  bio: string | null;
+  tags: string[];
 };
-
-const bioFields = ["bio"];
-const infoFields = ["city", "state", "country", "employment_status"];
-const websiteFields = ["linkedin_url", "github_url", "personal_site"];
-const contactFields = ["phone_number", "slack_username"];
 
 export default function Me() {
   const [editMode, changeEditMode] = useState(false);
-  const [data, changeData] = useState(new Map<string, string>());
+  const [profile, setProfile] = useState<UserProfile | null>(null);
 
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const profile = await fetchData(
-          `${API_BASE_URL}/auth/`,
-          "GET",
-          { format: "json" }
-        );
-  
-        console.log("Fetched current user profile raw:", profile); 
-  
-        const map = new Map<string, string>();
-        Object.entries(profile).forEach(([key, value]) => {
-          map.set(
-            key,
-            typeof value === "string"
-              ? value
-              : Array.isArray(value)
-              ? value.join(", ")
-              : ""
-          );
-        });
-  
-        console.log("Mapped current user profile entries:", Array.from(map.entries())); 
-        changeData(map);
+        const data: UserProfile = await fetchData(`${API_BASE_URL}/auth/`, "GET", {});
+        setProfile(data);
       } catch (err) {
         console.error("Failed to fetch current user profile:", err);
       }
     }
-  
+
     fetchProfile();
   }, []);
-  
 
   const getColorForTag = createTagColorMapper();
-  const tagsString = data.get("tags") || "";
-  const tagsArray = tagsString.split(", ").filter(tag => tag.length > 0);
-  const tagObjects = tagsArray.map(tag => ({
+  const tagObjects = profile?.tags.map(tag => ({
     name: tag,
     color: getColorForTag(tag),
-  }));
+  })) ?? [];
 
   return (
     <SafeAreaProvider style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* Profile */}
-        <View style={styles.headerSection}>
-          <View style={styles.profileHeader}>
-            <ProfilePhoto style={styles.profilePhoto} user={data.get("user") ?? ""} />
-            <View style={styles.headerInfo}>
-              <Text style={styles.nameText}>{data.get("name")}</Text>
-              <Text style={styles.positionText}>
-                {data.get("job_title")} | {data.get("company")}
-              </Text>
+        {profile && (
+          <>
+            <View style={styles.headerSection}>
+              <View style={styles.profileHeader}>
+                <ProfilePhoto style={styles.profilePhoto} user={profile.user} />
+                <View style={styles.headerInfo}>
+                  <Text style={styles.nameText}>{profile.slack_username}</Text>
+                  <Text style={styles.positionText}>
+                    {profile.job_title ?? "No job title"} | {profile.company ?? "No company"}
+                  </Text>
+                </View>
+                <EditButton editMode={editMode} changeEditMode={changeEditMode} />
+              </View>
+
+              <View style={styles.tagsContainer}>
+                <TagCarousel tags={tagObjects} />
+              </View>
             </View>
-            <EditButton editMode={editMode} changeEditMode={changeEditMode} />
-          </View>
 
-          <View style={styles.tagsContainer}>
-            <TagCarousel tags={tagObjects} />
-          </View>
-        </View>
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Bio</Text>
+              <Text>{profile.bio ?? "No bio available."}</Text>
+            </View>
 
-        {/* Save Button */}
-        {editMode && (
-          <View style={{ marginBottom: 20 }}>
-            <Text
-              onPress={async () => {
-                const updatedProfile = Object.fromEntries(data.entries());
-                try {
-                  await fetchData(`${API_BASE_URL}/auth/`, "PUT", updatedProfile);
-                  changeEditMode(false);
-                  console.log("Profile updated!");
-                } catch (err) {
-                  console.error("Error updating profile:", err);
-                }
-              }}
-              style={styles.saveButton}
-            >
-              Save
-            </Text>
-          </View>
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Contact</Text>
+              <Text>Phone: {profile.phone_number ?? "N/A"}</Text>
+              <Text>Slack: {profile.slack_username ?? "N/A"}</Text>
+            </View>
+
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Websites</Text>
+              <Text>LinkedIn: {profile.linkedin_url ?? "N/A"}</Text>
+              <Text>GitHub: {profile.github_url ?? "N/A"}</Text>
+              <Text>Website: {profile.personal_site ?? "N/A"}</Text>
+            </View>
+          </>
         )}
-
-        {/* Sections */}
-        <BoxSection
-          title="Biography"
-          fields={bioFields}
-          labelDataMap={labelDataMap}
-          data={data}
-          editMode={editMode}
-          updateData={changeData}
-          style={styles.fullBox}
-        />
-
-        <View style={{ flex: 1, flexDirection: "row" }}>
-            <BoxSection
-              title="Info"
-              fields={infoFields}
-              labelDataMap={labelDataMap}
-              data={data}
-              editMode={editMode}
-              updateData={changeData}
-              style={styles.halfBox}
-            />
-
-          <View style={{ flex: 1 }} />
-
-          <BoxSection
-              title="Contact"
-              fields={contactFields}
-              labelDataMap={labelDataMap}
-              data={data}
-              editMode={editMode}
-              updateData={changeData}
-              style={styles.halfBox}
-          />
-        </View>
-
-        <View style={{ height: 10 }} />
-
-        <BoxSection
-            title="Websites"
-            fields={websiteFields}
-            labelDataMap={labelDataMap}
-            data={data}
-            editMode={editMode}
-            updateData={changeData}
-            style={styles.fullBox}
-        />
       </ScrollView>
     </SafeAreaProvider>
   );
@@ -215,42 +140,15 @@ const styles = StyleSheet.create({
     marginTop: 12,
     height: 70,
   },
-  bioSection: {
+  section: {
     ...Containers.cards,
     marginBottom: 15,
+    padding: 10,
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: "bold",
     color: Colors.primary,
-    marginBottom: 8,
-  },
-  bioText: {
-    fontSize: 16,
-    lineHeight: 22,
-  },
-  boxRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 15,
-  },
-  halfBox: {
-    width: "48%",
-    ...Containers.cards,
-  },
-  fullBox: {
-    width: "100%",
-    marginBottom: 15,
-    ...Containers.cards,
-  },
-  saveButton: {
-    backgroundColor: Colors.primary,
-    color: "white",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    textAlign: "center",
-    fontWeight: "bold",
-    alignSelf: "center",
+    marginBottom: 5,
   },
 });

@@ -2,7 +2,6 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useState, useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import ProfilePhoto from "@/components/ProfilePhoto";
-import BoxSection from "@/components/BoxSections";
 import TagCarousel from "@/components/TagCarousel";
 import * as Device from "expo-device";
 import { Colors, Containers } from "@/themes";
@@ -11,142 +10,89 @@ import fetchData from "@/utils/fetchdata";
 import { useLocalSearchParams } from "expo-router";
 import { API_BASE_URL } from "@/utils/constants";
 
-const labelDataMap = {
-  name: "Name",
-  bio: "",
-  tags: "Tags",
-  city: "City",
-  state: "State",
-  country: "Country",
-  employment_status: "Employment Status",
-  job_title: "Job Title",
-  company: "Company",
-  linkedin_url: "LinkedIn",
-  github_url: "GitHub",
-  personal_site: "Website",
-  phone_number: "Phone",
-  slack_username: "Slack Message",
+type UserProfile = {
+  user: string;
+  slack_username: string | null;
+  linkedin_url: string | null;
+  github_url: string | null;
+  personal_site: string | null;
+  country: string | null;
+  state: string | null;
+  city: string | null;
+  phone_number: string | null;
+  photo_url: string | null;
+  employment_status: string | null;
+  job_title: string | null;
+  company: string | null;
+  bio: string | null;
+  tags: string[];
 };
 
-const bioFields = ["bio"];
-const infoFields = ["city", "state", "country", "employment_status"];
-const websiteFields = ["linkedin_url", "github_url", "personal_site"];
-const contactFields = ["phone_number", "slack_username"];
-
-export default function UserProfile() {
+export default function UserProfilePage() {
   const { username } = useLocalSearchParams();
-  const [data, changeData] = useState(new Map<string, string>());
+  const [profile, setProfile] = useState<UserProfile | null>(null);
 
   useEffect(() => {
     async function fetchProfile() {
       if (!username) return;
-  
+
       try {
-        const profile = await fetchData(
-          `${API_BASE_URL}/profile/${username}/`,
-          "GET",
-          { format: "json" }
-        );
-  
-        console.log("Fetched user profile raw:", profile); 
-  
-        const map = new Map<string, string>();
-        Object.entries(profile).forEach(([key, value]) => {
-          map.set(
-            key,
-            typeof value === "string"
-              ? value
-              : Array.isArray(value)
-              ? value.join(", ")
-              : ""
-          );
-        });
-  
-        console.log("Mapped user profile entries:", Array.from(map.entries())); 
-        changeData(map);
+        const data: UserProfile = await fetchData(`${API_BASE_URL}/profile/${username}/`, "GET", {});
+        setProfile(data);
       } catch (err) {
         console.error("Failed to fetch user profile:", err);
       }
     }
-  
+
     fetchProfile();
   }, [username]);
-  
 
   const getColorForTag = createTagColorMapper();
-  const tagsString = data.get("tags") || "";
-  const tagsArray = tagsString.split(", ").filter(tag => tag.length > 0);
-  const tagObjects = tagsArray.map(tag => ({
+  const tagObjects = profile?.tags.map(tag => ({
     name: tag,
     color: getColorForTag(tag),
-  }));
+  })) ?? [];
 
   return (
     <SafeAreaProvider style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* Profile */}
-        <View style={styles.headerSection}>
-          <View style={styles.profileHeader}>
-           <ProfilePhoto style={styles.profilePhoto} user={username as string} />
-            <View style={styles.headerInfo}>
-              <Text style={styles.nameText}>{data.get("name")}</Text>
-              <Text style={styles.positionText}>
-                {data.get("job_title")} | {data.get("company")}
-              </Text>
+        {profile && (
+          <>
+            <View style={styles.headerSection}>
+              <View style={styles.profileHeader}>
+                <ProfilePhoto style={styles.profilePhoto} user={profile.user} />
+                <View style={styles.headerInfo}>
+                  <Text style={styles.nameText}>{profile.slack_username}</Text>
+                  <Text style={styles.positionText}>
+                    {profile.job_title ?? "No job title"} | {profile.company ?? "No company"}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.tagsContainer}>
+                <TagCarousel tags={tagObjects} />
+              </View>
             </View>
-          </View>
 
-          <View style={styles.tagsContainer}>
-            <TagCarousel tags={tagObjects} />
-          </View>
-        </View>
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Bio</Text>
+              <Text>{profile.bio ?? "No bio available."}</Text>
+            </View>
 
-        {/* Sections */}
-        <BoxSection
-          title="Biography"
-          fields={bioFields}
-          labelDataMap={labelDataMap}
-          data={data}
-          editMode={false}
-          updateData={() => {}}
-          style={styles.fullBox}
-        />
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Contact</Text>
+              <Text>Phone: {profile.phone_number ?? "N/A"}</Text>
+              <Text>Slack: {profile.slack_username ?? "N/A"}</Text>
+            </View>
 
-        <View style={{ flex: 1, flexDirection: "row" }}>
-            <BoxSection
-              title="Info"
-              fields={infoFields}
-              labelDataMap={labelDataMap}
-              data={data}
-              editMode={false}
-              updateData={() => {}}
-              style={styles.halfBox}
-            />
-
-          <View style={{ flex: 1 }} />
-
-          <BoxSection
-              title="Contact"
-              fields={contactFields}
-              labelDataMap={labelDataMap}
-              data={data}
-              editMode={false}
-              updateData={() => {}}
-              style={styles.halfBox}
-          />
-        </View>
-
-        <View style={{ height: 10 }} />
-
-        <BoxSection
-            title="Websites"
-            fields={websiteFields}
-            labelDataMap={labelDataMap}
-            data={data}
-            editMode={false}
-            updateData={() => {}}
-            style={styles.fullBox}
-        />
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Websites</Text>
+              <Text>LinkedIn: {profile.linkedin_url ?? "N/A"}</Text>
+              <Text>GitHub: {profile.github_url ?? "N/A"}</Text>
+              <Text>Website: {profile.personal_site ?? "N/A"}</Text>
+            </View>
+          </>
+        )}
       </ScrollView>
     </SafeAreaProvider>
   );
@@ -195,32 +141,15 @@ const styles = StyleSheet.create({
     marginTop: 12,
     height: 70,
   },
-  bioSection: {
+  section: {
     ...Containers.cards,
     marginBottom: 15,
+    padding: 10,
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: "bold",
     color: Colors.primary,
-    marginBottom: 8,
-  },
-  bioText: {
-    fontSize: 16,
-    lineHeight: 22,
-  },
-  boxRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 15,
-  },
-  halfBox: {
-    width: "48%",
-    ...Containers.cards,
-  },
-  fullBox: {
-    width: "100%",
-    marginBottom: 15,
-    ...Containers.cards,
+    marginBottom: 5,
   },
 });
