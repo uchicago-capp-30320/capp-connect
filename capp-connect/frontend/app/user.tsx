@@ -37,10 +37,10 @@ export default function UserProfilePage() {
       if (!username) return;
 
       try {
-        const data: UserProfile = await 
+        const data: UserProfile = await
         fetchData(
-          `${API_BASE_URL}/profile/${username}/`, 
-          "GET", 
+          `${API_BASE_URL}/profile/${username}/`,
+          "GET",
           {});
         setProfile(data);
       } catch (err) {
