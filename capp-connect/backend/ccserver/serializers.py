@@ -39,11 +39,24 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class NameSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for extracting cleaned profile names.
+    
+    Processes slack usernames by removing parenthetical content.
+    Only includes the processed username in output.
+    """
     class Meta:
         model = Profile
         fields = ["slack_username"]
 
     def to_representation(self, instance):
+        """Clean slack username by removing parentheses content.
+        
+        Args:
+            instance (Profile): Profile instance being serialized
+            
+        Returns:
+            str: Cleaned username without parentheses
+        """
         slack_name = instance.slack_username
         cleaned_name = re.sub(r"\(.*?\)", "", slack_name).strip()
         return cleaned_name
