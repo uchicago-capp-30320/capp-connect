@@ -12,6 +12,7 @@ type Resource = {
   description: string;
   poster_name: string;
   links: string;
+  tags: string[];
 };
 
 export default function Resources() {
@@ -56,6 +57,7 @@ export default function Resources() {
                 title={item.title}
                 description={item.description}
                 links={item.links}
+                tags={item.tags}
               />
           )}
         />
