@@ -15,7 +15,7 @@ import { TextStyles } from "@/themes";
 const TAG_LIMIT = 5
 
 export default function Index() {
-  const tabNames = ["Directory", "Resources", "Feed"]
+  const tabNames: Array<"Directory" | "Resources" | "Feed"> = ["Directory", "Resources", "Feed"]
 
   // list of tags
   // const [ tags, setTags ] = useState<string[]>([]);
@@ -24,7 +24,7 @@ export default function Index() {
   // get width of screen
   const [screenWidth, setScreenWidth] = useState(1000);
   // set search type
-  const [searchType, setSearchType] = useState("Directory");
+  const [searchType, setSearchType] = useState<"Directory" | "Resources" | "Feed">("Directory");
   // use key to force remount when window dimensions change
   const [key, setKey] = useState(0)
   // manage error state
