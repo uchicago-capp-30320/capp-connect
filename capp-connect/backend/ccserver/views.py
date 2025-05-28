@@ -193,13 +193,35 @@ class SearchProfiles(APIView):
 
 
 class GetPost(APIView):
+    """API endpoint for retrieving, updating, or deleting a specific post."""
     def get_object(self, pk):
+        """Helper method to retrieve a post by primary key.
+        
+        Args:
+            pk: Post primary key
+            
+        Returns:
+            Post: Retrieved post object
+            
+        Raises:
+            Http404: If post does not exist
+        """
         try:
             return Post.objects.get(pk=pk)
         except Post.DoesNotExist as e:
             raise Http404(f"Post with id {pk} does not exist.") from e
 
     def get(self, request, pk, format=None):
+        """Retrieve a post by ID.
+        
+        Args:
+            request: HTTP request object
+            pk: Post primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: Serialized post data or 404 error
+        """
         try:
             post = Post.objects.get(pk=pk)
             serializer = PostSerializer(post)
@@ -210,6 +232,17 @@ class GetPost(APIView):
             )
 
     def put(self, request, pk, format=None):
+        """Update a post by ID (partial updates allowed).
+        
+        Args:
+            request: HTTP request object with updated post data
+            pk: Post primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: Updated post data, 404 if not found, 
+                      400 for invalid data, or 403 for permission denied
+        """
         post = self.get_object(pk)
         serializer = PostSerializer(post, data=request.data, partial=True)
         if serializer.is_valid():
@@ -219,6 +252,16 @@ class GetPost(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
+        """Delete a post by ID.
+        
+        Args:
+            request: HTTP request object
+            pk: Post primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: 204 on success or 403 for permission denied
+        """
         post = self.get_object(pk)
         if request.user == post.user:
             post.delete()
