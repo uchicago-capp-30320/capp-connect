@@ -96,14 +96,7 @@ export default function RootLayout() {
     }}>
       <Stack.Screen name="(tabs)" options={{ title: "Back", headerShown: false}} />
 
-      <Stack.Screen name="me"
-        options={{
-          title: "My Profile",
-          headerStyle: {backgroundColor: Colors.header},
-          headerTintColor: Colors.headerText
-        }} />
-
-      <Stack.Screen name="user"
+      <Stack.Screen name="profile"
         options={{
           title: "Profile",
           headerTitleAlign: "center",
