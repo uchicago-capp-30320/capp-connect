@@ -123,7 +123,19 @@ class GetProfileList(APIView):
 
 
 class SearchDirectoryList(APIView):
+    """API endpoint for directory search data (usernames and allowed tags)."""
     def get(self, request, format=None):
+        """Retrieve searchable directory data.
+        
+        Args:
+            request: HTTP request object
+            format: Optional format suffix
+
+        Returns:
+            Response: Dictionary containing:
+                - users: List of cleaned usernames
+                - tags: List of tags allowed for profiles
+        """
         users = Profile.objects.all()
         user_serializer = NameSerializer(users, many=True)
         tags = Tag.objects.filter(allowed_on_profile=True)
