@@ -1,15 +1,21 @@
 import { View, Text, StyleSheet, Linking, TouchableOpacity } from "react-native";
 import { Containers, Colors } from "@/themes";
+import TagIcon from "./TagIcon";
+import createTagColorMapper from "@/utils/tagColorMapper";
 
 type Props = {
   title: string;
   description: string;
   links: string;
+  tags: string[]
 };
 
-export default function ResourceCard({ title, description, links }: Props) {
+export default function ResourceCard({ title, description, links, tags }: Props) {
+  // create Tag color mapper:
+  const getColorForTag = createTagColorMapper();
+
   return (
-    <View style={[Containers.cards, styles.card]}>
+    <View style={[Containers.cards, styles.card, {flexDirection: "column", minHeight: 200}]}>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.description}>
         {description || "No description available"}
@@ -19,6 +25,19 @@ export default function ResourceCard({ title, description, links }: Props) {
           <Text style={styles.link}>Visit Resource</Text>
         </TouchableOpacity>
       )}
+      <View style={{
+          flex:1,
+          flexDirection:"row",
+          position:"absolute",
+          bottom:10,
+          flexWrap: 'wrap',
+          marginTop: 10
+          }}
+      >
+          {tags.map((tag, index) => (
+              <TagIcon key={index} tag={tag} color={getColorForTag(tag)} style={{}} deletable={false} searchType={"Resources"}/>
+          ))}
+      </View>
     </View>
   );
 }

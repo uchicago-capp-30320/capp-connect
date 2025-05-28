@@ -76,7 +76,7 @@ export default function TagIcon({ tag, color, style, deletable, listSetter, list
                         }}
                     >
 
-                            <FontAwesomeIcon size={10} icon={faX} color={"black"} style={{ paddingLeft: 5 }} />
+                            <FontAwesomeIcon size={15} icon={faX} color={"black"} style={{ paddingLeft: 5 }} />
 
                     </Pressable>
                 : null}
