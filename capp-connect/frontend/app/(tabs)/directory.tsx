@@ -6,68 +6,74 @@ import SearchBar from '../../components/SearchBar';
 import fetchData from '../../utils/fetchdata';
 import { API_BASE_URL } from "@/utils/constants";
 
+
 type UserProfile = {
-  user: string;
-  city: string | null;
-  state: string | null;
-  country: string | null;
-  job_title: string | null;
-  company: string | null;
-  tags: string[];
-  photo_url: string | null;
-  employment_status: string | null;
+ user: string;
+ city: string | null;
+ state: string | null;
+ country: string | null;
+ job_title: string | null;
+ company: string | null;
+ tags: string[];
+ photo_url: string | null;
+ employment_status: string | null;
 };
 
+
 export default function Directory() {
-  const [data, setData] = useState<UserProfile[]>([]);
+ const [data, setData] = useState<UserProfile[]>([]);
 
-  useEffect(() => {
-    async function fetchProfiles() {
-        const profiles = await fetchData(
-          `${API_BASE_URL}/profiles/`,
-          "GET",
-          { format: "json" }
-        );
-        console.log("Fetched profiles:", profiles);
-        setData(profiles);
-    }
 
-    fetchProfiles();
-  }, []);
+ useEffect(() => {
+   async function fetchProfiles() {
+       const profiles = await fetchData(
+         `${API_BASE_URL}/profiles/`,
+         "GET",
+         { format: "json" }
+       );
+       console.log("Fetched profiles:", profiles);
+       setData(profiles);
+   }
 
-    return (
-      <>
-        <SearchBar
-          placeholder="Search..."
-          style={{
-            marginVertical: 10,
-            width: "90%",
-            alignSelf: "center"
-          }}
-          color="gray"
-        />
 
-        <View style={{flex: 1, width:"100%"}}>
-          <FlashList
-            data={data}
-            estimatedItemSize={100}
-            keyExtractor={(item) => item.user}
-            renderItem={({ item }) => {
-                return (
-                  <ProfileCard
-                    name={item.user}
-                    city={item.city ?? ""}
-                    state={item.state ?? ""}
-                    country={item.country ?? ""}
-                    job_title={item.job_title ?? "No job title"}
-                    company={item.company ?? "No company"}
-                    tags={item.tags ?? []}
-                    user={item.user}
-                  />
-                );
-            }}
-          />
-        </View>
-      </>
-    );
-  }
+   fetchProfiles();
+ }, []);
+
+
+   return (
+     <>
+       <SearchBar
+         placeholder="Search..."
+         style={{
+           marginVertical: 10,
+           width: "90%",
+           alignSelf: "center"
+         }}
+         color="gray"
+       />
+
+
+       <View style={{flex: 1, width:"100%"}}>
+         <FlashList
+           data={data}
+           estimatedItemSize={100}
+           keyExtractor={(item) => item.user}
+           renderItem={({ item }) => {
+               return (
+                 <ProfileCard
+                   name={item.user}
+                   city={item.city ?? ""}
+                   state={item.state ?? ""}
+                   country={item.country ?? ""}
+                   job_title={item.job_title ?? "No job title"}
+                   company={item.company ?? "No company"}
+                   tags={item.tags ?? []}
+                   user={item.user}
+                 />
+               );
+           }}
+         />
+       </View>
+     </>
+   );
+ }

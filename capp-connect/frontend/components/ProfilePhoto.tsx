@@ -3,21 +3,29 @@ import { Image, StyleProp, ImageStyle, Pressable, SafeAreaView } from "react-nat
 import { router } from 'expo-router';
 import { getPhotoUrlUser } from "@/utils/currentUser";
 
+
 interface ProfilePhotoProps {
     style: StyleProp<ImageStyle>;
     user: string;
+    imageUrl?: string;
 }
 
-export default function ProfilePhoto({ style, user }: ProfilePhotoProps) {
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
+export default function ProfilePhoto({ style, user, imageUrl }: ProfilePhotoProps) {
+    const [url, setURL] = useState<string | null>(null);
 
     useEffect(() => {
         async function fetchImage() {
             const url = await getPhotoUrlUser(user);
-            setImageUrl(url && url.trim().length > 0 ? url : null);
+            setURL(url && url.trim().length > 0 ? url : null);
         }
-        fetchImage();
+
+        if (!imageUrl) {
+            fetchImage();
+        } else {
+            setURL(imageUrl)
+        }
     }, [user]);
+
 
     if (!imageUrl) return null;
 
@@ -25,7 +33,7 @@ export default function ProfilePhoto({ style, user }: ProfilePhotoProps) {
         <SafeAreaView>
             <Pressable onPress={() => { console.log(user); router.navigate('/me'); }}>
                 <Image
-                    source={{ uri: imageUrl }}
+                    source={url ? { uri: url } : undefined}
                     resizeMode="cover"
                     style={style}
                 />
