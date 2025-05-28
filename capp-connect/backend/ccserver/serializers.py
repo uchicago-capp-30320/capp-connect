@@ -2,7 +2,7 @@ import re
 
 from rest_framework import serializers
 
-from .models import Comment, Post, Profile, ProfileTag, Resource, Tag
+from .models import Comment, Post, Profile, ProfileTag, Resource, Tag, ResourceTag
 
 
 class TagSerializer(serializers.HyperlinkedModelSerializer):
@@ -120,6 +120,8 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             "start_time",
             "location",
             "slack_ts",
+            "client_msg_id",
+            "slack_user_id"
         ]
         unique_together = ("post_id", "tag")
 
@@ -168,6 +170,10 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ResourceSerializer(serializers.ModelSerializer):
+    tags = serializers.SlugRelatedField(
+        many=True, slug_field="tag_name", queryset=Tag.objects.all()
+    )
+    
     class Meta:
         model = Resource
         fields = [
@@ -177,4 +183,10 @@ class ResourceSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "links",
+            "tags"
         ]
+
+class ResourceTagSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = ResourceTag
+        fields = ["resource", "tag"]
