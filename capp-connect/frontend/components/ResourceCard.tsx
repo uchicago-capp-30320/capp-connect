@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 16,
     marginBottom: 8,
-    color: "#333333", 
+    color: "#333333",
   },
   link: {
     fontSize: 16,
