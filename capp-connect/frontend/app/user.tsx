@@ -10,6 +10,7 @@ import { Colors, Containers } from "@/themes";
 import createTagColorMapper from "@/utils/tagColorMapper";
 import fetchData from "@/utils/fetchdata";
 import { useLocalSearchParams } from "expo-router";
+import { API_BASE_URL } from "@/utils/constants";
 
 const labelDataMap = {
   name: "Name",
@@ -42,7 +43,7 @@ export default function UserProfile() {
     async function fetchProfile() {
       if (!username) return;
       const profile = await fetchData(
-        `http://127.0.0.1:8080/ccserver/profile/${username}/`,
+        `${API_BASE_URL}/profile/${username}/`,
         "GET",
         { format: "json" }
       );      
@@ -70,7 +71,7 @@ export default function UserProfile() {
         {/* Profile */}
         <View style={styles.headerSection}>
           <View style={styles.profileHeader}>
-            <ProfilePhoto style={styles.profilePhoto} />
+           <ProfilePhoto style={styles.profilePhoto} user={username as string} />
             <View style={styles.headerInfo}>
               <Text style={styles.nameText}>{data.get("name")}</Text>
               <Text style={styles.positionText}>

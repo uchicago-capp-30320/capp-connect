@@ -9,7 +9,7 @@ import * as Device from "expo-device";
 import { Colors, Containers } from "@/themes";
 import createTagColorMapper from "@/utils/tagColorMapper";
 import fetchData from "@/utils/fetchdata";
-
+import { API_BASE_URL } from "@/utils/constants";
 const labelDataMap = {
   name: "Name",
   bio: "",
@@ -39,7 +39,7 @@ export default function Me() {
   useEffect(() => {
     async function fetchProfile() {
         const profile = await fetchData(
-            "http://127.0.0.1:8080/ccserver/auth/",
+            `${API_BASE_URL}/auth/`,
             "GET",
             { format: "json" }
           );                             
@@ -67,7 +67,7 @@ export default function Me() {
         {/* Profile */}
         <View style={styles.headerSection}>
           <View style={styles.profileHeader}>
-            <ProfilePhoto style={styles.profilePhoto} />
+            <ProfilePhoto style={styles.profilePhoto} user={data.get("user") ?? ""} />
             <View style={styles.headerInfo}>
               <Text style={styles.nameText}>{data.get("name")}</Text>
               <Text style={styles.positionText}>

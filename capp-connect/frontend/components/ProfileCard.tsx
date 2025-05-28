@@ -62,7 +62,7 @@ export default function ProfileCard(props: ProfileCardProps) {
             onLayout={(e) => {
               setProfileWidth(e.nativeEvent.layout.width)
             }}>
-            <ProfilePhoto style={styles.image} />
+            <ProfilePhoto style={styles.image} user={props.user} />
           </View>
 
         {/* Profile Info */}
