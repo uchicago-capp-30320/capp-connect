@@ -52,6 +52,7 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
             "company",
             "bio",
             "tags",
+            "slack_user_id",
         ]
         unique_together = ("profile", "tag")
 
