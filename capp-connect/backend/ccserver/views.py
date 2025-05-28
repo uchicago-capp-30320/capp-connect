@@ -146,7 +146,17 @@ class SearchDirectoryList(APIView):
 
 
 class SearchOthersList(APIView):
+    """API endpoint for retrieving all available tags."""
     def get(self, request, format=None):
+        """Retrieve all tags.
+        
+        Args:
+            request: HTTP request object
+            format: Optional format suffix
+
+        Returns:
+            Response: List of serialized tags
+        """
         tags = Tag.objects.all()
         serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
