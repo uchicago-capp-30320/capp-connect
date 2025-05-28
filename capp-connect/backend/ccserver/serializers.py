@@ -304,6 +304,11 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ResourceSerializer(serializers.ModelSerializer):
+    """Serializer for Resource model.
+    
+    Includes resource metadata and tag relationships.
+    Uses standard ModelSerializer for resource representation.
+    """
     tags = serializers.SlugRelatedField(
         many=True, slug_field="tag_name", queryset=Tag.objects.all()
     )
@@ -322,6 +327,11 @@ class ResourceSerializer(serializers.ModelSerializer):
 
 
 class ResourceTagSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for ResourceTag relationship model.
+    
+    Maps relationships between resources and tags.
+    Includes both ends of the relationship.
+    """
     class Meta:
         model = ResourceTag
         fields = ["resource", "tag"]
