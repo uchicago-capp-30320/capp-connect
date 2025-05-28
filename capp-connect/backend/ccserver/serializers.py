@@ -139,6 +139,11 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProfileListSerializer(serializers.HyperlinkedModelSerializer):
+    """Compact serializer for Profile listings.
+    
+    Includes subset of fields optimized for list views.
+    Shows user info and associated tags.
+    """
     user = serializers.StringRelatedField()
     tags = serializers.SlugRelatedField(
         many=True, slug_field="tag_name", queryset=Tag.objects.all()
