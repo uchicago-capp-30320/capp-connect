@@ -10,6 +10,7 @@ import { Colors, Containers } from "@/themes";
 import createTagColorMapper from "@/utils/tagColorMapper";
 import fetchData from "@/utils/fetchdata";
 import { API_BASE_URL } from "@/utils/constants";
+
 const labelDataMap = {
   name: "Name",
   bio: "",
@@ -20,17 +21,17 @@ const labelDataMap = {
   employment_status: "Employment Status",
   job_title: "Job Title",
   company: "Company",
-  linkedin_username: "LinkedIn",
-  github_username: "GitHub",
+  linkedin_url: "LinkedIn",
+  github_url: "GitHub",
   personal_site: "Website",
   phone_number: "Phone",
-  slack_url: "Slack Message",
+  slack_username: "Slack Message",
 };
 
 const bioFields = ["bio"];
 const infoFields = ["city", "state", "country", "employment_status"];
-const websiteFields = ["linkedin_username", "github_username", "personal_site"];
-const contactFields = ["phone_number", "slack_url"];
+const websiteFields = ["linkedin_url", "github_url", "personal_site"];
+const contactFields = ["phone_number", "slack_username"];
 
 export default function Me() {
   const [editMode, changeEditMode] = useState(false);
@@ -106,7 +107,7 @@ export default function Me() {
               onPress={async () => {
                 const updatedProfile = Object.fromEntries(data.entries());
                 try {
-                  await fetchData("https://127.0.0.1:8080/ccserver/auth/", "PUT", updatedProfile);
+                  await fetchData(`${API_BASE_URL}/auth/`, "PUT", updatedProfile);
                   changeEditMode(false);
                   console.log("Profile updated!");
                 } catch (err) {

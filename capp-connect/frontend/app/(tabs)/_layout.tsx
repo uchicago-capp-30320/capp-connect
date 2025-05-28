@@ -4,26 +4,25 @@ import ProfilePhoto from '@/components/ProfilePhoto';
 import HelpIcon from '@/components/HelpIcon';
 import { View, StyleSheet } from 'react-native';
 import * as Device from 'expo-device';
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
 import Colors from '@/themes/colors';
-import { getCurrentUser } from "@/utils/currentUser"
+import { getCurrentUser } from "@/utils/currentUser";
 
 const ICON_SIZE = Device.deviceType ===  Device.DeviceType.PHONE ? 35: 50
 
 export default function Layout() {
-  const [currentUsername, setCurrentUsername] = React.useState("");
+  const [currentUsername, setCurrentUsername] = useState<string>("");
 
-  React.useEffect(() => {
-    async function loadUser() {
+  useEffect(() => {
+    async function fetchUser() {
       const data = await getCurrentUser();
-      setCurrentUsername(data?.get("user") ?? "");
+      const user = data?.get("user") ?? "";
+      setCurrentUsername(user);
     }
-
-    loadUser();
+    fetchUser();
   }, []);
-
 
 function makeTab(fileName: string, label: string, icon: React.ComponentProps<typeof FontAwesome>['name']) {
   return (
@@ -65,7 +64,7 @@ function makeDrawerScreen(fileName: string, label: string) {
             // display profile photo and settings button side by side with some space in between
             <>
             <View style={{marginRight: 7}}>
-              <ProfilePhoto style={styles.image} user={currentUsername} />
+            <ProfilePhoto style={styles.image} user={currentUsername} />
             </View>
 
             <HelpIcon style={[styles.icon, {marginRight: 10, marginBottom: 5}]}/>

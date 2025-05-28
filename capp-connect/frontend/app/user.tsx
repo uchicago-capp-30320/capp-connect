@@ -21,17 +21,17 @@ const labelDataMap = {
   employment_status: "Employment Status",
   job_title: "Job Title",
   company: "Company",
-  linkedin_username: "LinkedIn",
-  github_username: "GitHub",
+  linkedin_url: "LinkedIn",
+  github_url: "GitHub",
   personal_site: "Website",
   phone_number: "Phone",
-  slack_url: "Slack Message",
+  slack_username: "Slack Message",
 };
 
 const bioFields = ["bio"];
 const infoFields = ["city", "state", "country", "employment_status"];
-const websiteFields = ["linkedin_username", "github_username", "personal_site"];
-const contactFields = ["phone_number", "slack_url"];
+const websiteFields = ["linkedin_url", "github_url", "personal_site"];
+const contactFields = ["phone_number", "slack_username"];
 
 export default function UserProfile() {
   const { username } = useLocalSearchParams();
