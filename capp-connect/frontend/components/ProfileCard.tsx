@@ -23,6 +23,7 @@ interface ProfileCardProps {
   company: string
   tags: Array<string>
   user: string
+  imageURL: string
 }
 
 // create Tag color mapper
@@ -46,7 +47,7 @@ export default function ProfileCard(props: ProfileCardProps) {
 
   return (
     <TouchableHighlight
-      onPress={() => router.push(`/profile?id=${encodeURIComponent(props.user)}`)}
+      onPress={() => router.push(`/user?username=${props.user}`)}
       activeOpacity={0.6}
       underlayColor={Colors.background}
       style={[Containers.container, styles.compactContainer]} // change height
@@ -62,7 +63,7 @@ export default function ProfileCard(props: ProfileCardProps) {
             onLayout={(e) => {
               setProfileWidth(e.nativeEvent.layout.width)
             }}>
-            <ProfilePhoto style={styles.image} />
+            <ProfilePhoto imageUrl={props.imageURL} style={styles.image} user={props.user} />
           </View>
 
         {/* Profile Info */}
@@ -74,7 +75,7 @@ export default function ProfileCard(props: ProfileCardProps) {
             <Text style={styles.location}>{location}</Text>
             {/* tags */}
             <View style={[styles.tagsContainer]}>
-              <TagCarousel tags={tagObjects} style={{alignSelf: "center", maxWidth: cardWidth*.9, flexShrink: 1}}/>
+              <TagCarousel searchType="Directory" tags={tagObjects} style={{alignSelf: "center", maxWidth: cardWidth*.9, flexShrink: 1}}/>
             </View>
           </View>
         </View>
