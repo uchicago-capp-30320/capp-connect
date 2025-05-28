@@ -418,7 +418,20 @@ class GetComment(APIView):
 
 
 class GetAllComments(APIView):
+    """API endpoint for listing all comments on a post or creating 
+    new comments.
+    """
     def get(self, request, pk, format=None):
+        """Retrieve all comments for a specific post.
+        
+        Args:
+            request: HTTP request object
+            pk: Post primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: List of serialized comments or 404 error
+        """
         try:
             post = Post.objects.get(pk=pk)
             comments = post.comments.all()
@@ -435,6 +448,17 @@ class GetAllComments(APIView):
             )
 
     def post(self, request, pk, format=None):
+        """Create a new comment on a specific post.
+        
+        Args:
+            request: HTTP request object with comment data
+            pk: Post primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: Serialized comment data on success (201), 
+                      404 if post not found, or 400 for invalid data
+        """
         try:
             post = Post.objects.get(pk=pk)
         except Post.DoesNotExist:
