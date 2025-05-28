@@ -24,7 +24,22 @@ from .serializers import (
 
 
 class GetProfile(APIView):
+    """API endpoint for retrieving, updating, or deleting a specific user profile.
+    
+    Supports GET, PUT, and DELETE operations for individual profiles.
+    Access control ensures users can only modify their own profile.
+    """
     def get(self, request, username, format=None):
+        """Retrieve a profile by username.
+        
+        Args:
+            request: HTTP request object
+            username: Target profile's username
+            format: Optional format suffix
+
+        Returns:
+            Response: Serialized profile data or 404 error
+        """
         try:
             profile = Profile.objects.get(user__username=username)
             serializer = ProfileSerializer(profile)
@@ -36,6 +51,17 @@ class GetProfile(APIView):
             )
 
     def put(self, request, username, format=None):
+        """Update a profile by username (partial updates allowed).
+        
+        Args:
+            request: HTTP request object with updated profile data
+            username: Target profile's username
+            format: Optional format suffix
+
+        Returns:
+            Response: Updated profile data, 404 if not found, 
+                      400 for invalid data, or 403 for permission denied
+        """
         try:
             profile = Profile.objects.get(user__username=username)
         except Profile.DoesNotExist:
@@ -52,6 +78,16 @@ class GetProfile(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, username, format=None):
+        """Delete a profile by username.
+        
+        Args:
+            request: HTTP request object
+            username: Target profile's username
+            format: Optional format suffix
+
+        Returns:
+            Response: 204 on success, 404 if not found, or 403 for permission denied
+        """
         try:
             profile = Profile.objects.get(user__username=username)
         except Profile.DoesNotExist:
