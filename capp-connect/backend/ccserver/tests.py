@@ -7,7 +7,19 @@ from .models import Comment, EmploymentStatus, Post, Profile, Resource, Tag
 
 
 class BaseTestCase(APITestCase):
+    """Base test case with common setup for all test classes.
+    
+    Creates:
+    - Two test users
+    - Profile for first user
+    - Sample tags
+    - Sample post with tag
+    - Sample resource
+    - Sample comment
+    - Authenticates the first user by default
+    """
     def setUp(self):
+        """Initialize test data and authenticate user1."""
         # Create test users
         self.user1 = User.objects.create_user(
             username="user1", password="testpass123"
@@ -56,13 +68,16 @@ class BaseTestCase(APITestCase):
 
 
 class ProfileTests(BaseTestCase):
+    """Test suite for profile-related API endpoints."""
     def test_get_profile(self):
+        """Test retrieving a profile by username returns correct data."""
         url = reverse("get_profile", kwargs={"username": "user1"})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["user"], "user1")
 
     def test_update_profile(self):
+        """Test updating a profile with valid data succeeds."""
         url = reverse("get_profile", kwargs={"username": "user1"})
         data = {"bio": "Updated bio", "tags": ["Python"]}
         response = self.client.put(url, data)
@@ -71,12 +86,14 @@ class ProfileTests(BaseTestCase):
         self.assertEqual(len(response.data["tags"]), 1)
 
     def test_delete_profile(self):
+        """Test authenticated user can delete their own profile."""
         url = reverse("get_profile", kwargs={"username": "user1"})
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Profile.objects.filter(user=self.user1).exists())
 
     def test_unauthorized_profile_access(self):
+        """Test users cannot delete other users' profiles."""
         self.client.force_authenticate(user=self.user2)
         url = reverse("get_profile", kwargs={"username": "user1"})
         response = self.client.delete(url)
@@ -84,7 +101,9 @@ class ProfileTests(BaseTestCase):
 
 
 class PostTests(BaseTestCase):
+    """Test suite for post-related API endpoints."""
     def test_create_post(self):
+        """Test authenticated user can create a new post with tags."""
         url = reverse("all_posts")
         data = {
             "title": "New Post",
@@ -97,12 +116,14 @@ class PostTests(BaseTestCase):
         self.assertEqual(Post.objects.count(), 2)
 
     def test_get_post_list(self):
+        """Test retrieving paginated post list returns expected structure."""
         url = reverse("all_posts")
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("General", response.data["posts"])
 
     def test_search_posts(self):
+        """Test searching posts by tag returns correct results."""
         url = reverse("search_posts") + "?tags=Python"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
