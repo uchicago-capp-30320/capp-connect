@@ -1,7 +1,6 @@
 import { View } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { useEffect, useState } from "react";
-import SearchBar from '../../components/SearchBar';
 import fetchData from '../../utils/fetchdata';
 import * as Device from 'expo-device'
 import ResourceCard from "@/components/ResourceCard";
