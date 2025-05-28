@@ -31,24 +31,17 @@ type Comment = {
 const getColorForTag = createTagColorMapper();
 
 // create function
-function wrapHTML(html: string, maxLines: number = 4) {
+function wrapHTML(html: string) {
   return `
     <html>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
           body {
             margin: 0;
             padding: 0;
-            font-size: 16px;
-            line-height: 1.4;
-            max-height: ${maxLines * 1.4}em;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: ${maxLines};
-            -webkit-box-orient: vertical;
             word-break: break-word;
             white-space: pre-wrap;
+            font-size: 16px;
           }
         </style>
       </head>
@@ -123,7 +116,7 @@ export default function Post() {
 
 
               <View style={{ paddingTop: 10, minHeight: "10%", width: "95%"}}>
-                <WebView source={{ html: wrapHTML(richBody) }} style={{ flex: 1 }} />
+                <WebView source={{ html: wrapHTML(richBody) }} style={{ flex: 1, minHeight: 250 }} />
               </View>
 
               <View style={{width: "100%"}}>
