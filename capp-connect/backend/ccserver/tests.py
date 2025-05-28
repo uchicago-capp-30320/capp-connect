@@ -133,7 +133,7 @@ class ResourceTests(BaseTestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["title"], "Test Resource")
-    
+
     def test_search_resources(self):
         self.resource.tags.add(self.tag1)
         url = reverse("search_resources") + "?tags=Python"
@@ -141,6 +141,7 @@ class ResourceTests(BaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data["title"], "Test Resource")
+
 
 class SearchTests(BaseTestCase):
     def test_tag_list(self):
