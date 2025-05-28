@@ -30,3 +30,9 @@
 - Get all profiles that have X tag (filter/search)
 - Update profile, only if the user is the owner
 - Delete profile, only if the user is the owner
+
+## Posts from Slack
+
+- Create new post
+- Update post, based on Slack time stamp and channel to used when it's updated on Slack
+- Delete post, based on Slack time stamp and channel to used when it's deleted on Slack
