@@ -165,6 +165,11 @@ class ProfileListSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProfileTagSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for ProfileTag relationship model.
+    
+    Maps relationships between profiles and tags.
+    Includes both ends of the relationship.
+    """
     class Meta:
         model = ProfileTag
         fields = ["user", "tag"]
