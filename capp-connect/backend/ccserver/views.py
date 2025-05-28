@@ -619,7 +619,16 @@ class SearchResources(APIView):
 
 
 class MyProfileView(APIView):
+    """API endpoint for retrieving the current authenticated user's profile."""
     def get(self, request):
+        """Retrieve the current user's profile.
+        
+        Args:
+            request: HTTP request object (authenticated user)
+
+        Returns:
+            Response: Serialized profile data
+        """
         profile = Profile.objects.get(user=request.user)
         serializer = ProfileSerializer(profile)
         return Response(serializer.data)
