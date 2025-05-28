@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Linking } from "react-native";
 import { useState, useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import ProfilePhoto from "@/components/ProfilePhoto";
@@ -39,7 +39,6 @@ export default function Me() {
         const data: UserProfile = await fetchData(`${API_BASE_URL}/auth/`, "GET", {});
         setProfile(data);
 
-        // Initialize form state
         const initData = new Map<string, string>();
         Object.entries(data).forEach(([key, value]) => {
           if (typeof value === "string" || value === null) {
@@ -55,11 +54,7 @@ export default function Me() {
     fetchProfile();
   }, []);
 
-  const getColorForTag = createTagColorMapper();
-  const tagObjects = profile?.tags.map(tag => ({
-    name: tag,
-    color: getColorForTag(tag),
-  })) ?? [];
+  const display = (value: string | null) => value?.trim() || "N/A";
 
   const handleChange = (key: string, value: string) => {
     const newForm = new Map(formData);
@@ -82,6 +77,12 @@ export default function Me() {
     }
   };
 
+  const getColorForTag = createTagColorMapper();
+  const tagObjects = profile?.tags.map(tag => ({
+    name: tag,
+    color: getColorForTag(tag),
+  })) ?? [];
+
   return (
     <SafeAreaProvider style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -98,7 +99,7 @@ export default function Me() {
                       onChangeText={(text) => handleChange("slack_username", text)}
                     />
                   ) : (
-                    <Text style={styles.nameText}>{profile.slack_username}</Text>
+                    <Text style={styles.nameText}>{display(profile.slack_username)}</Text>
                   )}
                   <Text style={styles.positionText}>
                     {editMode ? (
@@ -118,7 +119,7 @@ export default function Me() {
                         />
                       </>
                     ) : (
-                      `${profile.job_title ?? "No job title"} | ${profile.company ?? "No company"}`
+                      `${display(profile.job_title)} | ${display(profile.company)}`
                     )}
                   </Text>
                 </View>
@@ -126,10 +127,15 @@ export default function Me() {
               </View>
 
               <View style={styles.tagsContainer}>
-                <TagCarousel tags={tagObjects} />
+                {tagObjects.length > 0 ? (
+                  <TagCarousel tags={tagObjects} />
+                ) : (
+                  <Text style={{ color: "#888" }}>No tags listed</Text>
+                )}
               </View>
             </View>
 
+            {/* Bio Section */}
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Bio</Text>
               {editMode ? (
@@ -140,10 +146,49 @@ export default function Me() {
                   multiline
                 />
               ) : (
-                <Text>{profile.bio ?? "No bio available."}</Text>
+                <Text>{display(profile.bio)}</Text>
               )}
             </View>
 
+            {/* Location Section */}
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Location</Text>
+              {["city", "state", "country"].map((key) => (
+                <Text key={key}>
+                  {key[0].toUpperCase() + key.slice(1)}:{" "}
+                  {editMode ? (
+                    <TextInput
+                      style={styles.input}
+                      value={formData.get(key) || ""}
+                      onChangeText={(text) => handleChange(key, text)}
+                    />
+                  ) : (
+                    display(profile[key as keyof UserProfile] as string | null)
+                  )}
+                </Text>
+              ))}
+            </View>
+
+            {/* Employment Section */}
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Employment</Text>
+              <Text>
+                Status:{" "}
+                {editMode ? (
+                  <TextInput
+                    style={styles.input}
+                    value={formData.get("employment_status") || ""}
+                    onChangeText={(text) => handleChange("employment_status", text)}
+                  />
+                ) : (
+                  display(profile.employment_status)
+                )}
+              </Text>
+              <Text>Job Title: {display(profile.job_title)}</Text>
+              <Text>Company: {display(profile.company)}</Text>
+            </View>
+
+            {/* Contact Section */}
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Contact</Text>
               {["phone_number", "slack_username"].map((key) => (
@@ -156,27 +201,32 @@ export default function Me() {
                       onChangeText={(text) => handleChange(key, text)}
                     />
                   ) : (
-                    formData.get(key) || "N/A"
+                    display(profile[key as keyof UserProfile] as string | null)
                   )}
                 </Text>
               ))}
             </View>
 
+            {/* Websites Section */}
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Websites</Text>
               {["linkedin_url", "github_url", "personal_site"].map((key) => (
-                <Text key={key}>
-                  {key.includes("linkedin") ? "LinkedIn" : key.includes("github") ? "GitHub" : "Website"}:{" "}
+                <View key={key}>
                   {editMode ? (
                     <TextInput
                       style={styles.input}
                       value={formData.get(key) || ""}
                       onChangeText={(text) => handleChange(key, text)}
+                      placeholder={key}
                     />
+                  ) : profile[key as keyof UserProfile] ? (
+                    <TouchableOpacity onPress={() => Linking.openURL(profile[key as keyof UserProfile] as string)}>
+                      <Text style={styles.link}>{profile[key as keyof UserProfile]}</Text>
+                    </TouchableOpacity>
                   ) : (
-                    formData.get(key) || "N/A"
+                    <Text>{`${key.replace("_url", "").replace("_", " ")}: N/A`}</Text>
                   )}
-                </Text>
+                </View>
               ))}
             </View>
 
@@ -230,8 +280,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
     marginTop: 4,
-    flexDirection: "row",
-    flexWrap: "wrap",
   },
   tagsContainer: {
     marginTop: 12,
@@ -252,8 +300,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "#ccc",
     paddingVertical: 4,
-    marginBottom: 6,
     fontSize: 16,
+    marginBottom: 5,
   },
   saveButton: {
     backgroundColor: Colors.primary,
@@ -265,5 +313,10 @@ const styles = StyleSheet.create({
   saveButtonText: {
     color: "white",
     fontWeight: "bold",
+  },
+  link: {
+    color: Colors.primary,
+    textDecorationLine: "underline",
+    marginBottom: 4,
   },
 });
