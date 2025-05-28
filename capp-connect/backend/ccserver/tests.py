@@ -143,7 +143,6 @@ class ResourceTests(BaseTestCase):
         self.assertEqual(response.data[0]["tags"][0], "Python")
 
 
-
 class SearchTests(BaseTestCase):
     def test_tag_list(self):
         url = reverse("tags_list")

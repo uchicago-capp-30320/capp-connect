@@ -83,6 +83,11 @@ urlpatterns = [
         cc_views.SearchResources.as_view(),
         name="search_resources",
     ),
+    path(
+        "ccserver/resources/",
+        cc_views.GetResourceList.as_view(),
+        name="resource_list",
+    ),
     path("ccserver/auth/", cc_views.MyProfileView.as_view(), name="my_profile"),
     path("slack-sync/", cc_views.SlackPost.as_view(), name="slack_sync"),
 ]
