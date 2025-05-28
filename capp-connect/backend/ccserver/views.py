@@ -359,6 +359,7 @@ class SlackPost(APIView):
             return None
 
     def post(self, request):
+        print("Hello Alison, this is nuts")
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
