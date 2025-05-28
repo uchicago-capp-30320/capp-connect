@@ -2,7 +2,6 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useState, useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import ProfilePhoto from "@/components/ProfilePhoto";
-import EditButton from "@/components/EditButton";
 import BoxSection from "@/components/BoxSections";
 import TagCarousel from "@/components/TagCarousel";
 import * as Device from "expo-device";
@@ -36,26 +35,43 @@ const contactFields = ["phone_number", "slack_url"];
 
 export default function UserProfile() {
   const { username } = useLocalSearchParams();
-  const [editMode, changeEditMode] = useState(false);
   const [data, changeData] = useState(new Map<string, string>());
 
   useEffect(() => {
     async function fetchProfile() {
       if (!username) return;
-      const profile = await fetchData(
-        `${API_BASE_URL}/profile/${username}/`,
-        "GET",
-        { format: "json" }
-      );      
-      const map = new Map<string, string>();
-      Object.entries(profile).forEach(([key, value]) => {
-        map.set(key, typeof value === "string" ? value : Array.isArray(value) ? value.join(", ") : "");
-      });
-      changeData(map);
+  
+      try {
+        const profile = await fetchData(
+          `${API_BASE_URL}/profile/${username}/`,
+          "GET",
+          { format: "json" }
+        );
+  
+        console.log("Fetched user profile raw:", profile); 
+  
+        const map = new Map<string, string>();
+        Object.entries(profile).forEach(([key, value]) => {
+          map.set(
+            key,
+            typeof value === "string"
+              ? value
+              : Array.isArray(value)
+              ? value.join(", ")
+              : ""
+          );
+        });
+  
+        console.log("Mapped user profile entries:", Array.from(map.entries())); 
+        changeData(map);
+      } catch (err) {
+        console.error("Failed to fetch user profile:", err);
+      }
     }
-
+  
     fetchProfile();
   }, [username]);
+  
 
   const getColorForTag = createTagColorMapper();
   const tagsString = data.get("tags") || "";
@@ -78,7 +94,6 @@ export default function UserProfile() {
                 {data.get("job_title")} | {data.get("company")}
               </Text>
             </View>
-            <EditButton editMode={editMode} changeEditMode={changeEditMode} />
           </View>
 
           <View style={styles.tagsContainer}>
@@ -86,35 +101,14 @@ export default function UserProfile() {
           </View>
         </View>
 
-        {/* Save Button */}
-        {editMode && (
-          <View style={{ marginBottom: 20 }}>
-            <Text
-              onPress={async () => {
-                const updatedProfile = Object.fromEntries(data.entries());
-                try {
-                  await fetchData(`http://127.0.0.1:8080/ccserver/profile/${username}/`, "PUT", updatedProfile);
-                  changeEditMode(false);
-                  console.log("Profile updated!");
-                } catch (err) {
-                  console.error("Error updating profile:", err);
-                }
-              }}
-              style={styles.saveButton}
-            >
-              Save
-            </Text>
-          </View>
-        )}
-
         {/* Sections */}
         <BoxSection
           title="Biography"
           fields={bioFields}
           labelDataMap={labelDataMap}
           data={data}
-          editMode={editMode}
-          updateData={changeData}
+          editMode={false}
+          updateData={() => {}}
           style={styles.fullBox}
         />
 
@@ -124,8 +118,8 @@ export default function UserProfile() {
               fields={infoFields}
               labelDataMap={labelDataMap}
               data={data}
-              editMode={editMode}
-              updateData={changeData}
+              editMode={false}
+              updateData={() => {}}
               style={styles.halfBox}
             />
 
@@ -136,8 +130,8 @@ export default function UserProfile() {
               fields={contactFields}
               labelDataMap={labelDataMap}
               data={data}
-              editMode={editMode}
-              updateData={changeData}
+              editMode={false}
+              updateData={() => {}}
               style={styles.halfBox}
           />
         </View>
@@ -149,8 +143,8 @@ export default function UserProfile() {
             fields={websiteFields}
             labelDataMap={labelDataMap}
             data={data}
-            editMode={editMode}
-            updateData={changeData}
+            editMode={false}
+            updateData={() => {}}
             style={styles.fullBox}
         />
       </ScrollView>
@@ -228,15 +222,5 @@ const styles = StyleSheet.create({
     width: "100%",
     marginBottom: 15,
     ...Containers.cards,
-  },
-  saveButton: {
-    backgroundColor: Colors.primary,
-    color: "white",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    textAlign: "center",
-    fontWeight: "bold",
-    alignSelf: "center",
   },
 });
