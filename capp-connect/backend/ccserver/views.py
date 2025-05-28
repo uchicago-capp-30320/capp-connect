@@ -269,9 +269,25 @@ class GetPost(APIView):
 
 
 class GetPostList(APIView):
+    """API endpoint for listing paginated posts grouped by type, 
+    and creating new posts.
+    """
     POSTS_PER_TYPE = 25
 
     def get(self, request, format=None):
+        """Retrieve paginated posts grouped by post type.
+        
+        Args:
+            request: HTTP request object with optional 'page' query parameter
+            format: Optional format suffix
+
+        Returns:
+            Response: Dictionary containing:
+                - next_page: Next page number (or null)
+                - current_page: Current page number
+                - posts_per_type: Number of posts per type per page
+                - posts: Dictionary of post types with serialized post lists
+        """
         try:
             page_number = int(request.GET.get("page", 1))
         except ValueError:
@@ -302,6 +318,16 @@ class GetPostList(APIView):
         return Response(response_data)
 
     def post(self, request, format=None):
+        """Create a new post.
+        
+        Args:
+            request: HTTP request object with post data
+            format: Optional format suffix
+
+        Returns:
+            Response: Serialized post data on success (201), 
+                      or validation errors (400)
+        """
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
