@@ -12,6 +12,7 @@ import { Colors, Containers } from "@/themes";
 import { toHTML } from "slack-markdown";
 import { WebView } from 'react-native-webview';
 import ProfilePhoto from "@/components/ProfilePhoto";
+import TagCarousel from "@/components/TagCarousel";
 
 
 type Comment = {
@@ -30,17 +31,24 @@ type Comment = {
 const getColorForTag = createTagColorMapper();
 
 // create function
-function wrapHTML(html: string) {
+function wrapHTML(html: string, maxLines: number = 4) {
   return `
     <html>
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
           body {
             margin: 0;
             padding: 0;
+            font-size: 16px;
+            line-height: 1.4;
+            max-height: ${maxLines * 1.4}em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: ${maxLines};
+            -webkit-box-orient: vertical;
             word-break: break-word;
             white-space: pre-wrap;
-            font-size: 16px;
           }
         </style>
       </head>
@@ -108,7 +116,7 @@ export default function Post() {
             }}
           >
             <ScrollView style={{width: "100%"}}>
-          <View style={{flex: 1, flexDirection: "column", alignItems: "center", width: "95%"}}>
+          <View style={{flex: 1, flexDirection: "column", alignItems: "center", width: "95%", alignSelf: "center"}}>
             <View style={{alignItems:"center", padding: 10, width: "90%"}}>
               <Text style={{fontSize: 30}}>{params.title}</Text>
             </View>
@@ -118,16 +126,29 @@ export default function Post() {
                 <WebView source={{ html: wrapHTML(richBody) }} style={{ flex: 1 }} />
               </View>
 
-              <View style={{
-                flexDirection:"row",
-                flexWrap: 'wrap',
-                paddingTop: 30
-                }}
-              >
+              <View style={{width: "100%"}}>
+                
                 {params.tags ?
-                  (typeof params.tags === "string" ? params.tags.split(",") : params.tags).map((tag, index) => (
-                      <TagIcon key={index} tag={tag} color={getColorForTag(tag)} style={{}} deletable={false}/>
-                  ))
+                  <TagCarousel
+                    searchType={
+                      ["Directory", "Resources", "Feed"].includes(String(params.searchType))
+                        ? String(params.searchType) as any // Replace 'any' with 'SearchType' if imported
+                        : "Directory" // or another default valid SearchType value
+                    }
+                    style={{alignSelf: "center", width: "auto", minWidth: 100}}
+                    tags={
+                      (typeof params.tags === "string"
+                        ? params.tags.split(",").map(tag => ({
+                            name: tag.trim(),
+                            color: getColorForTag(tag.trim())
+                          }))
+                        : params.tags.map(tag => ({
+                            name: tag.trim(),
+                            color: getColorForTag(tag.trim())
+                          }))
+                      )
+                    }
+                  />
                   :
                   null
                 }

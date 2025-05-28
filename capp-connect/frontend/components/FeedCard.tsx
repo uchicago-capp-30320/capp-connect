@@ -7,6 +7,7 @@ import { useRouter } from "expo-router";
 import { Colors, Containers} from "@/themes";
 import { toHTML } from "slack-markdown";
 import { WebView } from 'react-native-webview';
+import { useState } from "react";
 
 
 // create conditional styling for desktop vs mobile
@@ -36,17 +37,25 @@ const styles = StyleSheet.create({
     },
 });
 
-function wrapHTML(html: string) {
+// had help from chatgpt to get html right
+function wrapHTML(html: string, maxLines: number = 4) {
   return `
     <html>
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
           body {
             margin: 0;
             padding: 0;
+            font-size: 16px;
+            line-height: 1.4;
+            max-height: ${maxLines * 1.4}em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: ${maxLines};
+            -webkit-box-orient: vertical;
             word-break: break-word;
             white-space: pre-wrap;
-            font-size: 16px;
           }
         </style>
       </head>
@@ -56,6 +65,7 @@ function wrapHTML(html: string) {
 }
 
 
+
 // The text box should take a key/label for the text box, as well as a current value
 interface FeedCardProps {
     postID: string
@@ -63,6 +73,7 @@ interface FeedCardProps {
     body: string
     tags: Array<string>
     userID: string
+    searchType: "Directory" | "Resources" | "Feed"
 }
 
 // create Tag color mapper:
@@ -70,11 +81,21 @@ const getColorForTag = createTagColorMapper();
 
 // create basic card for feed
 // should update to remove tags that would surpass the screen width
-export default function FeedCard({postID, userID, title, body, tags}: FeedCardProps) {
+export default function FeedCard({postID, userID, title, body, tags, searchType}: FeedCardProps) {
+    const [webViewHeight, setWebViewHeight] = useState(0);
+
+    const injectedJavaScript = `
+        setTimeout(function() {
+        window.ReactNativeWebView.postMessage(
+            Math.min(document.body.scrollHeight, ${1.4 * 4 * 16}) // max 4 lines
+        );
+        }, 100);
+        true;
+    `;
     const handleClick = () => {
         const router = useRouter()
         router.push(
-            `/post?postID=${encodeURIComponent(postID)}&userID=${encodeURIComponent(userID)}&title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}&tags=${encodeURIComponent(tags.join(','))}`
+            `/post?postID=${encodeURIComponent(postID)}&userID=${encodeURIComponent(userID)}&title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}&tags=${encodeURIComponent(tags.join(','))}&searchType=${encodeURIComponent(searchType)}`
         )
     }
 
@@ -107,7 +128,18 @@ export default function FeedCard({postID, userID, title, body, tags}: FeedCardPr
                 </View>
                 {/* create text body */}
                 <View style={{ position: 'relative', width: '100%', height: '100%' }}>
-                    <WebView source={{ html: wrapHTML(richBody) }} style={{ flex: 1, paddingTop: 15 }} />
+                    <View style={{ height: webViewHeight || undefined }}>
+                        <WebView
+                            source={{ html: wrapHTML(richBody, 4) }}
+                            injectedJavaScript={injectedJavaScript}
+                            onMessage={event => {
+                            const height = parseInt(event.nativeEvent.data);
+                            setWebViewHeight(height);
+                            }}
+                            scrollEnabled={false}
+                            style={{ width: '100%', backgroundColor: 'transparent' }}
+                        />
+                    </View>
                     <TouchableHighlight
                         onPress={() => {handleClick()}}
                         style={{
@@ -122,6 +154,7 @@ export default function FeedCard({postID, userID, title, body, tags}: FeedCardPr
                     >
                         <View style={{ flex: 1 }} />
                     </TouchableHighlight>
+                    
                 </View>
                 <View style={{
                     // flex:1,
@@ -132,7 +165,7 @@ export default function FeedCard({postID, userID, title, body, tags}: FeedCardPr
                     }}
                 >
                     {tags.map((tag, index) => (
-                        <TagIcon key={index} tag={tag} color={getColorForTag(tag)} style={{}} deletable={false}/>
+                        <TagIcon key={index} tag={tag} color={getColorForTag(tag)} style={{}} deletable={false} searchType={searchType}/>
                     ))}
                 </View>
             </View>
