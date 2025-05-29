@@ -1,5 +1,6 @@
 **CappConnect General Data Notice:** 
 
+
 All user and messaging data in CappConnect is stored in a secure PostgreSQL database on a remote server. At no point in time will any team member on CappConnect share this information with any other apps or third parties. If this data is breached in any way, all users will be notified promptly. 
 
 ***\*\*\*** If this app were to be translated into a full-time project, it would be done in collaboration with the MSCAPP administration. All subsequent changes to the application would be handled by members of the current CappConnect team, administration, or potentially future MSCAPP students. **\*\*\**** 
