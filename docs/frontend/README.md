@@ -2,6 +2,9 @@
 CAPP Connect Frontend Repo
 Frontend members: Gregory Mitchell, Amber Avila, Paula Cadena
 
+## Outstanding Issues
+While the basic layout and app works there are some unresolved issues with using the endpoints. Due to this, it is not currently possible to create posts in the app and have them posted to the database, it is not possible to edit user profile details, and while Search works for the posts and resources, it doesn't currently work for the directory. There is currenlty code in the frontend to do all of these things so these issues could likely be resolved without much more work.
+
 ## Tech Stack
 For the design of the frontend, we used React Native with the Expo Framework. This design choice was made to simultaneously design for web and mobile. Expo Go is an app downloadable via mobile app stores and allows for easy prototyping and development for the app on mobile. Expo Go is being used as of 5/17/25, but we will eventually switch to development builds more freedom and robustness.
 
