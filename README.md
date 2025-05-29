@@ -28,11 +28,11 @@ This project seeks to serve current, former, and future MS-CAPP students at the 
 7. Then go to this [link](https://capp-connect.unnamed.computer/auth/login/slack/) to login and start using the app
 
 ### Connecting to socket mode:
-*When Socket mode and the server are activated, you can send Slack messages in real time using one of our four pre-approved channels.* 
+*When Socket mode and the server are activated, you can send Slack messages in real time using one of our four pre-approved channels.*
 1. In a new terminal, connect to the server using the command: `ssh -p 2222 capp-connect@turing.unnamed.computer`
 2. Activate your virtual environment.
 3. cd to `capp-connect/backend/continuous_messaging`
-4. create a `.env` file in the directory continuous_messaging. Reach out to Kiran for the keys. 
+4. create a `.env` file in the directory continuous_messaging. Reach out to Kiran for the keys.
 5. run `python socket_mode.py`
 6. Start sending messages in one of our pre-approved channels to post them to the app in real-time.
 
