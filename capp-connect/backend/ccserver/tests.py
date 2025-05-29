@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
 
 from .models import Comment, EmploymentStatus, Post, Profile, Resource, Tag
@@ -192,3 +193,71 @@ class SearchTests(BaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("users", response.data)
         self.assertIn("tags", response.data)
+
+
+class SlackPostTests(BaseTestCase):
+    """Test suite for Slack integration endpoints."""
+
+    def setUp(self):
+        super().setUp()
+        # Create and set authentication token
+        self.token = Token.objects.create(user=self.user1)
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token.key}")
+
+        # Sample Slack post data
+        self.slack_post_data = {
+            "title": "Slack Test Post",
+            "description": "General from Slack",
+            "post_type": "General",
+            "tags": ["Python"],
+            "slack_ts": "1234567890.123456",
+            "slack_user_id": "U12345678",
+            "client_msg_id": "1234567890.123456",
+        }
+
+    def test_create_post_via_slack(self):
+        """Test successful post creation via Slack integration."""
+        url = reverse("slack_sync")
+        response = self.client.post(url, self.slack_post_data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Post.objects.count(), 2)
+        post = Post.objects.get(slack_ts="1234567890.123456")
+        self.assertEqual(post.description, "General from Slack")
+        self.assertEqual(post.source, Post.Source.SLACK)
+
+    def test_update_post_via_slack(self):
+        """Test updating an existing Slack post."""
+        # Create initial post
+        self.client.post(reverse("slack_sync"), self.slack_post_data)
+
+        # Update data
+        update_data = {
+            "slack_ts": "1234567890.123456",
+            "post_type": "General",
+            "description": "Updated description",
+            "tags": ["Django"],
+        }
+
+        response = self.client.put(reverse("slack_sync"), update_data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        post = Post.objects.get(slack_ts="1234567890.123456")
+        self.assertEqual(post.description, "Updated description")
+        self.assertEqual(post.tags.first().tag_name, "Django")
+
+    def test_delete_post_via_slack(self):
+        """Test deleting a Slack post."""
+        # Create initial post
+        self.client.post(reverse("slack_sync"), self.slack_post_data)
+        self.assertEqual(Post.objects.count(), 2)
+
+        # Delete request
+        delete_data = {"slack_ts": "1234567890.123456", "post_type": "General"}
+        response = self.client.delete(reverse("slack_sync"), delete_data)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Post.objects.count(), 1)
+        self.assertFalse(
+            Post.objects.filter(slack_ts="1234567890.123456").exists()
+        )
