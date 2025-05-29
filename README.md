@@ -3,23 +3,29 @@ CAPP Connect Project Repo
 Project members: Amber Avila, Lee-Or Bentovim, Paula Cadena, Kiran Jivnani, Gregory Mitchell, and Alison Spencer
 Instructor: James Turk
 
-This project is a work in progress. [Link to Notion](https://www.notion.so/Projects-Tasks-1d50e856f08380bdb819cc3870547466)
+This project seeks to serve current, former, and future MS-CAPP students at the University of Chicago by creating a more user-friendly and cohesive space for collaboration on projects, sharing of events, and searching for future job opportunities. It continues to be a work in progress, and we would love your support.
 
-### Instructions to Run the Project
+### Instructions to Start Working in the project
 
-The below is credited to @michplunkett, 2024 CAPP TA
 
-1. Download uv: [link](https://docs.astral.sh/uv/).
-2. Download Node.js and npm: [link](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-3. Go into the base directory of the repository and type `make env` into the terminal.
-4. Use the `make run` command.
+1. Clone the project with ssh: `git clone git@github.com:uchicago-capp-30320/capp-connect.git`
+2. Download uv: [link](https://docs.astral.sh/uv/).
+3. Download Node.js and npm: [link](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+4. Go into the base directory of the repository and type `make env` into the terminal.
+5. `cd` into `capp-connect/frontend` and run `npm install`
+6. `cd` into `capp-connect/backend` and create a `.env` file with the keys found in `.env.example`
 
-### Connecting to the server to test auth:
+### Connecting to the server to run the app:
 1. Connect to the server using the command: `ssh -p 2222 capp-connect@turing.unnamed.computer`
-2. Create a new uv virtual environment: `source .venv/bin/activate`
-3. cd to `capp-connect/backend`
-4. Run `python manage.py runserver 0.0.0.0:8010` (may be python3 on your machine)
-5. Then go to this [link](https://capp-connect.unnamed.computer/auth/login/slack/)
+2. `cd` one layer into the capp-connect root
+3. Create a new uv virtual environment: `source .venv/bin/activate`
+4. Run ```cd capp-connect/frontend && \
+		npx expo export --platform web --output-dir static && \
+		if [ -d ../backend/ccserver/static ]; then rm -r ../backend/ccserver/static; fi && \
+		mv static ../backend/ccserver/```
+5. `cd` back to the root `cd ../..`
+6. Run `python capp-connect/backend/manage.py runserver 0.0.0.0:8010`
+7. Then go to this [link](https://capp-connect.unnamed.computer/auth/login/slack/) to login and start using the app
 
 
 ### Technical Notes
