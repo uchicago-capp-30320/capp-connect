@@ -7,6 +7,11 @@ from slack_sdk import WebClient
 client = WebClient(token=os.environ.get("SLACK_BOT_TOKEN"))
 logger = logging.getLogger(__name__)
 
+###############################################################################
+#Documentation: https://api.slack.com/methods/conversations.replies
+###############################################################################
+
+
 
 conversation_history = convo_history()
 def get_replies(conversation_history, limit=100):
