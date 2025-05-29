@@ -60,7 +60,11 @@ export default function Resources() {
         wasSearched.current = true
     }
 
-    !searched ? fetchResources() : getSearchResults()
+    if (!searched) {
+      fetchResources();
+    } else {
+      getSearchResults();
+    }
 
   }, [searched]);
 

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Linking } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from "react-native";
 import { useState, useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import ProfilePhoto from "@/components/ProfilePhoto";
@@ -132,7 +132,7 @@ export default function Me() {
 
               <View style={styles.tagsContainer}>
                 {tagObjects.length > 0 ? (
-                  <TagCarousel tags={tagObjects} />
+                  <TagCarousel tags={tagObjects} searchType="Directory" />
                 ) : (
                   <Text style={{ color: "#888" }}>No tags listed</Text>
                 )}
