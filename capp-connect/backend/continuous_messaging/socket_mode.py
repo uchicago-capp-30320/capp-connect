@@ -1,21 +1,24 @@
 import json
 import os
+
 import requests
+from dotenv import load_dotenv
 from openai import OpenAI
 from requests import RequestException
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
-from dotenv import load_dotenv
+
+
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), ".env"))
 
 
 ################################################################################
-#The following documentation was used for the continuous ingestion: 
-    # https://api.slack.com/tutorials/tracks/hello-world-bolt
-    # https://docs.slack.dev/reference/events
-    # https://tools.slack.dev/bolt-python/concepts/event-listening
-    # for changing msg: https://api.slack.com/events/message/message_changed
-    # for deleting msg: https://api.slack.com/events/message/message_deleted
+# The following documentation was used for the continuous ingestion:
+# https://api.slack.com/tutorials/tracks/hello-world-bolt
+# https://docs.slack.dev/reference/events
+# https://tools.slack.dev/bolt-python/concepts/event-listening
+# for changing msg: https://api.slack.com/events/message/message_changed
+# for deleting msg: https://api.slack.com/events/message/message_deleted
 ################################################################################
 
 API_SLACK_SYNC_URL = os.getenv("API_SLACK_SYNC_URL")
@@ -26,18 +29,19 @@ HEADERS = {
     "Content-Type": "application/json",
 }
 
-def sync_with_api(method, data):  
+
+def sync_with_api(method, data):
     """
     This is a helper used to send data from your Slack app to your Django backend API.
     It calls the API at the API_SLACK_SYNC_URL and sends data as JSON using HEADERS.
     If the request is successful, it returns True. If the request fails, it catches
     the exception, prints the error message, status code, response content, and the
     data that caused the error, then returns False.
-    Inputs: 
-        method (string): HTTP method 
+    Inputs:
+        method (string): HTTP method
         data (dict): Dictionary that gets sent as the JSON body of the request
 
-    Output (bool): True if successful, False otherwise. 
+    Output (bool): True if successful, False otherwise.
     """
     try:
         response = requests.request(
@@ -62,18 +66,19 @@ app = App(
 )
 
 
-
-client = OpenAI(api_key=os.getenv("OPEN_API_KEY")) #please export your OPEN_API_KEY before running this file
+client = OpenAI(
+    api_key=os.getenv("OPEN_API_KEY")
+)  # please export your OPEN_API_KEY before running this file
 
 
 def create_tag(text):
     """
     This function utilizes the ChatGPT Open API to read our incoming slack messages and
     add the appropriate tags from our existing tag list.
-    Input: 
-        text (string): (comes from the function get_msg() which gets text from 
+    Input:
+        text (string): (comes from the function get_msg() which gets text from
         incoming slack messages in real time)
-    Output(list): 
+    Output(list):
         tag_list (string): list of at most 5 tags. This can also be an empty list.
     """
     full_tag_list = [
@@ -190,7 +195,7 @@ def create_tag(text):
     ]
 
     prompt = f"""
-    You are a STRICT tagging assistant. Based on the message below, return a 
+    You are a STRICT tagging assistant. Based on the message below, return a
     JSON array (maximum 5 items) of relevant tags from the provided list.
 
     Strict Rules:
@@ -198,7 +203,7 @@ def create_tag(text):
     - DO NOT return tags unless the message explicitly discusses or clearly implies the subject.
     - DO NOT infer meaning from vague, sarcastic, or generic phrases.
     - DO NOT guess. If there is uncertainty, return an empty list.
-    - You must select tags ONLY from the provided list. If a term is not in the 
+    - You must select tags ONLY from the provided list. If a term is not in the
         list, do not include it, even if it looks relevant. Do not invent or paraphrase tags.
     - Match even if the tag appears in lowercase or embedded in a longer phrase.
     - Return valid JSON only. Do not include any explanation or text before or after the array.
@@ -233,7 +238,7 @@ def create_tag(text):
             return []
 
     except Exception:
-        return []  
+        return []
 
 
 @app.message()
@@ -244,9 +249,9 @@ def get_msg(message):
     generate a list of 0-5 tags based on the message content.
 
     Inputs:
-        - message (dict): The incoming Slack message event. 
+        - message (dict): The incoming Slack message event.
         - say (optional): This is a function that lets you respond by sending message
-                back on the channel. We do NOT use this functionality but it can 
+                back on the channel. We do NOT use this functionality but it can
                 be added back in for future iterations.
     Output:
         -  None. The output is printed and passed to the API via sync_with_api()
@@ -268,11 +273,11 @@ def get_msg(message):
             "title": f"{post_type} from Slack",
             "start_time": "2025-05-26T16:30:50+00:00",
             "post_type": post_type,
-            "slack_user_id": message["user"],  
+            "slack_user_id": message["user"],
             "client_msg_id": message["client_msg_id"],
             "description": message["text"],
             "tags": message_tag,
-            "slack_ts": message["ts"],  
+            "slack_ts": message["ts"],
             "edited": message.get("edited"),
         }
         print("Prepared message for DB:", message_for_db)
@@ -282,7 +287,7 @@ def get_msg(message):
         print(f"Missing key in message: {str(e)}")
 
 
-@app.event("message")  
+@app.event("message")
 def record_changed_messages(body):
     """
     This function tracks edits or deletions to Slack messages in real time.
@@ -294,8 +299,8 @@ def record_changed_messages(body):
 
     Inputs:
         - body: The full event payload sent from Slack.
-        - logger (OPTIONAL): Slack's built-in logger. We do not use this but in any 
-            future iteration of the project it can be added back in! 
+        - logger (OPTIONAL): Slack's built-in logger. We do not use this but in any
+            future iteration of the project it can be added back in!
 
     Output:
         - None. The output is printed and passed to the API via sync_with_api()
@@ -315,7 +320,7 @@ def record_changed_messages(body):
 
     message_data = event.get("message", {})
     message_tag = create_tag(
-    message_data.get("text", "")
+        message_data.get("text", "")
     )  # gpt plug in is here for edited tags!
 
     try:
@@ -332,7 +337,7 @@ def record_changed_messages(body):
             if not sync_with_api("PUT", changed_message):
                 print(f"Failed to update post {slack_ts} in {channel}")
 
-        elif (event["subtype"] == "message_deleted"):  
+        elif event["subtype"] == "message_deleted":
             deleted_message = {
                 "post_type": post_type,
                 "slack_ts": event[
