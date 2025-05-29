@@ -1,12 +1,19 @@
 import json
 import os
-
 import requests
 from openai import OpenAI
 from requests import RequestException
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
+################################################################################
+#The following documentation was used for the continuous ingestion: 
+    # https://api.slack.com/tutorials/tracks/hello-world-bolt
+    # https://docs.slack.dev/reference/events
+    # https://tools.slack.dev/bolt-python/concepts/event-listening
+    # for changing msg: https://api.slack.com/events/message/message_changed
+    # for deleting msg: 
+################################################################################
 
 API_SLACK_SYNC_URL = os.environ["API_SLACK_SYNC_URL"]
 API_AUTH_TOKEN = os.environ["API_AUTH_TOKEN"]
@@ -16,9 +23,19 @@ HEADERS = {
     "Content-Type": "application/json",
 }
 
+def sync_with_api(method, data):  
+    """
+    This is a helper used to send data from your Slack app to your Django backend API.
+    It calls the API at the API_SLACK_SYNC_URL and sends data as JSON using HEADERS.
+    If the request is successful, it returns True. If the request fails, it catches
+    the exception, prints the error message, status code, response content, and the
+    data that caused the error, then returns False.
+    Inputs: 
+        method (string): HTTP method 
+        data (dict): Dictionary that gets sent as the JSON body of the request
 
-def sync_with_api(method, data):  # from Paula!
-    """Helper function to sync with Django API"""
+    Output (bool): True if successful, False otherwise. 
+    """
     try:
         response = requests.request(
             method, API_SLACK_SYNC_URL, json=data, headers=HEADERS
@@ -32,12 +49,6 @@ def sync_with_api(method, data):  # from Paula!
             print("Response content:", e.response.text)
             print("Payload that caused error:", data)
         return False
-
-
-# documentation so i don't forget: https://api.slack.com/tutorials/tracks/hello-world-bolt
-# https://docs.slack.dev/reference/events
-# https://tools.slack.dev/bolt-python/concepts/event-listening
-# for changing msg: https://api.slack.com/events/message/message_changed
 
 
 app = App(
