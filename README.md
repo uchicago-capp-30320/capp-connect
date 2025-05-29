@@ -17,7 +17,7 @@ This project seeks to serve current, former, and future MS-CAPP students at the 
 
 ### Connecting to the server to run the app:
 1. Connect to the server using the command: `ssh -p 2222 capp-connect@turing.unnamed.computer`
-2. `cd` one layer into the root
+2. `cd` one layer into the capp-connect root
 3. Create a new uv virtual environment: `source .venv/bin/activate`
 4. Run ```cd capp-connect/frontend && \
 		npx expo export --platform web --output-dir static && \
