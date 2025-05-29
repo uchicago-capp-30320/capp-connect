@@ -1,3 +1,8 @@
+"""
+URL configuration for CAPPConnect access. 
+URL patterns given for admin, Slack authorization paths, ccserver API endpoints, and frontend URLs.
+"""
+
 import os
 from pathlib import Path
 

@@ -14,9 +14,9 @@ The file should follow this format, replacing placeholders with actual credentia
 ```ini
 [my_service]
 host=placeholder
-port=placeholder
-user=placeholder
-dbname=placeholder
+port=5432
+user=capp_connect
+dbname=capp_connect
 ```
 
 ## Password storage
