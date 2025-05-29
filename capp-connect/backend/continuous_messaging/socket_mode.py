@@ -5,6 +5,9 @@ from openai import OpenAI
 from requests import RequestException
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
+from dotenv import load_dotenv
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), ".env"))
+
 
 ################################################################################
 #The following documentation was used for the continuous ingestion: 
@@ -15,8 +18,8 @@ from slack_bolt.adapter.socket_mode import SocketModeHandler
     # for deleting msg: https://api.slack.com/events/message/message_deleted
 ################################################################################
 
-API_SLACK_SYNC_URL = os.environ["API_SLACK_SYNC_URL"]
-API_AUTH_TOKEN = os.environ["API_AUTH_TOKEN"]
+API_SLACK_SYNC_URL = os.getenv("API_SLACK_SYNC_URL")
+API_AUTH_TOKEN = os.getenv("API_AUTH_TOKEN")
 
 HEADERS = {
     "Authorization": f"Token {API_AUTH_TOKEN}",
@@ -52,7 +55,7 @@ def sync_with_api(method, data):
 
 
 app = App(
-    token=os.environ["SLACK_BOT_TOKEN"],
+    token=os.getenv("SLACK_BOT_TOKEN"),
     signing_secret=None,  # just had to disbale in env!!! remmeber this!!!
     installation_store=None,
     authorize=None,
@@ -60,7 +63,7 @@ app = App(
 
 
 
-client = OpenAI(api_key=os.environ["OPEN_API_KEY"]) #please export your OPEN_API_KEY before running this file
+client = OpenAI(api_key=os.getenv("OPEN_API_KEY")) #please export your OPEN_API_KEY before running this file
 
 
 def create_tag(text):
@@ -349,4 +352,4 @@ def record_changed_messages(body):
 
 if __name__ == "__main__":
     print("Starting Slack Socket Mode listener...")
-    SocketModeHandler(app, os.environ["SLACK_APP_TOKEN"]).start()
+    SocketModeHandler(app, os.getenv("SLACK_APP_TOKEN")).start()
