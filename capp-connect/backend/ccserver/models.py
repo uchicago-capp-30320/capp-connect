@@ -4,6 +4,8 @@ from django.db import models
 
 # Choices for model fields
 class EmploymentStatus(models.TextChoices):
+    """Enumerates options for employment status"""
+
     EMPLOYED = "Employed", "employed"
     SEARCHING = "Searching", "searching"
     HIRING = "Hiring", "hiring"
@@ -13,6 +15,8 @@ class EmploymentStatus(models.TextChoices):
 # Models
 # Tags, to be used for users/posts/resources
 class Tag(models.Model):
+    """Represents a tag which can apply to posts, profiles, pr resources"""
+
     tag_id = models.AutoField(primary_key=True)
     tag_name = models.CharField(max_length=50, unique=True)
     allowed_on_profile = models.BooleanField(default=True)
@@ -23,6 +27,8 @@ class Tag(models.Model):
 
 # Users and related tables
 class Profile(models.Model):
+    """Builds on Django's user and stores information on a user from Slack and from user input"""
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     slack_username = models.CharField(max_length=100, blank=True, null=True)
     slack_user_id = models.CharField(max_length=50, blank=True, null=True)
@@ -53,6 +59,8 @@ class Profile(models.Model):
 
 
 class ProfileTag(models.Model):
+    """Join table linking profiles to associated tags"""
+
     profile = models.ForeignKey(Profile, default=1, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
 
@@ -62,7 +70,11 @@ class ProfileTag(models.Model):
 
 # Posts and related tables
 class Post(models.Model):
+    """Represents a post shared by a user, whether in app or in Slack"""
+
     class Source(models.TextChoices):
+        """Shows whether a post was created in Slack or in App"""
+
         SLACK = "Slack", "Slack"
         APP = "App", "App"
 
@@ -106,6 +118,8 @@ class Post(models.Model):
 
 
 class PostTag(models.Model):
+    """Join table linking posts to associated tags"""
+
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
 
@@ -114,6 +128,8 @@ class PostTag(models.Model):
 
 
 class Comment(models.Model):
+    """Represents comments left by users on a post"""
+
     comment_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(
@@ -131,6 +147,8 @@ class Comment(models.Model):
 
 # Resources and related tables
 class Resource(models.Model):
+    """Represents a resource for users' reference"""
+
     resource_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     description = models.TextField()
@@ -149,6 +167,8 @@ class Resource(models.Model):
 
 
 class ResourceTag(models.Model):
+    """Join table between resource and tag"""
+
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
 

@@ -167,7 +167,10 @@ class SearchOthersList(APIView):
 
 
 class SearchProfiles(APIView):
-    """API endpoint for searching profiles by tags or usernames."""
+    """
+    API endpoint for searching profiles by tags or usernames.
+    Note: currently only search by tag is supported, need to align username endpoint.
+    """
 
     def get(self, request):
         """Search profiles by tags (intersection of all provided tags).
@@ -343,7 +346,10 @@ class GetPostList(APIView):
 
 
 class SearchPosts(APIView):
-    """API endpoint for searching posts by tags (intersection of all tags)."""
+    """
+    API endpoint for searching posts by tags (intersection of all tags).
+    Note: currently only search by single tag is supported, misaligned with frontend.
+    """
 
     def get(self, request):
         """Search posts by tags (intersection of all provided tags).
