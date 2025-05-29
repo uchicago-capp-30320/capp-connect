@@ -5,6 +5,7 @@ from django.db import models
 # Choices for model fields
 class EmploymentStatus(models.TextChoices):
     """Enumerates options for employment status"""
+
     EMPLOYED = "Employed", "employed"
     SEARCHING = "Searching", "searching"
     HIRING = "Hiring", "hiring"
@@ -147,6 +148,7 @@ class Comment(models.Model):
 # Resources and related tables
 class Resource(models.Model):
     """Represents a resource for users' reference"""
+
     resource_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     description = models.TextField()
@@ -166,6 +168,7 @@ class Resource(models.Model):
 
 class ResourceTag(models.Model):
     """Join table between resource and tag"""
+
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
 

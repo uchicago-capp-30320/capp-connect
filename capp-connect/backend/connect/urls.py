@@ -1,5 +1,5 @@
 """
-URL configuration for CAPPConnect access. 
+URL configuration for CAPPConnect access.
 URL patterns given for admin, Slack authorization paths, ccserver API endpoints, and frontend URLs.
 """
 
