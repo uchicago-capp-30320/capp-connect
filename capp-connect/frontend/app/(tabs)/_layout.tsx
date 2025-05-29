@@ -9,6 +9,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
 import Colors from '@/themes/colors';
 import { getCurrentUser } from "@/utils/currentUser";
+import * as React from 'react';
 
 const ICON_SIZE = Device.deviceType ===  Device.DeviceType.PHONE ? 35: 50
 

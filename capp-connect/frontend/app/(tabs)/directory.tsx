@@ -59,7 +59,11 @@ export default function Directory() {
         wasSearched.current = true
     }
 
-    !searched ? fetchProfiles() : getSearchResults()
+    if (!searched) {
+      fetchProfiles();
+    } else {
+      getSearchResults();
+    }
 
   }, [searched]);
 
