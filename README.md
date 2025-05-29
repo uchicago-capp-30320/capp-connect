@@ -7,7 +7,6 @@ This project seeks to serve current, former, and future MS-CAPP students at the 
 
 ### Instructions to Start Working in the project
 
-The below is credited to @michplunkett, 2024 CAPP TA
 
 1. Clone the project with ssh: `git clone git@github.com:uchicago-capp-30320/capp-connect.git`
 2. Download uv: [link](https://docs.astral.sh/uv/).
