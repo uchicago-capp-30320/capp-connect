@@ -20,6 +20,7 @@ create-requirements:
 .PHONY: test
 test:
 	uv run pytest -vs tests/
+	python capp-connect/backend/manage.py test ccserver.tests
 
 .PHONY: test-and-fail
 test-and-fail:

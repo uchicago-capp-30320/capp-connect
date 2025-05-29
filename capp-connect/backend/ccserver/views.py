@@ -24,7 +24,23 @@ from .serializers import (
 
 
 class GetProfile(APIView):
+    """API endpoint for retrieving, updating, or deleting a specific user profile.
+
+    Supports GET, PUT, and DELETE operations for individual profiles.
+    Access control ensures users can only modify their own profile.
+    """
+
     def get(self, request, username, format=None):
+        """Retrieve a profile by username.
+
+        Args:
+            request: HTTP request object
+            username: Target profile's username
+            format: Optional format suffix
+
+        Returns:
+            Response: Serialized profile data or 404 error
+        """
         try:
             profile = Profile.objects.get(user__username=username)
             serializer = ProfileSerializer(profile)
@@ -36,6 +52,17 @@ class GetProfile(APIView):
             )
 
     def put(self, request, username, format=None):
+        """Update a profile by username (partial updates allowed).
+
+        Args:
+            request: HTTP request object with updated profile data
+            username: Target profile's username
+            format: Optional format suffix
+
+        Returns:
+            Response: Updated profile data, 404 if not found,
+                      400 for invalid data, or 403 for permission denied
+        """
         try:
             profile = Profile.objects.get(user__username=username)
         except Profile.DoesNotExist:
@@ -52,6 +79,16 @@ class GetProfile(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, username, format=None):
+        """Delete a profile by username.
+
+        Args:
+            request: HTTP request object
+            username: Target profile's username
+            format: Optional format suffix
+
+        Returns:
+            Response: 204 on success, 404 if not found, or 403 for permission denied
+        """
         try:
             profile = Profile.objects.get(user__username=username)
         except Profile.DoesNotExist:
@@ -70,14 +107,38 @@ class GetProfile(APIView):
 
 
 class GetProfileList(APIView):
+    """API endpoint for listing all user profiles with compact information."""
+
     def get(self, request, format=None):
+        """Retrieve all profiles.
+
+        Args:
+            request: HTTP request object
+            format: Optional format suffix
+
+        Returns:
+            Response: List of serialized profile summaries
+        """
         users = Profile.objects.all()
         serializer = ProfileListSerializer(users, many=True)
         return Response(serializer.data)
 
 
 class SearchDirectoryList(APIView):
+    """API endpoint for directory search data (usernames and allowed tags)."""
+
     def get(self, request, format=None):
+        """Retrieve searchable directory data.
+
+        Args:
+            request: HTTP request object
+            format: Optional format suffix
+
+        Returns:
+            Response: Dictionary containing:
+                - users: List of cleaned usernames
+                - tags: List of tags allowed for profiles
+        """
         users = Profile.objects.all()
         user_serializer = NameSerializer(users, many=True)
         tags = Tag.objects.filter(allowed_on_profile=True)
@@ -88,14 +149,35 @@ class SearchDirectoryList(APIView):
 
 
 class SearchOthersList(APIView):
+    """API endpoint for retrieving all available tags."""
+
     def get(self, request, format=None):
+        """Retrieve all tags. For searching feed posts and resources.
+
+        Args:
+            request: HTTP request object
+            format: Optional format suffix
+
+        Returns:
+            Response: List of serialized tags
+        """
         tags = Tag.objects.all()
         serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
 
 
 class SearchProfiles(APIView):
+    """API endpoint for searching profiles by tags or usernames."""
+
     def get(self, request):
+        """Search profiles by tags (intersection of all provided tags).
+
+        Args:
+            request: HTTP request object with 'tags' query parameter(s)
+
+        Returns:
+            Response: List of profiles matching all provided tags
+        """
         tag_names_list = request.GET.getlist("tags")
         matching_profiles = None
 
@@ -116,13 +198,36 @@ class SearchProfiles(APIView):
 
 
 class GetPost(APIView):
+    """API endpoint for retrieving, updating, or deleting a specific post."""
+
     def get_object(self, pk):
+        """Helper method to retrieve a post by primary key.
+
+        Args:
+            pk: Post primary key
+
+        Returns:
+            Post: Retrieved post object
+
+        Raises:
+            Http404: If post does not exist
+        """
         try:
             return Post.objects.get(pk=pk)
         except Post.DoesNotExist as e:
             raise Http404(f"Post with id {pk} does not exist.") from e
 
     def get(self, request, pk, format=None):
+        """Retrieve a post by ID.
+
+        Args:
+            request: HTTP request object
+            pk: Post primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: Serialized post data or 404 error
+        """
         try:
             post = Post.objects.get(pk=pk)
             serializer = PostSerializer(post)
@@ -133,6 +238,17 @@ class GetPost(APIView):
             )
 
     def put(self, request, pk, format=None):
+        """Update a post by ID (partial updates allowed).
+
+        Args:
+            request: HTTP request object with updated post data
+            pk: Post primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: Updated post data, 404 if not found,
+                      400 for invalid data, or 403 for permission denied
+        """
         post = self.get_object(pk)
         serializer = PostSerializer(post, data=request.data, partial=True)
         if serializer.is_valid():
@@ -142,6 +258,16 @@ class GetPost(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
+        """Delete a post by ID.
+
+        Args:
+            request: HTTP request object
+            pk: Post primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: 204 on success or 403 for permission denied
+        """
         post = self.get_object(pk)
         if request.user == post.user:
             post.delete()
@@ -149,9 +275,26 @@ class GetPost(APIView):
 
 
 class GetPostList(APIView):
+    """API endpoint for listing paginated posts grouped by type,
+    and creating new posts.
+    """
+
     POSTS_PER_TYPE = 25
 
     def get(self, request, format=None):
+        """Retrieve paginated posts grouped by post type.
+
+        Args:
+            request: HTTP request object with optional 'page' query parameter
+            format: Optional format suffix
+
+        Returns:
+            Response: Dictionary containing:
+                - next_page: Next page number (or null)
+                - current_page: Current page number
+                - posts_per_type: Number of posts per type per page
+                - posts: Dictionary of post types with serialized post lists
+        """
         try:
             page_number = int(request.GET.get("page", 1))
         except ValueError:
@@ -182,6 +325,16 @@ class GetPostList(APIView):
         return Response(response_data)
 
     def post(self, request, format=None):
+        """Create a new post.
+
+        Args:
+            request: HTTP request object with post data
+            format: Optional format suffix
+
+        Returns:
+            Response: Serialized post data on success (201),
+                      or validation errors (400)
+        """
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
@@ -190,7 +343,17 @@ class GetPostList(APIView):
 
 
 class SearchPosts(APIView):
+    """API endpoint for searching posts by tags (intersection of all tags)."""
+
     def get(self, request):
+        """Search posts by tags (intersection of all provided tags).
+
+        Args:
+            request: HTTP request object with 'tags' query parameter(s)
+
+        Returns:
+            Response: List of posts matching all provided tags
+        """
         tag_names_list = request.GET.getlist("tags")
         matching_posts = None
         for tag_name in tag_names_list:
@@ -205,7 +368,20 @@ class SearchPosts(APIView):
 
 
 class GetComment(APIView):
+    """API endpoint for retrieving or deleting a specific comment."""
+
     def get(self, request, pk, comment_id, format=None):
+        """Retrieve a comment by post ID and comment ID.
+
+        Args:
+            request: HTTP request object
+            pk: Post primary key
+            comment_id: Comment primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: Serialized comment data or 404 error
+        """
         try:
             post = Post.objects.get(pk=pk)
             comment = post.comments.get(pk=comment_id)
@@ -222,6 +398,17 @@ class GetComment(APIView):
             )
 
     def delete(self, request, pk, comment_id, format=None):
+        """Delete a comment by post ID and comment ID.
+
+        Args:
+            request: HTTP request object
+            pk: Post primary key
+            comment_id: Comment primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: 204 on success or 404 if not found
+        """
         try:
             post = Post.objects.get(pk=pk)
             comment = post.comments.get(pk=comment_id)
@@ -240,7 +427,21 @@ class GetComment(APIView):
 
 
 class GetAllComments(APIView):
+    """API endpoint for listing all comments on a post or creating
+    new comments.
+    """
+
     def get(self, request, pk, format=None):
+        """Retrieve all comments for a specific post.
+
+        Args:
+            request: HTTP request object
+            pk: Post primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: List of serialized comments or 404 error
+        """
         try:
             post = Post.objects.get(pk=pk)
             comments = post.comments.all()
@@ -257,6 +458,17 @@ class GetAllComments(APIView):
             )
 
     def post(self, request, pk, format=None):
+        """Create a new comment on a specific post.
+
+        Args:
+            request: HTTP request object with comment data
+            pk: Post primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: Serialized comment data on success (201),
+                      404 if post not found, or 400 for invalid data
+        """
         try:
             post = Post.objects.get(pk=pk)
         except Post.DoesNotExist:
@@ -271,12 +483,33 @@ class GetAllComments(APIView):
 
 
 class GetResourceList(APIView):
+    """API endpoint for listing all resources or creating new resources."""
+
     def get(self, request, format=None):
+        """Retrieve all resources.
+
+        Args:
+            request: HTTP request object
+            format: Optional format suffix
+
+        Returns:
+            Response: List of serialized resources
+        """
         resources = Resource.objects.all()
         serializer = ResourceSerializer(resources, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
+        """Create a new resource.
+
+        Args:
+            request: HTTP request object with resource data
+            format: Optional format suffix
+
+        Returns:
+            Response: Serialized resource data on success (201),
+                      or validation errors (400)
+        """
         serializer = ResourceSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -285,13 +518,38 @@ class GetResourceList(APIView):
 
 
 class GetResource(APIView):
+    """API endpoint for retrieving, updating, or deleting a specific
+    resource.
+    """
+
     def get_object(self, pk):
+        """Helper method to retrieve a resource by primary key.
+
+        Args:
+            pk: Resource primary key
+
+        Returns:
+            Resource: Retrieved resource object
+
+        Raises:
+            Http404: If resource does not exist
+        """
         try:
             return Resource.objects.get(pk=pk)
         except Resource.DoesNotExist as e:
             raise Http404(f"Post with id {pk} does not exist.") from e
 
     def get(self, request, pk, format=None):
+        """Retrieve a resource by ID.
+
+        Args:
+            request: HTTP request object
+            pk: Resource primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: Serialized resource data or 404 error
+        """
         try:
             resource = Resource.objects.get(pk=pk)
             serializer = ResourceSerializer(resource)
@@ -303,6 +561,17 @@ class GetResource(APIView):
             )
 
     def put(self, request, pk, format=None):
+        """Update a resource by ID (partial updates allowed).
+
+        Args:
+            request: HTTP request object with updated resource data
+            pk: Resource primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: Updated resource data, 404 if not found,
+                      or 400 for invalid data
+        """
         try:
             resource = self.get_object(pk=pk)
         except Resource.DoesNotExist:
@@ -320,13 +589,33 @@ class GetResource(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
+        """Delete a resource by ID.
+
+        Args:
+            request: HTTP request object
+            pk: Resource primary key
+            format: Optional format suffix
+
+        Returns:
+            Response: 204 on success
+        """
         resource = self.get_object(pk)
         resource.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class SearchResources(APIView):
+    """API endpoint for searching resources by tags (intersection of all tags)."""
+
     def get(self, request):
+        """Search resources by tags (intersection of all provided tags).
+
+        Args:
+            request: HTTP request object with 'tags' query parameter(s)
+
+        Returns:
+            Response: List of resources matching all provided tags
+        """
         tag_names_list = request.GET.getlist("tags")
         matching_resources = None
         for tag_name in tag_names_list:
@@ -343,29 +632,71 @@ class SearchResources(APIView):
 
 
 class MyProfileView(APIView):
+    """API endpoint for retrieving the current authenticated user's profile."""
+
     def get(self, request):
+        """Retrieve the current user's profile.
+
+        Args:
+            request: HTTP request object (authenticated user)
+
+        Returns:
+            Response: Serialized profile data
+        """
         profile = Profile.objects.get(user=request.user)
         serializer = ProfileSerializer(profile)
         return Response(serializer.data)
 
 
 class SlackPost(APIView):
+    """API endpoint for Slack integration to create/update/delete posts.
+
+    Uses token authentication for Slack requests.
+    """
+
     authentication_classes = [TokenAuthentication]
 
     def get_object(self, slack_ts, post_type):
+        """Helper method to retrieve a post by Slack timestamp and type.
+
+        Args:
+            slack_ts: Slack message timestamp identifier
+            post_type: Type of post ('help_request', 'event', etc.)
+
+        Returns:
+            Post: Retrieved post or None if not found
+        """
         try:
             return Post.objects.get(slack_ts=slack_ts, post_type=post_type)
         except Post.DoesNotExist:
             return None
 
     def post(self, request):
+        """Create a new post from Slack data.
+
+        Args:
+            request: HTTP request with Slack post data
+
+        Returns:
+            Response: Serialized post data on success (201),
+                      or validation errors (400)
+        """
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(source="Slack")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
+        """Update a post by Slack timestamp and type.
+
+        Args:
+            request: HTTP request with updated Slack post data
+
+        Returns:
+            Response: Updated post data, 404 if not found,
+                      or 400 for invalid data
+        """
         slack_ts = request.data.get("slack_ts")
         post_type = request.data.get("post_type")
         post = self.get_object(slack_ts, post_type)
@@ -381,6 +712,14 @@ class SlackPost(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
+        """Delete a post by Slack timestamp and type (Slack channel).
+
+        Args:
+            request: HTTP request containing Slack timestamp and post type
+
+        Returns:
+            Response: 204 on success (even if post doesn't exist)
+        """
         slack_ts = request.data.get("slack_ts")
         post_type = request.data.get("post_type")
         post = self.get_object(slack_ts, post_type)
@@ -392,4 +731,9 @@ class SlackPost(APIView):
 @method_decorator(never_cache, name="dispatch")
 # We want this to always refresh for dev
 class FrontendAppView(TemplateView):
+    """Serves the frontend React application.
+
+    Never cached to ensure latest version during development.
+    """
+
     template_name = "index.html"
