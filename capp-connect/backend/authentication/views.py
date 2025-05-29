@@ -43,6 +43,7 @@ def slack_callback(request):
     This function gets the autorization code from Slack, and exchanges it for an
     JWT ID token. It then verifies the JWT signagture and decodes the payload.
     Decoded version = the JSON response.
+
     Input: request: the incoming HTTP request object from the browser.
     Output: The decoded JSON showing user information such as name, slack_id, email, etc.
     """

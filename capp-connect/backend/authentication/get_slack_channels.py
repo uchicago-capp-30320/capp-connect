@@ -1,22 +1,26 @@
-# this code comes from: https://api.slack.com/messaging/retrieving
 import logging
 import os
 
-# Import WebClient from Python SDK (github.com/slackapi/python-slack-sdk)
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 
 
-# WebClient instantiates a client that can call API methods
-# When using Bolt, you can use either `app.client` or the `client` passed to listeners.
 client = WebClient(token=os.environ.get("SLACK_BOT_TOKEN"))
 logger = logging.getLogger(__name__)
+
+################################################################################
+# Documentation:
+# https://api.slack.com/messaging/retrieving
+################################################################################
 
 
 def retrieve_messages():
     """
     This code goes through a list of channels where the bot is added and returns the
-    conversation ids to us in the form of a dictionary where the key is the channel name
+    conversation ids to us as a dictionary.
+
+    Input: none
+    Output (dict): A dictionary where the key is the name of the Slack channel
     and the value is the channel id.
     """
     channel_names = [
