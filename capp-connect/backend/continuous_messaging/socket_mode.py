@@ -12,7 +12,7 @@ from slack_bolt.adapter.socket_mode import SocketModeHandler
     # https://docs.slack.dev/reference/events
     # https://tools.slack.dev/bolt-python/concepts/event-listening
     # for changing msg: https://api.slack.com/events/message/message_changed
-    # for deleting msg: 
+    # for deleting msg: https://api.slack.com/events/message/message_deleted
 ################################################################################
 
 API_SLACK_SYNC_URL = os.environ["API_SLACK_SYNC_URL"]
@@ -59,18 +59,19 @@ app = App(
 )
 
 
-# lets add chat gpt integration for tagging here:
 
-client = OpenAI(api_key=os.environ["KIRAN_OPEN_API_KEY"])
+client = OpenAI(api_key=os.environ["OPEN_API_KEY"]) #please export your OPEN_API_KEY before running this file
 
 
 def create_tag(text):
     """
     This function utilizes the ChatGPT Open API to read our incoming slack messages and
     add the appropriate tags from our existing tag list.
-    Input: text (comes from the function get_msg() which gets text from incoming
-    slack messages in real time)
-    Output: tag_list
+    Input: 
+        text (string): (comes from the function get_msg() which gets text from 
+        incoming slack messages in real time)
+    Output(list): 
+        tag_list (string): list of at most 5 tags. This can also be an empty list.
     """
     full_tag_list = [
         "climate policy",
@@ -186,14 +187,16 @@ def create_tag(text):
     ]
 
     prompt = f"""
-    You are a strict tagging assistant. Based on the message below, return a JSON array (maximum 5 items) of relevant tags from the provided list.
+    You are a STRICT tagging assistant. Based on the message below, return a 
+    JSON array (maximum 5 items) of relevant tags from the provided list.
 
     Strict Rules:
     - Only return tags that are clearly and directly relevant to the core meaning of the message.
     - DO NOT return tags unless the message explicitly discusses or clearly implies the subject.
     - DO NOT infer meaning from vague, sarcastic, or generic phrases.
     - DO NOT guess. If there is uncertainty, return an empty list.
-    - You must select tags ONLY from the provided list. If a term is not in the list, do not include it — even if it looks relevant. Do not invent or paraphrase tags.
+    - You must select tags ONLY from the provided list. If a term is not in the 
+        list, do not include it, even if it looks relevant. Do not invent or paraphrase tags.
     - Match even if the tag appears in lowercase or embedded in a longer phrase.
     - Return valid JSON only. Do not include any explanation or text before or after the array.
 
@@ -221,36 +224,30 @@ def create_tag(text):
                 if tag in full_tag_list:
                     real_tag_list.append(
                         tag
-                    )  # adding this manual check because chat WONT stop hallucinating even though temp = 0.
+                    )  # added this manual check because chat WONT stop hallucinating even though temp = 0.
             return real_tag_list
         else:
             return []
 
     except Exception:
-        return []  # i dont want error - just give me empty tag list. If we had more time, we would have better error handling...
+        return []  
 
 
 @app.message()
-def get_msg(message, say):
+def get_msg(message):
     """
-    This function allows you to get messages posted on slack channels in real time.
+    This function extracts relevant fields from the incoming Slack message payload
+    and formats them for database insertion. It also uses the GPT tagging assistant to
+    generate a list of 0-5 tags based on the message content.
+
     Inputs:
-        - message: The incoming Slack message event. This is in the form of a dictionary.
-        - say: This is a function that lets you respond by sending message
-                back on the channel. We do NOT use this functionality!
-    Output (printed):
-        - Select fields in the message dictionary that we need to translate over to our DB.
+        - message (dict): The incoming Slack message event. 
+        - say (optional): This is a function that lets you respond by sending message
+                back on the channel. We do NOT use this functionality but it can 
+                be added back in for future iterations.
+    Output:
+        -  None. The output is printed and passed to the API via sync_with_api()
     """
-    """filtered_message = {
-        "type": message["type"],
-        "channel": message["channel"],
-        "user": message["user"],
-        "text": message["text"],
-        "ts": message["ts"],
-        "event_ts": message["event_ts"],
-        "edited": message.get("edited"),
-    }"""
-    # print (filtered_message)
     message_tag = create_tag(message["text"])
     channel = message["channel"]
     post_type = None
@@ -265,47 +262,40 @@ def get_msg(message, say):
 
     try:
         message_for_db = {
-            # "type": message["type"],
             "title": f"{post_type} from Slack",
             "start_time": "2025-05-26T16:30:50+00:00",
             "post_type": post_type,
-            "slack_user_id": message[
-                "user"
-            ],  # in theirs it is slack_user_id #changed may 26 from user_id
+            "slack_user_id": message["user"],  
             "client_msg_id": message["client_msg_id"],
             "description": message["text"],
             "tags": message_tag,
-            "slack_ts": message[
-                "ts"
-            ],  # they are going to replace with when it came into DB
-            # "event_ts": message["event_ts"],
+            "slack_ts": message["ts"],  
             "edited": message.get("edited"),
         }
-        # print(message_for_db)
         print("Prepared message for DB:", message_for_db)
         if not sync_with_api("POST", message_for_db):
             print(f"Failed to create post for message {message['slack_ts']}")
-
     except KeyError as e:
         print(f"Missing key in message: {str(e)}")
 
 
-@app.event("message")  # https://api.slack.com/events/message/message_changed
-def record_changed_messages(body, logger):
+@app.event("message")  
+def record_changed_messages(body):
     """
     This function tracks edits or deletions to Slack messages in real time.
 
     It listens for Slack events of type "message" and filters for subtypes
     like "message_changed" or "message_deleted". Depending on the subtype,
-    it gets relevant fields from the event dictionary to later insert
-    into our DB.
+    it gets relevant fields from the event dictionary to insert
+    into our database.
 
     Inputs:
         - body: The full event payload sent from Slack.
-        - logger: Slack's built-in logger. We do NOT use this!!!
+        - logger (OPTIONAL): Slack's built-in logger. We do not use this but in any 
+            future iteration of the project it can be added back in! 
 
-    Output (printed):
-        - For edited and deleted messages: prints a dict.
+    Output:
+        - None. The output is printed and passed to the API via sync_with_api()
 
     """
     event = body["event"]
@@ -322,7 +312,7 @@ def record_changed_messages(body, logger):
 
     message_data = event.get("message", {})
     message_tag = create_tag(
-        message_data.get("text", "")
+    message_data.get("text", "")
     )  # gpt plug in is here for edited tags!
 
     try:
@@ -330,26 +320,18 @@ def record_changed_messages(body, logger):
             slack_ts = message_data["ts"]
             changed_message = {
                 "post_type": post_type,
-                # "hidden": event["hidden"],
-                # "ts": event["ts"],
                 "client_msg_id": message_data.get("client_msg_id"),
-                # "message": event.get("message", {}),
-                # "edited": message_data.get("edited", {}),
                 "description": message_data.get("text", ""),
                 "tags": message_tag,
                 "slack_ts": slack_ts,
             }
             print("Edited message:", changed_message)
-
             if not sync_with_api("PUT", changed_message):
                 print(f"Failed to update post {slack_ts} in {channel}")
 
-        elif (
-            event["subtype"] == "message_deleted"
-        ):  # https://api.slack.com/events/message/message_deleted
+        elif (event["subtype"] == "message_deleted"):  
             deleted_message = {
                 "post_type": post_type,
-                # "ts": event["ts"],
                 "slack_ts": event[
                     "deleted_ts"
                 ],  # reminder this is the deleted ts which matches.
